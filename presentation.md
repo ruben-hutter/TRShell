@@ -20,6 +20,7 @@ colortheme: orchid
 - Interested in the inner workings of Linux
 - We like optimizing workflows
 
+# Project Idea
 ## Importance
 - simple layout
 - easy to overview multiple shells
@@ -31,12 +32,14 @@ colortheme: orchid
 - C Language (maybe some x86 Assembler)
 - TRSh scripting xD (.trsh)
 
+
 # Hardware / Software Requirements
 ## Setup
 - easy as required tools are part of most Linux distros by default
 - gcc & gdb for compilation and debugging of C code
 - Linux operating system
 - editor to write code
+
 
 # Time Plan
 - Link to Gantproject
