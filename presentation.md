@@ -1,6 +1,6 @@
 ---
 title: TRShell 
-subtitle: Project Presentation
+subtitle: OS Project Presentation
 author: Tobias Hafner, Ruben Hutter
 date: April 1, 2022
 output: beamer_presentation
@@ -17,23 +17,26 @@ colortheme: orchid
 ## Motivation
 - We love shortcuts
 - Tiling window workflow
+- Interested in the inner workings of Linux
+- We like optimizing workflows
 
 ## Importance
-- Simple layout
-- Sleek apperence
-- Intuitive to use
+- simple layout
+- easy to overview multiple shells
+- focus on running multiple jobs
+- intuitive to use
+- minimalistic but appealing appearance
 
 ## Implementation
 - C Language (maybe some x86 Assembler)
-- TRSh Scripting xD
-
+- TRSh scripting xD (.trsh)
 
 # Hardware / Software Requirements
-## Setup (e.g. Raspberry Pie)
-- gcc & gdb
-
-## If needed: estimated budget
-
+## Setup
+- easy as required tools are part of most Linux distros by default
+- gcc & gdb for compilation and debugging of C code
+- Linux operating system
+- editor to write code
 
 # Time Plan
 - Link to Gantproject
