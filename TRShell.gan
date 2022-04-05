@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?><project name="TRShell" company="" webLink="http://" view-date="2022-04-26" view-index="0" gantt-divider-location="300" resource-divider-location="300" version="3.1.3103" locale="en_US">
+    <description/>
+    <view zooming-state="default:3" id="gantt-chart">
+        <field id="tpd3" name="Name" width="167" order="0"/>
+        <field id="tpd4" name="Begin date" width="65" order="1"/>
+        <field id="tpd5" name="End date" width="64" order="2"/>
+        <option id="color.recent">
+            <![CDATA[#ff0000 #00ff00]]>
+        </option>
+    </view>
+    <view id="resource-table">
+        <field id="0" name="Name" width="210" order="0"/>
+        <field id="1" name="Default role" width="86" order="1"/>
+    </view>
+    <!-- -->
+    <calendars>
+        <day-types>
+            <day-type id="0"/>
+            <day-type id="1"/>
+            <default-week id="1" name="default" sun="1" mon="0" tue="0" wed="0" thu="0" fri="0" sat="1"/>
+            <only-show-weekends value="false"/>
+            <overriden-day-types/>
+            <days/>
+        </day-types>
+    </calendars>
+    <tasks empty-milestones="true">
+        <taskproperties>
+            <taskproperty id="tpd0" name="type" type="default" valuetype="icon"/>
+            <taskproperty id="tpd1" name="priority" type="default" valuetype="icon"/>
+            <taskproperty id="tpd2" name="info" type="default" valuetype="icon"/>
+            <taskproperty id="tpd3" name="name" type="default" valuetype="text"/>
+            <taskproperty id="tpd4" name="begindate" type="default" valuetype="date"/>
+            <taskproperty id="tpd5" name="enddate" type="default" valuetype="date"/>
+            <taskproperty id="tpd6" name="duration" type="default" valuetype="int"/>
+            <taskproperty id="tpd7" name="completion" type="default" valuetype="int"/>
+            <taskproperty id="tpd8" name="coordinator" type="default" valuetype="text"/>
+            <taskproperty id="tpd9" name="predecessorsr" type="default" valuetype="text"/>
+        </taskproperties>
+        <task id="386" name="Prepare presentation" color="#8cb6ce" meeting="false" start="2022-04-04" duration="3" complete="0" thirdDate="2022-04-06" thirdDate-constraint="0" expand="true">
+            <depend id="222" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="222" name="Project idea presentation" color="#00ff00" meeting="false" start="2022-04-07" duration="2" complete="0" thirdDate="2022-04-25" thirdDate-constraint="0" expand="true"/>
+        <task id="0" name="Read source code of other shells" color="#8cb6ce" meeting="false" start="2022-04-11" duration="5" complete="0" thirdDate="2022-04-11" thirdDate-constraint="0" expand="true"/>
+        <task id="37" name="UI" color="#8cb6ce" meeting="false" start="2022-04-18" duration="13" complete="0" thirdDate="2022-04-18" thirdDate-constraint="0" expand="true">
+            <notes>
+                <![CDATA[- interactive mode: loop -> Read-Eval-Print-Loop (REPL)
+- read input, parse and execute until: exit, shutdown or reboot
+
+Printing Prompt Strings: PS1, PS2, ..., PS4]]>
+            </notes>
+            <depend id="35" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="414" name="MS - 1" color="#ff0000" meeting="true" start="2022-05-05" duration="0" complete="0" thirdDate="2022-04-11" thirdDate-constraint="0" expand="true">
+            <notes>
+                <![CDATA[Working shell prompt:
+- You can enter the shell
+- Enter some first commands
+- Exit shell]]>
+            </notes>
+        </task>
+        <task id="35" name="Command Line Interpreter" color="#8cb6ce" meeting="false" start="2022-05-05" duration="10" complete="0" thirdDate="2022-04-18" thirdDate-constraint="0" expand="true">
+            <notes>
+                <![CDATA[- Parser: scans input and breaks it down to tokens
+- Token: one or more characters -> single unit of input
+- Abstract Syntax Tree (ATS): high level representation of the command line -> given to executor]]>
+            </notes>
+            <depend id="39" type="2" difference="0" hardness="Strong"/>
+            <depend id="41" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="41" name="Builtin utilities" color="#8cb6ce" meeting="false" start="2022-05-19" duration="7" complete="0" thirdDate="2022-04-18" thirdDate-constraint="0" expand="true">
+            <notes>
+                <![CDATA[- Set of commands that are implemented as part of the shell program itself
+- example: cd, fg, bg]]>
+            </notes>
+        </task>
+        <task id="39" name="Symbol table" color="#8cb6ce" meeting="false" start="2022-05-19" duration="7" complete="0" thirdDate="2022-04-18" thirdDate-constraint="0" expand="true">
+            <notes>
+                <![CDATA[- Store information about variables
+- History implementation]]>
+            </notes>
+        </task>
+        <task id="418" name="MS - 2" color="#ff0000" meeting="true" start="2022-05-19" duration="0" complete="0" thirdDate="2022-04-11" thirdDate-constraint="0" expand="true">
+            <notes>
+                <![CDATA[- The default comands are processed correctly: command, flags and passed arguments]]>
+            </notes>
+        </task>
+        <task id="630" name="Shortcuts" color="#8cb6ce" meeting="false" start="2022-05-24" duration="10" complete="0" thirdDate="2022-04-26" thirdDate-constraint="0" expand="true">
+            <notes>
+                <![CDATA[- Navigate differents shells with shortcut
+- Move split windows around]]>
+            </notes>
+        </task>
+        <task id="545" name="Tiling windows" color="#8cb6ce" meeting="false" start="2022-05-24" duration="10" complete="0" thirdDate="2022-05-12" thirdDate-constraint="0" expand="true"/>
+        <task id="427" name="MS - 3" color="#ff0000" meeting="true" start="2022-05-30" duration="0" complete="0" thirdDate="2022-04-11" thirdDate-constraint="0" expand="true">
+            <notes>
+                <![CDATA[- Every shell functionality, inclusive history, works]]>
+            </notes>
+        </task>
+        <task id="9" name="Implement personal scripting language" color="#8cb6ce" meeting="false" start="2022-06-03" duration="5" complete="0" thirdDate="2022-06-01" thirdDate-constraint="0" expand="true"/>
+        <task id="316" name="Debug last errors" color="#8cb6ce" meeting="false" start="2022-06-10" duration="4" complete="0" thirdDate="2022-05-03" thirdDate-constraint="0" expand="true"/>
+        <task id="5" name="MS - 4" color="#ff0000" meeting="true" start="2022-06-10" duration="0" complete="0" thirdDate="2022-05-18" thirdDate-constraint="0" expand="true">
+            <notes>
+                <![CDATA[- TRShell is finished
+- Time to debug!]]>
+            </notes>
+        </task>
+        <task id="350" name="Prepare presentation" meeting="false" start="2022-06-13" duration="3" complete="0" expand="true"/>
+        <task id="1" name="Project presentation" color="#00ff00" meeting="false" start="2022-06-16" duration="2" complete="0" thirdDate="2022-04-04" thirdDate-constraint="0" expand="true"/>
+    </tasks>
+    <resources>
+        <resource id="0" name="Tobi" function="Default:1" contacts="" phone=""/>
+        <resource id="1" name="Ruben" function="Default:1" contacts="" phone=""/>
+    </resources>
+    <allocations>
+        <allocation task-id="1" resource-id="0" function="Default:1" responsible="false" load="100.0"/>
+        <allocation task-id="386" resource-id="0" function="Default:1" responsible="false" load="100.0"/>
+        <allocation task-id="222" resource-id="0" function="Default:1" responsible="false" load="100.0"/>
+        <allocation task-id="0" resource-id="0" function="Default:1" responsible="false" load="100.0"/>
+        <allocation task-id="37" resource-id="0" function="Default:1" responsible="false" load="100.0"/>
+        <allocation task-id="35" resource-id="0" function="Default:1" responsible="false" load="100.0"/>
+        <allocation task-id="41" resource-id="0" function="Default:1" responsible="true" load="100.0"/>
+        <allocation task-id="9" resource-id="0" function="Default:1" responsible="false" load="100.0"/>
+        <allocation task-id="316" resource-id="0" function="Default:1" responsible="false" load="100.0"/>
+        <allocation task-id="1" resource-id="1" function="Default:1" responsible="false" load="100.0"/>
+        <allocation task-id="386" resource-id="1" function="Default:1" responsible="false" load="100.0"/>
+        <allocation task-id="222" resource-id="1" function="Default:1" responsible="false" load="100.0"/>
+        <allocation task-id="0" resource-id="1" function="Default:1" responsible="false" load="100.0"/>
+        <allocation task-id="37" resource-id="1" function="Default:1" responsible="false" load="100.0"/>
+        <allocation task-id="35" resource-id="1" function="Default:1" responsible="false" load="100.0"/>
+        <allocation task-id="39" resource-id="1" function="Default:1" responsible="true" load="100.0"/>
+        <allocation task-id="9" resource-id="1" function="Default:1" responsible="false" load="100.0"/>
+        <allocation task-id="316" resource-id="1" function="Default:1" responsible="false" load="100.0"/>
+    </allocations>
+    <vacations/>
+    <previous/>
+    <roles roleset-name="Default"/>
+</project>
