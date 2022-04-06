@@ -8,11 +8,6 @@ theme: Dresden
 colortheme: orchid
 ---
 
-# Group Members
-- Tobias Hafner
-- Ruben Hutter
-
-
 # Project Idea
 ## Motivation
 - We love shortcuts
@@ -42,4 +37,7 @@ colortheme: orchid
 
 
 # Time Plan
-![Gantproject](TRShell.png)
+![](ablauf.png)
+
+# Time Plan
+![](TRShell.png)
