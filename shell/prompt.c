@@ -1,4 +1,5 @@
 #include <stdio.h>
+
 #include "shell.h"
 
 void print_prompt_1(void) {
