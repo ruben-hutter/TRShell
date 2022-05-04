@@ -7,6 +7,7 @@
 
 int main(int argc, char **argv) {
     char* input_string;
+    
     while(true) {
         // print prompt string 1 to cli
         print_prompt_1();
