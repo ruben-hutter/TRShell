@@ -33,13 +33,13 @@ int main(int argc, char **argv) {
     exit(EXIT_SUCCESS);
 }
 
-char* read_command(void) {
-    char buf[1024];
+char* read_from_input() {
+    char buffer[1024];
     char* ptr = NULL;
     char ptrlen = 0;
 
-    while (fgets(buf, 1024, stdin)) {
-        int buflen = strlen(buf);
+    while (fgets(buffer, 1024, stdin)) {
+        int buflen = strlen(buffer);
 
         if (!ptr) {
             ptr = malloc(buflen+1);
@@ -59,10 +59,10 @@ char* read_command(void) {
             return NULL;
         }
 
-        strcpy(ptr+ptrlen, buf);
+        strcpy(ptr+ptrlen, buffer);
 
-        if (buf[buflen-1] == '\n') {
-            if (buflen == 1 || buf[buflen-2] != '\\') {
+        if (buffer[buflen-1] == '\n') {
+            if (buflen == 1 || buffer[buflen-2] != '\\') {
                 return ptr;
             }
 
