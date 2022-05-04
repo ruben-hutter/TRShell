@@ -10,10 +10,10 @@ colortheme: orchid
 
 # Project Idea
 ## Motivation
-- We love shortcuts
-- Tiling window workflow
 - Interested in the inner workings of Linux
 - We like optimizing workflows
+- We love shortcuts
+- Tiling window workflow
 
 # Project Idea
 ## Importance
@@ -25,19 +25,17 @@ colortheme: orchid
 
 ## Implementation
 - C Language (maybe some x86 Assembler)
+- Python 3
 - TRSh scripting xD (.trsh)
 
 
 # Hardware / Software Requirements
 ## Setup
-- easy as required tools are part of most Linux distros by default
-- gcc & gdb for compilation and debugging of C code
 - Linux operating system
+- gcc & gdb for compilation and debugging of C code
 - editor to write code
+- easy as required tools are part of most Linux distros by default
 
 
 # Time Plan
 ![](ablauf.png)
-
-# Time Plan
-![](TRShell.png)
