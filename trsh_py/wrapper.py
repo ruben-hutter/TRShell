@@ -49,3 +49,11 @@ class Wrapper:
         self.gui_section = gui_section
         self.shell = None
         self.run_shell()
+
+    # terminate terminal on destruction of wrapper
+    def __del__(self):
+        if self.shell == None:
+            return
+        self.shell.terminate()
+        if self.shell != None and self.shell.poll() == None:
+            self.shell.kill()
