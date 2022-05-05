@@ -35,34 +35,31 @@ class Wrapper:
             shell=True
             )
 
-        # wait for shell process to start
-        self.wait_for_shell_start()
-
         # redirect stdout of subprocess to gui
         stdout_reader = Thread(target=self.read_shell_stdout)
         stdout_reader.setDaemon(True)
-        sleep(10)
         stdout_reader.start()
-
-    def wait_for_shell_start(self):
-        while self.shell.poll() == None:
-            sleep(0.01)
 
     # reads the str out of the shell process and calls push_to_gui
     def read_shell_stdout(self):
         while True:
-            output_string = self.shell.stdout.read(1).decode()
-            if output_string == '' and self.shell.poll() != None:
+            output_string = self.read_line_from_shell()
+            if not output_string:
                 break
+            output_string = output_string.rstrip()
             self.push_to_gui(output_string)
 
     # pushes a string to the qui
     def push_to_gui(self, output_string):
-
         # debug printout
         print(f"Subprocess sent: {output_string}")
 
     # pushes a string to the trshell c process
     def push_to_shell(self, input_string):
-        self.shell.communicate(input=input_string.encode())
-        return
+        input_string = input_string + '\n'
+        self.shell.stdin.write(input_string.encode())
+        self.shell.stdin.flush()
+
+    # read line from shell
+    def read_line_from_shell(self):
+        return self.shell.stdout.readline().decode()

@@ -38,7 +38,7 @@ int run_repl(){
     FILE *istream = stdin;
     char *s;
     while ((s = fgets_alloc(istream)) != NULL) {
-        fprintf(stdout, "%s", s);
+        printf("%s", s);
         free(s);
         fflush(stdout);
     }
@@ -50,8 +50,4 @@ int run_repl(){
         puts("Out of memory");
     }
     return 0;
-}
-
-int main() {
-  return run_repl();
 }
