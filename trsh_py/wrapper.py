@@ -7,7 +7,6 @@ from time import sleep
 SHELL_EXEC_PATH = "dummy_shell.o"
 
 class Wrapper:
-
     # construct new trshell object
     def __init__(self, gui_section):
         self.gui_section = gui_section
