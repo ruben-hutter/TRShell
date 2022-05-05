@@ -33,17 +33,19 @@ int main(int argc, char **argv) {
     exit(EXIT_SUCCESS);
 }
 
-char* read_command(void) {
-    char buf[1024];
+char* read_from_input() {
+    char buffer[1024];
     char* ptr = NULL;
     char ptrlen = 0;
 
-    while (fgets(buf, 1024, stdin)) {
-        int buflen = strlen(buf);
+    while (fgets(buffer, 1024, stdin)) {
+        int buflen = strlen(buffer); // ex. "ls -al" -> "ls -al\n" (without '\0')
 
         if (!ptr) {
+            // initial buffer allocation
             ptr = malloc(buflen+1);
         } else {
+            // increase buffer allocated size
             char *ptr2 = realloc(ptr, ptrlen+buflen+1);
 
             if (ptr2) {
@@ -55,14 +57,18 @@ char* read_command(void) {
         }
 
         if (!ptr) {
+            // failed allocating buffer
             fprintf(stderr, "error: failed to alloc buffer: %s\n", strerror(errno));
             return NULL;
         }
 
-        strcpy(ptr+ptrlen, buf);
+        // copy buffered entry to allocated buffer
+        strcpy(ptr+ptrlen, buffer);
 
-        if (buf[buflen-1] == '\n') {
-            if (buflen == 1 || buf[buflen-2] != '\\') {
+        if (buffer[buflen-1] == '\n') {
+            // last buffer char is "new line"
+            if (buflen == 1 || buffer[buflen-2] != '\\') {
+                // end of command if empty or not continues on new line
                 return ptr;
             }
 
