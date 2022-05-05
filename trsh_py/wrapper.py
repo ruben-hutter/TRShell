@@ -18,7 +18,9 @@ class Wrapper:
         if self.shell == None:
             return
         self.shell.terminate()
-        if self.shell != None and self.shell.poll() == None:
+        try:
+            self.shell.wait(3)
+        except:
             self.shell.kill()
     
     # launches a new trshell c process
