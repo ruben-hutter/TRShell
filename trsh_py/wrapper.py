@@ -33,11 +33,18 @@ class Wrapper:
             shell=True
             )
 
+        # wait for shell process to start
+        self.wait_for_shell_start()
+
         # redirect stdout of subprocess to gui
         stdout_reader = Thread(target=self.read_shell_stdout)
         stdout_reader.setDaemon(True)
         sleep(10)
         stdout_reader.start()
+
+    def wait_for_shell_start(self):
+        while self.shell.poll() == None:
+            sleep(0.01)
 
     # reads the str out of the shell process and calls push_to_gui
     def read_shell_stdout(self):
