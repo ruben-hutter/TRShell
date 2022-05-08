@@ -53,5 +53,13 @@ int run_repl(){
 }
 
 int main() {
-  return run_repl();
+  int i = run_repl();
+  /**
+  while (i++ < 1000) {
+    fprintf(stdout, "Teststring: %d\n", i);
+    fflush(stdout);
+    usleep(50000);
+  }
+  **/
+  return 0;
 }

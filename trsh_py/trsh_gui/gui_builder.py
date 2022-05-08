@@ -13,9 +13,6 @@ def create_console_widget():
 def create_layout():
     return QVBoxLayout()
 
-def connect_console_handler(console_widget, handler_func):
-    return
-
 def assemble_gui():
     main_window = create_main_window()
     console_widget = create_console_widget()

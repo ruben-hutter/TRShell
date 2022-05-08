@@ -1,9 +1,8 @@
 # class representing the main window of the trshell application
-from PyQt6.QtWidgets import QMainWindow, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import QWidget
 from PyQt6.QtGui import QIcon
 import trsh_gui.qss_reader as qss_reader
 from trsh_gui.console_widget import ConsoleWidget
-import os
 
 STYLE_SHEET = "trsh_gui/main_window.qss"
 DEFAULT_WIDTH = 800
@@ -28,3 +27,12 @@ class MainWindow(QWidget):
         # apply style sheet
         self.style_sheet = qss_reader.read_style_sheet(STYLE_SHEET)
         self.setStyleSheet(self.style_sheet)
+
+    # kill all wrappers on close
+    def closeEvent(self, a0):
+        for console_widget in self.findChildren(ConsoleWidget):
+            wrapper = console_widget.wrapper
+            if not wrapper:
+                continue
+            wrapper.kill()
+        return super().closeEvent(a0)
