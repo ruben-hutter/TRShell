@@ -6,7 +6,8 @@ from PyQt6.QtGui import *
 from PyQt6.QtWidgets import *
 from PyQt6.QtCore import *
 
-SHELL_EXEC_PATH = "dummy_shell.o"
+SHELL_EXEC_PATH = 'dummy_shell.o'
+SHELL_WRAP_FLAG = '-w'
 
 class Wrapper:
     # construct new trshell object
@@ -33,7 +34,7 @@ class Wrapper:
     # launches a new trshell c process
     def run_shell(self):
         # launch shell c with subprocess 
-        command = "./" + SHELL_EXEC_PATH
+        command = "./" + SHELL_EXEC_PATH + ' ' + SHELL_WRAP_FLAG
         self.shell = sp.Popen(
             command,
             stdin=sp.PIPE,
