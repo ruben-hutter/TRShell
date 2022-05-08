@@ -17,7 +17,7 @@ class Wrapper:
 
     # destructor of wrapper
     def __del__(self):
-        self.kill
+        self.kill()
     
     # terminates the trshell task and the trshell reader
     def kill(self):
