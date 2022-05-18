@@ -51,12 +51,10 @@ class Wrapper:
         self.shell_reader = ShellReader(self.shell)
         self.shell_reader.signals.output_signal.connect(self.update_gui)
         QThreadPool.globalInstance().start(self.shell_reader)
-        return
 
     # sends the received text to the console widget
     def update_gui(self, output_string):
         self.console_widget.appendPlainText(output_string)
-        return
 
     # pushes a string to the trshell c process
     def push_to_shell(self, input_string):
