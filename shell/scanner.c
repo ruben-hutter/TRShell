@@ -14,7 +14,7 @@ int token_buffer_index = -1;
 
 /* special token to indicate end of input */
 struct token_struct eof_token = {
-    .text_len = 0,
+    .text_len = 0
 };
 
 
