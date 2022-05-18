@@ -1,4 +1,7 @@
 #include <errno.h>
+
+#include <stdbool.h>
+
 #include "shell.h"
 #include "input.h"
 
