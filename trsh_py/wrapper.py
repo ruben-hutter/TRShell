@@ -1,7 +1,6 @@
 # wrapper wrapping the trshell c implementation into python
 import subprocess as sp
 from threading import Thread
-from turtle import update
 from PyQt6.QtGui import *
 from PyQt6.QtWidgets import *
 from PyQt6.QtCore import *
