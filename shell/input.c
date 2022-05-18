@@ -43,7 +43,7 @@ char get_next_char (struct input_struct *input) {
 }
 
 // return the next char without incrementinng the current read potision
-char peek_next_char(struct input_struct *input) {
+char peek_next_char(struct input_struct* input) {
     // either input_struct pointer or pointer of buffer in input struct is NULL
     if (!input || !input->buffer) {
         // return error char symbolizing that an error occured
@@ -71,7 +71,7 @@ char peek_next_char(struct input_struct *input) {
 }
 
 // moves the reading position in the buffer to the right until non whitespace char is found
-void skip_white_spaces(struct input_struct *input) {
+void skip_white_spaces(struct input_struct* input) {
     // either input_struct pointer or pointer of buffer in input struct is NULL
     if (!input || !input->buffer) {
         return;
