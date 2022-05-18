@@ -71,10 +71,10 @@ char* read_from_input() {
                 // end of command if empty or not continues on new line
                 return ptr;
             }
-
+            // if it continues remove last 2 chars
             ptr[ptrlen+buflen-2] = '\0';
             buflen -= 2;
-            print_promt_2();
+            print_prompt_2();
         }
 
         ptrlen += buflen;

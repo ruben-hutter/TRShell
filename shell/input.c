@@ -3,11 +3,9 @@
 #include "input.h"
 
 // moves the current read position back by one
-void unget_last_char(struct input_struct *input)
-{
+void unget_last_char (struct input_struct *input) {
     // no char to remove as positioned at beginning of buffer
-    if(input->current_pos < 0)
-    {
+    if (input->current_pos < 0) {
         return;
     }
     // remove last char by moving pointer in front of that char
@@ -15,26 +13,22 @@ void unget_last_char(struct input_struct *input)
 }
 
 // returns the next char in the buffer
-char get_next_char(struct input_struct *input)
-{
+char get_next_char (struct input_struct *input) {
     // either input_struct pointer or pointer of buffer in input struct is NULL       
-    if(!input || !input->buffer)
-    {
+    if (!input || !input->buffer) {
         // return error char symbolizing that an error occured
         errno = ENODATA;
         return ERRCHAR;
     }
 
-    if(input->current_pos == INIT_POS)
-    {
+    if (input->current_pos == INIT_POS) {
         // init buffer position
         input->current_pos  = -1;
     }
 
     input++;
     // if next symbol is outside of buffer cause reached end
-    if(input->current_pos >= input->buffer_size)
-    {
+    if (input->current_pos >= input->buffer_size) {
         // set position to last char in buffer
         input->current_pos = input->buffer_size;
         // return end of file char
@@ -46,11 +40,9 @@ char get_next_char(struct input_struct *input)
 }
 
 // return the next char without incrementinng the current read potision
-char peek_next_char(struct input_struct *input)
-{
+char peek_next_char(struct input_struct *input) {
     // either input_struct pointer or pointer of buffer in input struct is NULL
-    if(!input || !input->buffer)
-    {
+    if (!input || !input->buffer) {
         // return error char symbolizing that an error occured
         errno = ENODATA;
         return ERRCHAR;
@@ -60,8 +52,7 @@ char peek_next_char(struct input_struct *input)
     long peek_pos = input->current_pos;
 
     // if peek is at buffer init position -> set one before first char
-    if(peek_pos == INIT_POS)
-    {
+    if (peek_pos == INIT_POS) {
         peek_pos = -1;
     }
 
@@ -69,8 +60,7 @@ char peek_next_char(struct input_struct *input)
     peek_pos++;
 
     // if peeking out of buffer return end of file
-    if(peek_pos >= input->buffer_size)
-    {
+    if (peek_pos >= input->buffer_size) {
         return EOF;
     }
 
