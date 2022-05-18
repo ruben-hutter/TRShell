@@ -71,18 +71,15 @@ char peek_next_char(struct input_struct *input) {
 }
 
 // moves the reading position in the buffer to the right until non whitespace char is found
-void skip_white_spaces(struct input_struct *input)
-{
+void skip_white_spaces(struct input_struct *input) {
     // either input_struct pointer or pointer of buffer in input struct is NULL
-    if(!input || !input->buffer)
-    {
+    if (!input || !input->buffer) {
         return;
     }
 
     char upcoming_char;
     // move to the right until non tab or whitespace or EOF char is found
-    while(true)
-    {
+    while (true) {
         upcoming_char = peek_char(input);
 
         // reached end of file
