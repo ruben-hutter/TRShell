@@ -1,5 +1,7 @@
 # wrapper wrapping the trshell c implementation into python
 import subprocess as sp
+import pty
+import os
 from threading import Thread
 from turtle import update
 from PyQt6.QtGui import *
@@ -33,40 +35,44 @@ class Wrapper:
     
     # launches a new trshell c process
     def run_shell(self):
+        # create tty file descriptors
+        self.master, self.slave = pty.openpty()
         # launch shell c with subprocess 
         command = "./" + SHELL_EXEC_PATH + ' ' + SHELL_WRAP_FLAG
         self.shell = sp.Popen(
             command,
-            stdin=sp.PIPE,
-            stdout=sp.PIPE,
-            stderr=sp.PIPE,
+            stdin=self.slave,
+            stdout=self.slave,
+            stderr=self.slave,
             shell=True
             )
 
-        # redirect stdout of subprocess to gui
+        # iread from master file descriptor
         self.launch_shell_reader()
 
     # creates and starts a new qrunnable reading from the shell process
     def launch_shell_reader(self):
-        self.shell_reader = ShellReader(self.shell)
+        self.shell_reader = ShellReader(self.shell, self.master)
         self.shell_reader.signals.output_signal.connect(self.update_gui)
         QThreadPool.globalInstance().start(self.shell_reader)
+        return
 
     # sends the received text to the console widget
     def update_gui(self, output_string):
         self.console_widget.appendPlainText(output_string)
+        return
 
     # pushes a string to the trshell c process
     def push_to_shell(self, input_string):
         input_string = input_string + '\n'
-        self.shell.stdin.write(input_string.encode())
-        self.shell.stdin.flush()
+        os.write(self.master, input_string)
 
 class ShellReader(QRunnable):
     # init new shell reader
-    def __init__(self, shell):
+    def __init__(self, shell, master):
         super(ShellReader, self).__init__()
         self.shell = shell
+        self.master = master
         self.signals = ShellReaderSignals()
 
     # reads the str out of the shell process and calls push_to_gui
@@ -80,7 +86,7 @@ class ShellReader(QRunnable):
 
     # read line from shell
     def read_line_from_shell(self):
-        return self.shell.stdout.readline().decode()
+        return os.read(self.master, 10240)
 
     # pushes a string to the quee for the qui to print it
     def push_to_gui(self, output_string):

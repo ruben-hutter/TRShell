@@ -1,5 +1,4 @@
 import sys
-from wrapper import Wrapper
 from PyQt6.QtWidgets import QApplication
 import trsh_gui.gui_builder as gui_builder
 
