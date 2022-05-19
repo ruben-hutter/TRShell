@@ -6,8 +6,8 @@
 #define USER_SECONDARY "\033[38;5;38m"
 
 // colors used for root
-#define ROOT_PRIMARY "\033[38;5;35m"
-#define ROOT_SECONDARY "\033[38;5;38m"
+#define ROOT_PRIMARY "\033[38;5;196m"
+#define ROOT_SECONDARY "\033[38;5;202m"
 
 // miscellaneous style information
 #define STYLE_BOLD "\033[1m"
