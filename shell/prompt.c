@@ -3,7 +3,7 @@
 #include "shell.h"
 # include <stdlib.h>
 
-#define PROMPT_1 "tobi: ../shell $ "
+#define PROMPT_1 "tobi :: TRShell ᐅ $ "
 #define PROMPT_2 "> "
 
 void print_prompt_1(void) {
