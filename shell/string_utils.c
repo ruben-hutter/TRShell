@@ -34,3 +34,15 @@ void conactenate(int num_of_args, char* output_string, char* input_string, ...) 
     // end list
     va_end(args);
 }
+
+// malloc an empty string of the specified length
+char* get_malloced_empty_string(int length) {
+    char* colored_string = malloc(length);
+    *colored_string = '\0';
+    return colored_string;
+}
+
+// adds a terminator at the beginning of the string to empty it
+void make_empty_string(char* input_string) {
+    *colored_string = '\0';
+}
