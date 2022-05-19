@@ -12,9 +12,9 @@
 #define INIT_POS -2L
 
 struct input_struct {   
-    char* buffer;           /* the input text */
-    long buffer_size;       /* size of the input text */
-    long current_pos;       /* absolute char position in source */
+    char* buffer;           // the input text
+    long buffer_size;       // size of the input text
+    long current_pos;       // absolute char position in source
 };
 
 char get_next_char(struct input_struct* input);
