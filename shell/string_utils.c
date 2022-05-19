@@ -4,17 +4,15 @@
 # include "string.h"
 # include "string_utils.h"
 
+#include <stdio.h>
+
 // get the length of all passed string concatenated
-int get_concatenated_length(int num_of_args, char* input_string, ...) {
+int get_concatenated_length(int num_of_args, ...) {
     // prepare arg list for iteration
     va_list args;
-    va_start(args, input_string);
+    va_start(args, num_of_args);
     // loop through args and sum length
-    int concatenated_length = 0;
-    int iter;
-    for (iter = 0; iter < num_of_args; iter++) {
-        concatenated_length += strlen(va_arg(args, char*));
-    }
+    int concatenated_length = v_get_concatenated_length(num_of_args, args);
     // end list
     va_end(args);
     // return resulting length
@@ -34,10 +32,10 @@ int v_get_concatenated_length(int num_of_args, va_list input_strings) {
 
 // concatenate all strings and write to output string
 // note that output_string must be of succficient length to fit concatenation
-void concatenate(int num_of_args, char* output_string, char* input_string, ...) {
+void concatenate(int num_of_args, char* output_string, ...) {
     // prepare arg list for iteration
     va_list args;
-    va_start(args, input_string);
+    va_start(args, output_string);
     // concate strings using v_concatenate
     v_concatenate(num_of_args, output_string, args);
     // end list

@@ -56,7 +56,7 @@ void print_prompt_1(void) {
     // update the current working directory
     update_cwd();
     // get prefix and prompt
-    char* prefix = create_user_prefix("tobi", current_working_dir);
+    char* prefix = create_user_prefix("tobi", "current_working_dir");
     char* prompt = create_user_prompt(PROMPT_1);
     // combine prefix and prompt to prompt_string
     char prompt_string[get_concatenated_length(2, prefix, prompt)];
