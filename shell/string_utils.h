@@ -4,7 +4,7 @@
 // get the length of all passed string concatenated
 int get_concatenated_length(int num_of_args, char* input_string, ...);
 // get the length of all passed string in the va_list concatenated
-int v_get_concatenated_length(int num_of_args, va_list input_strings)
+int v_get_concatenated_length(int num_of_args, va_list input_strings);
 // concatenate all strings and write to output string
 // note that output_string must be of succficient length to fit concatenation
 void concatenate(int num_of_args, char* output_string, char* input_string, ...);

@@ -17,6 +17,6 @@
 // concat input_strings with style reset character at the appendet to the end
 void concatenate_with_style(int num_of_input_strings, char* styled_string, char* input_strings, ...);
 // get the length of all passed string concatenated with the style reset char apendet to the end
-int get_concatenated_length_with_style(int num_of_input_strings, char* input_string, ...);
+int get_concatenated_length_with_style(int num_of_input_strings, char* input_strings, ...);
 
 #endif

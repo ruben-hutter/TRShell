@@ -14,13 +14,15 @@
 
 char current_working_dir[100];
 
+
 void update_cwd(void) {
     if (getcwd(current_working_dir, sizeof(current_working_dir)) != NULL) {
-        return;
+       return;
     }
     perror("getcwd() error");
     return;
 }
+
 
 // get the prompt prefix containing the user name and the current directory in user colors
 char* create_user_prefix(char* user_name, char* curr_work_dir_name) {
@@ -32,19 +34,19 @@ char* create_user_prefix(char* user_name, char* curr_work_dir_name) {
     // construct styled version of working directory
     char dir_part[get_concatenated_length_with_style(3, USER_SECONDARY, STYLE_BOLD, curr_work_dir_name)];
     make_empty_string(dir_part);
-    concatenate_with_style(3, USER_SECONDARY, STYLE_BOLD, curr_work_dir_name);
+    concatenate_with_style(3, dir_part, USER_SECONDARY, STYLE_BOLD, curr_work_dir_name);
 
     // concatenate user_part and dir_part
-    char prefix = malloc(get_concatenated_length(2, user_part, dir_part));
+    char* prefix = get_malloced_empty_string(get_concatenated_length(2, user_part, dir_part));
     make_empty_string(prefix);
-    concatenate(2, user_part, dir_part);
+    concatenate(2, prefix, user_part, dir_part);
 
     return prefix;
 }
 
 //  get the prompt symbol of the specified prompt in user colors
 char* create_user_prompt(char* prompt) {
-    char* styled_prompt = malloc(get_concatenated_length_with_style(2, prompt, USER_PRIMARY));
+    char* styled_prompt = get_malloced_empty_string(get_concatenated_length_with_style(2, prompt, USER_PRIMARY));
     make_empty_string(styled_prompt);
     concatenate_with_style(2, styled_prompt, USER_PRIMARY, prompt);
     return styled_prompt;
