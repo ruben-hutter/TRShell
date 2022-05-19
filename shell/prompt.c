@@ -7,9 +7,9 @@
 #include "shell.h"
 #include "string_utils.h"
 
-#define PROMPT_1 "$ "
-#define PROMPT_2 "> "
-#define PROMPT_3 "# "
+#define PROMPT_1 " $ "
+#define PROMPT_2 " > "
+#define PROMPT_3 " # "
 #define SEPARATOR " ● "
 
 char current_working_dir[100];
@@ -56,12 +56,12 @@ void print_prompt_1(void) {
     // update the current working directory
     update_cwd();
     // get prefix and prompt
-    char* prefix = create_user_prefix("tobi", "current_working_dir");
+    char* prefix = create_user_prefix("tobi", current_working_dir);
     char* prompt = create_user_prompt(PROMPT_1);
     // combine prefix and prompt to prompt_string
     char prompt_string[get_concatenated_length(2, prefix, prompt)];
     make_empty_string(prompt_string);
-    concatenate(2, prompt_string, prefix, prompt_string);
+    concatenate(2, prompt_string, prefix, prompt);
     // free prefix and prompt
     free(prefix);
     free(prompt);

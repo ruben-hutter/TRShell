@@ -53,7 +53,8 @@ void v_concatenate(int num_of_args, char* output_string, va_list input_strings) 
 
 // malloc an empty string of the specified length
 char* get_malloced_empty_string(int length) {
-    char* colored_string = malloc(length);
+    // works as sizeof(char) is qual to 1
+    char* colored_string = (char*) malloc(length + 1);
     *colored_string = '\0';
     return colored_string;
 }
