@@ -25,7 +25,7 @@ union symval_u {
     double sfloat;
     long double ldouble;
     char chr;
-    char* str
+    char* str;
 };
 
 struct node_struct {

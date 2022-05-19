@@ -55,6 +55,7 @@ void print_prompt_2(void) {
     free(prompt_string);
 }
 
+// TODO test
 void get_pwd(void) {
     if (getcwd(current_working_dir, sizeof(current_working_dir)) != NULL) {
         return;

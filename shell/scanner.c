@@ -100,7 +100,7 @@ struct token_struct* tokenize(struct input_struct* input) {
                 break;
             case '\n':
                 if (token_buffer_index > 0) {
-                    inget_char(input);
+                    unget_last_char(input);
                 } else {
                     add_to_buffer(next_char);
                 }
