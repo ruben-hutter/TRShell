@@ -9,6 +9,8 @@
 
 char* colorize(char* string, char* color);
 
+char* style(char* string, char* style);
+
 char* get_malloc_empty_string(int length);
 
 #endif
