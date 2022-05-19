@@ -20,9 +20,20 @@ int get_concatenated_length(int num_of_args, char* input_string, ...) {
     return concatenated_length;
 }
 
+// get the length of all passed string in the va_list concatenated
+int v_get_concatenated_length(int num_of_args, va_list input_strings) {
+    int concatenated_length = 0;
+    int iter;
+    for (iter = 0; iter < num_of_args; iter++) {
+        concatenated_length += strlen(va_arg(input_strings, char*));
+    }
+    // return resulting length
+    return concatenated_length;
+}
+
 // concatenate all strings and write to output string
 // note that output_string must be of succficient length to fit concatenation
-void conactenate(int num_of_args, char* output_string, char* input_string, ...) {
+void concatenate(int num_of_args, char* output_string, char* input_string, ...) {
     // prepare arg list for iteration
     va_list args;
     va_start(args, input_string);

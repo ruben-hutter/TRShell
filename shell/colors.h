@@ -10,10 +10,13 @@
 #define ROOT_SECONDARY "\033[38;5;38m"
 
 // miscellaneous style information
-#define BOLD "\033[1m"
-#define WHITE "\033[38;5;15m"
+#define STYLE_BOLD "\033[1m"
+#define COLOR_WHITE "\033[38;5;15m"
 #define STYLE_RESET "\033[0m"
 
-void apply_style(int num_of_style_infos, char* raw_string, char* styled_string, char* style_info, ...);
+// concat input_strings with style reset character at the appendet to the end
+void concatenate_with_style(int num_of_input_strings, char* styled_string, char* input_strings, ...);
+// get the length of all passed string concatenated with the style reset char apendet to the end
+int get_concatenated_length_with_style(int num_of_input_strings, char* input_string, ...);
 
 #endif
