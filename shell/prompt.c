@@ -8,10 +8,18 @@
 
 #define PROMPT_1 "$ "
 #define PROMPT_2 "> "
-#define PROMPT_3 "ᐅ # "
+#define PROMPT_3 "# "
 #define SEPARATOR " ● "
 
 char current_working_dir[100];
+
+void update_cwd(void) {
+    if (getcwd(current_working_dir, sizeof(current_working_dir)) != NULL) {
+        return;
+    }
+    perror("getcwd() error");
+    return;
+}
 
 char* construct_prefix(char* user, char* w_dir) {
     int user_length = strlen(user) + strlen(SEPARATOR);
@@ -36,7 +44,8 @@ char* construct_prefix(char* user, char* w_dir) {
 }
 
 void print_prompt_1(void) {
-    char* prefix = construct_prefix("tobi", "some_dir");
+    update_cwd();
+    char* prefix = construct_prefix("tobi", current_working_dir);
     char* prompt_string = colorize(PROMPT_1, PRIMARY);
 
     int prompt_length = strlen(prefix) + strlen(prompt_string);
@@ -53,13 +62,4 @@ void print_prompt_2(void) {
     char* prompt_string = colorize(PROMPT_2, PRIMARY);
     fprintf(stderr, prompt_string);
     free(prompt_string);
-}
-
-// TODO test
-void get_pwd(void) {
-    if (getcwd(current_working_dir, sizeof(current_working_dir)) != NULL) {
-        return;
-    }
-    perror("getcwd() error");
-    return;
 }
