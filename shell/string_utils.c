@@ -44,5 +44,5 @@ char* get_malloced_empty_string(int length) {
 
 // adds a terminator at the beginning of the string to empty it
 void make_empty_string(char* input_string) {
-    *colored_string = '\0';
+    *input_string = '\0';
 }
