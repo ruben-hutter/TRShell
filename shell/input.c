@@ -35,7 +35,7 @@ char get_next_char (struct input_struct *input) {
         // set position to last char in buffer
         input->current_pos = input->buffer_size;
         // return end of file char
-        return EOF;
+        return EOF_;
     }
 
     // return char at current buffer position
@@ -64,7 +64,7 @@ char peek_next_char(struct input_struct* input) {
 
     // if peeking out of buffer return end of file
     if (peek_pos >= input->buffer_size) {
-        return EOF;
+        return EOF_;
     }
 
     return input->buffer[peek_pos];
@@ -80,10 +80,10 @@ void skip_white_spaces(struct input_struct* input) {
     char upcoming_char;
     // move to the right until non tab or whitespace or EOF char is found
     while (true) {
-        upcoming_char = peek_char(input);
+        upcoming_char = peek_next_char(input);
 
         // reached end of file
-        if (upcoming_char == EOF) {
+        if (upcoming_char == EOF_) {
             break;
         }
 
@@ -91,6 +91,6 @@ void skip_white_spaces(struct input_struct* input) {
         if (!(upcoming_char == ' ' || upcoming_char == '\t')) {
             break;
         }
-        next_char(input);
+        get_next_char(input);
     }
 }

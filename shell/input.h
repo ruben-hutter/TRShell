@@ -1,12 +1,15 @@
 #ifndef INPUT_H
-#define IMPUT_H
+#define INPUT_H
 
 // stands for special return values
-const char EOF = -1;
-const char ERRCHAR = 0;
+// const char EOF_ = -1;
+// const char ERRCHAR = 0;
+#define EOF_ -1
+#define ERRCHAR 0
 
 // init value for the curpos field 
-const long INIT_POS = -2;
+// const long INIT_POS = -2;
+#define INIT_POS -2L
 
 struct input_struct {   
     char* buffer;           /* the input text */
