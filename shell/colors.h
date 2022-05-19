@@ -1,8 +1,8 @@
 #ifndef COLORS_H
 #define COLORS_H
 
-#define ORANGE "\033[38;5;202m"
-#define GREEN "\033[38;5;154m"
+#define PRIMARY "\033[38;5;35m"
+#define SECONDARY "\033[38;5;38m"
 #define BOLD "\033[1m"
 #define WHITE "\033[38;5;15m"
 #define RESET "\033[0m"
