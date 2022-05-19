@@ -1,33 +1,18 @@
-# include "colors.h"
 # include <string.h>
 # include <stdlib.h>
+#include <stdarg.h>
 
-// wrap the passed string into the specified color 
-char* colorize(char* string, char* color) {
-    int length= strlen(color)+strlen(string)+strlen(RESET);
-    char* colored_string = get_malloc_empty_string(length);
+# include "colors.h"
+# include "string_utils.h"
 
-    strcat(colored_string, color);
-    strcat(colored_string, string);
-    strcat(colored_string, RESET);
-
-    return colored_string;
-}
-
-// prepend style data infront of string
-char* style(char* string, char* style) {
-    int length= strlen(style)+strlen(string)+strlen(RESET);
-    char* styled_string = get_malloc_empty_string(length);
-
-    strcat(styled_string, style);
-    strcat(styled_string, string);
-    strcat(styled_string, RESET);
-
-    return styled_string;
-}
-
-char* get_malloc_empty_string(int length) {
-    char* colored_string = malloc(length);
-    *colored_string = '\0';
-    return colored_string;
+void apply_style(int num_of_style_infos, char* raw_string, char* styled_string, char* style_info, ...) {
+    // prepare arg list for iteration
+    va_list style_args;
+    va_start(style_args, num_of_style_infos);
+    // concate style info
+    v_concatenate(num_of_style_infos, styled_string, style_args);
+    va_end(style_args);
+    // add raw string
+    strcat(styled_string, raw_string);
+    strcat(styled_string, STYLE_RESET);
 }
