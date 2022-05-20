@@ -3,14 +3,10 @@
 #include <unistd.h>
 #include <string.h>
 
+#include "prompt.h"
 #include "colors.h"
 #include "shell.h"
 #include "string_utils.h"
-
-#define PROMPT_1 " $ "
-#define PROMPT_2 "> "
-#define PROMPT_3 " # "
-#define SEPARATOR " ● "
 
 char current_working_dir[100];
 char* last_folder;
