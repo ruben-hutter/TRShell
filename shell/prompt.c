@@ -14,7 +14,7 @@
 
 char current_working_dir[100];
 
-
+// update current working directory
 void update_cwd(void) {
     if (getcwd(current_working_dir, sizeof(current_working_dir)) != NULL) {
        return;
@@ -23,6 +23,15 @@ void update_cwd(void) {
     return;
 }
 
+// crop the current working directory to only the last folder
+void crop_cwd(void) {
+    // extract the first token
+    char* token = strtok(current_working_dir, "/");
+    while (token != NULL) {
+        token = strtok(NULL, "/");
+    }
+    current_working_dir = token;
+}
 
 // get the prompt prefix containing the user name and the current directory in user colors
 char* create_user_prefix(char* user_name, char* curr_work_dir_name) {
