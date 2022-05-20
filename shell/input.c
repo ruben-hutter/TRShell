@@ -1,9 +1,16 @@
 #include <errno.h>
-
+#include <string.h>
 #include <stdbool.h>
 
 #include "shell.h"
 #include "input.h"
+
+// populates the passed dstruct with the passed string
+void populate_struct(struct input_struct input_struct, char* input_string) {
+    input_struct.buffer = input_string;
+    input_struct.buffer_size = strlen(input_string);
+    input_struct.current_pos = INIT_POS;
+}
 
 // moves the current read position back by one
 void unget_last_char (struct input_struct *input) {

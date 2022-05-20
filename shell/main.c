@@ -35,9 +35,7 @@ int main(int argc, char **argv) {
         //printf("%s\n", input_string);
 
         struct input_struct input;
-        input.buffer = input_string;
-        input.buffer_size = strlen(input_string);
-        input.current_pos = INIT_POS;
+        populate_struct(input, input_string);
         parse_and_execute(&input);
         free(input_string);
     }

@@ -17,9 +17,15 @@ struct input_struct {
     long current_pos;       // absolute char position in source
 };
 
+// populates the passed dstruct with the passed string
+void populate_struct(struct input_struct input_struct, char* input_string);
+// get next char from buffer
 char get_next_char(struct input_struct* input);
+// moves the read index one char back
 void unget_last_char(struct input_struct* input);
+// returns the next char without moving the read index
 char peek_next_char(struct input_struct* input);
+
 void skip_white_spaces(struct input_struct* input);
 
 #endif
