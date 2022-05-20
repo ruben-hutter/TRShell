@@ -7,7 +7,7 @@
 #include "shell.h"
 #include "input.h"
 #include "parser.h"
-//#include "backend.h"
+#include "executor.h"
 
 int main(int argc, char **argv) {
     char* input_string;
@@ -31,12 +31,13 @@ int main(int argc, char **argv) {
         }
 
         // print entered input for debug purposes
-        printf("%s\n", input_string);
-        // struct input_struct input;
-        // input.buffer = input_string;
-        // input.buffer_size = strlen(input_string);
-        // input.curpos = INIT_INPUT_POS;
-        // parse_and_execute(&input);
+        //printf("%s\n", input_string);
+
+        struct input_struct input;
+        input.buffer = input_string;
+        input.buffer_size = strlen(input_string);
+        input.current_pos = INIT_POS;
+        parse_and_execute(&input);
         free(input_string);
     }
     exit(EXIT_SUCCESS);
@@ -92,26 +93,26 @@ char* read_from_input() {
     return ptr;
 }
 
-// int parse_and_execute(struct input_struct* input) {
-//     skip_white_spaces(input);
+int parse_and_execute(struct input_struct* input) {
+    skip_white_spaces(input);
 
-//     struct token_struct* token = tokenize(input);
+    struct token_struct* token = tokenize(input);
 
-//     if (token == &eof_token) {
-//         return 0;
-//     }
+    if (token == &eof_token) {
+        return 0;
+    }
 
-//     while (token && token != &eof_token) {
-//         struct node_struct* cmd = parse_simple_command(token);
+    while (token && token != &eof_token) {
+        struct node_struct* cmd = parse_simple_command(token);
 
-//         if (!cmd) {
-//             break;
-//         }
+        if (!cmd) {
+            break;
+        }
 
-//         do_simple_command(cmd);
-//         free_node_tree(cmd);
-//         token = tokenize(input);
-//     }
+        do_simple_command(cmd);
+        free_node_tree(cmd);
+        token = tokenize(input);
+    }
 
-//     return 1;
-// }
+    return 1;
+}

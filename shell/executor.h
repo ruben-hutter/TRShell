@@ -1,5 +1,5 @@
-#ifndef BACKEND_H
-#define BACKEND_H
+#ifndef EXECUTOR_H
+#define EXECUTOR_H
 
 #include "node.h"
 
