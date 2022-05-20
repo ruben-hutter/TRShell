@@ -9,6 +9,7 @@
 #include "string_utils.h"
 
 char current_working_dir[100];
+char* last_folder;
 
 // update current working directory
 void update_cwd(void) {
@@ -22,11 +23,10 @@ void update_cwd(void) {
 // crop the current working directory to only the last folder
 void crop_cwd(void) {
     // extract the first token
-    char* token = strtok(current_working_dir, "/");
-    while (token != NULL) {
-        token = strtok(NULL, "/");
-    }
-    current_working_dir = token;
+    last_folder = strtok(current_working_dir, "/");
+    // while (last_folder != NULL) {
+    //     last_folder = strtok(NULL, "/");
+    // }
 }
 
 // get the prompt prefix containing the user name and the current directory in user colors
@@ -85,8 +85,10 @@ char* create_root_prompt(char* prompt) {
 void print_prompt_1(void) {
     // update the current working directory
     update_cwd();
+    // crop to last folder
+    crop_cwd();
     // get prefix and prompt
-    char* prefix = create_user_prefix("tobi", current_working_dir);
+    char* prefix = create_user_prefix("tobi", last_folder);
     char* prompt = create_user_prompt(PROMPT_1);
     // combine prefix and prompt to prompt_string
     char prompt_string[get_concatenated_length(2, prefix, prompt)];
@@ -108,8 +110,10 @@ void print_prompt_2(void) {
 void print_prompt_3(void) {
     // update the current working directory
     update_cwd();
+    // crop to last folder
+    crop_cwd();
     // get prefix and prompt
-    char* prefix = create_user_prefix("tobi", current_working_dir);
+    char* prefix = create_user_prefix("tobi", last_folder);
     char* prompt = create_user_prompt(PROMPT_3);
     // combine prefix and prompt to prompt_string
     char prompt_string[get_concatenated_length(2, prefix, prompt)];
