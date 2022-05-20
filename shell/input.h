@@ -21,6 +21,5 @@ char get_next_char(struct input_struct* input);
 void unget_last_char(struct input_struct* input);
 char peek_next_char(struct input_struct* input);
 void skip_white_spaces(struct input_struct* input);
-int parse_and_execute(struct input_struct* input);
 
 #endif

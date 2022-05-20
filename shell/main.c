@@ -4,6 +4,7 @@
 #include <string.h>
 #include <stdbool.h>
 
+#include "main.h"
 #include "shell.h"
 #include "input.h"
 #include "parser.h"
