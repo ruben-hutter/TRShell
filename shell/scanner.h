@@ -7,10 +7,22 @@ struct token_struct {
     char* text;                     // token
 };
 
-// the special EOF token, which indicates the end of input
-extern struct token_struct eof_token;
+// special token to indicate end of input
+struct token_struct eof_token = {
+    .text_len = 0
+};
 
-struct token_struct* tokenize(struct input_struct* input);
+// add a character to the token buffer
+void add_to_buffer(char c);
+
+// create new token struct from string
+struct token_struct* create_token(char* str);
+
+// frees all allocated spece of a token
 void free_token(struct token_struct* token);
+
+// tokenize an input string
+struct token_struct* tokenize(struct input_struct* input);
+
 
 #endif
