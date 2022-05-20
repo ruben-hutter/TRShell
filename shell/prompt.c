@@ -24,6 +24,8 @@ void update_cwd(void) {
 void crop_cwd(void) {
     // extract the first token
     last_folder = strtok(current_working_dir, "/");
+    // TODO find solution to null pointer as last...
+
     // while (last_folder != NULL) {
     //     last_folder = strtok(NULL, "/");
     // }
