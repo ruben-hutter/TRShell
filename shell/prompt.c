@@ -13,7 +13,7 @@
 #define SEPARATOR " ● "
 
 char current_working_dir[100];
-char* last_folder = "hello";
+char* last_folder;
 
 // update current working directory
 void update_cwd(void) {
@@ -27,13 +27,10 @@ void update_cwd(void) {
 // crop the current working directory to only the last folder
 void crop_cwd(void) {
     // extract the first token
-    char* token = strtok(current_working_dir, "/");
-    while (token != NULL) {
-        printf("%s\n", token);
-        token = strtok(NULL, "/");
-    }
-    //last_folder = (char*) realloc(last_folder, sizeof(token));
-    //last_folder = token;
+    last_folder = strtok(current_working_dir, "/");
+    // while (last_folder != NULL) {
+    //     last_folder = strtok(NULL, "/");
+    // }
 }
 
 // get the prompt prefix containing the user name and the current directory in user colors
