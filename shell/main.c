@@ -96,7 +96,6 @@ char* read_from_input() {
 
 int parse_and_execute(struct input_struct* input) {
     skip_white_spaces(input);
-
     struct token_struct* token = tokenize(input);
 
     if (token == &eof_token) {
