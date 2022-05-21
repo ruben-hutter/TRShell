@@ -65,7 +65,7 @@ void make_empty_string(char* input_string) {
 }
 
 
-void crop_string_to_end(char* input_string, char* delimiter) {
+void crop_string_to_end(char* input_string, char delimiter) {
     // check string length
     int input_len = strlen(input_string);
     // get pointer to end of string
@@ -73,7 +73,7 @@ void crop_string_to_end(char* input_string, char* delimiter) {
     // iterate backwrds until delimiter sign
     char* actual_ptr = eos_ptr;
     while (actual_ptr > input_string) {
-        if (*actual_ptr == *delimiter) {
+        if (*actual_ptr == delimiter) {
             // overrite actual string
             strcpy(input_string, actual_ptr+1);
             break;

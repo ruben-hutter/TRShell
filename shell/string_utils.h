@@ -22,6 +22,6 @@ char* get_malloced_empty_string(int length);
 void make_empty_string(char* input_string);
 
 // crop a string
-void crop_string_to_end(char* input_string, char* delimiter);
+void crop_string_to_end(char* input_string, char delimiter);
 
 #endif

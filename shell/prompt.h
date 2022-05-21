@@ -5,6 +5,7 @@
 #define PROMPT_2 "> "
 #define PROMPT_3 " # "
 #define SEPARATOR " ● "
+#define DELIMITER '/'
 
 // update current working directory
 void update_cwd(void);
