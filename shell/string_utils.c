@@ -1,10 +1,10 @@
 #include <stdarg.h>
 #include <stdlib.h>
-
-# include "string.h"
-# include "string_utils.h"
-
 #include <stdio.h>
+#include <string.h>
+
+#include "string_utils.h"
+
 
 // get the length of all passed string concatenated
 int get_concatenated_length(int num_of_args, ...) {
@@ -62,4 +62,23 @@ char* get_malloced_empty_string(int length) {
 // adds a terminator at the beginning of the string to empty it
 void make_empty_string(char* input_string) {
     *input_string = '\0';
+}
+
+
+void crop_string_to_end(char* input_string, char* delimiter) {
+    // check string length
+    int input_len = strlen(input_string);
+    // get pointer to end of string
+    char* eos_ptr = input_string + input_len;
+    // iterate backwrds until delimiter sign
+    char* actual_ptr = eos_ptr;
+    while (actual_ptr > input_string) {
+        if (*actual_ptr == *delimiter) {
+            // overrite actual string
+            strcpy(input_string, actual_ptr);
+            break;
+        }
+        actual_ptr--;
+    }
+    printf("eos_ptr: %d\ninput_ptr: %d\ninput_len: %d\n", eos_ptr, input_string, input_len);
 }

@@ -20,17 +20,6 @@ void update_cwd(void) {
     return;
 }
 
-// crop the current working directory to only the last folder
-void crop_cwd(void) {
-    // extract the first token
-    last_folder = strtok(current_working_dir, "/");
-    // TODO find solution to null pointer as last...
-
-    // while (last_folder != NULL) {
-    //     last_folder = strtok(NULL, "/");
-    // }
-}
-
 // get the prompt prefix containing the user name and the current directory in user colors
 char* create_user_prefix(char* user_name, char* curr_work_dir_name) {
     // construct styled version of username + separator
@@ -88,7 +77,7 @@ void print_prompt_1(void) {
     // update the current working directory
     update_cwd();
     // crop to last folder
-    crop_cwd();
+    crop_string_to_end(current_working_dir, '/');
     // get prefix and prompt
     char* prefix = create_user_prefix("tobi", last_folder);
     char* prompt = create_user_prompt(PROMPT_1);
@@ -113,7 +102,7 @@ void print_prompt_3(void) {
     // update the current working directory
     update_cwd();
     // crop to last folder
-    crop_cwd();
+    crop_string_to_end(current_working_dir, '/');
     // get prefix and prompt
     char* prefix = create_user_prefix("tobi", last_folder);
     char* prompt = create_user_prompt(PROMPT_3);
