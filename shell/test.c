@@ -5,10 +5,10 @@
 
 int main() {
     // test string crop
-    char string[100] = "/home/ruben";
+    char current_working_dir[100] = "/home/ruben";
+    getcwd(current_working_dir, sizeof(current_working_dir));
     char delimiter = '/';
-    char* delim_ptr = &delimiter;
-    printf("string before crop: %s\n", string);
-    crop_string_to_end(string, delim_ptr);
-    printf("string after crop: %s\n", string);
+    printf("string before crop: %s\n", current_working_dir);
+    crop_string_to_end(current_working_dir, &delimiter);
+    printf("string after crop: %s\n", current_working_dir);
 }

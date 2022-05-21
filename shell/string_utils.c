@@ -75,10 +75,9 @@ void crop_string_to_end(char* input_string, char* delimiter) {
     while (actual_ptr > input_string) {
         if (*actual_ptr == *delimiter) {
             // overrite actual string
-            strcpy(input_string, actual_ptr);
+            strcpy(input_string, actual_ptr+1);
             break;
         }
         actual_ptr--;
     }
-    printf("eos_ptr: %d\ninput_ptr: %d\ninput_len: %d\n", eos_ptr, input_string, input_len);
 }
