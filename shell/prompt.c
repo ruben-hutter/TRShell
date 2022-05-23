@@ -23,7 +23,7 @@ void update_cwd(void) {
 // checks if currently in home, if so, replace with tilde
 void check_if_home(void) {
     char name[20];
-    getlogin_r(name, sizeof(name));
+    get_login_r(name, sizeof(name));
     printf("current: %s\n", current_working_dir);
     if (strcmp(name, current_working_dir) == 0) {
         strcpy(current_working_dir, "~");
@@ -88,8 +88,13 @@ void print_prompt_1(void) {
     update_cwd();
     // crop to last folder
     crop_string_to_end(current_working_dir, DELIMITER);
+
     // check if in home
+    // TODO: PLEASE NO HIDDEN SIDEEFFECTS
+    // either replace_home_with_tilde(char* curr_dir) or move to update_cwd(...)
+    // crop_string_...(...) could also be moved
     check_if_home();
+    
     // get prefix and prompt
     char* prefix = create_user_prefix("tobi", "test");
     char* prompt = create_user_prompt(PROMPT_1);
