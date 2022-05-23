@@ -12,6 +12,7 @@
 #include "scanner.h"
 
 int main(int argc, char **argv) {
+    // array containing the users input
     char* input_string;
     
     while(true) {
@@ -32,9 +33,7 @@ int main(int argc, char **argv) {
             break;
         }
 
-        // print entered input for debug purposes
-        //printf("%s\n", input_string);
-
+        // init new struct representing char buffer for easy processing of the input
         struct input_struct input;
         populate_struct(&input, input_string);
         parse_and_execute(&input);
@@ -43,6 +42,7 @@ int main(int argc, char **argv) {
     exit(EXIT_SUCCESS);
 }
 
+// reads user input from the stdin
 char* read_from_input() {
     char buffer[1024];
     char* ptr = NULL;
@@ -57,10 +57,12 @@ char* read_from_input() {
         } else {
             // increase buffer allocated size
             char *ptr2 = realloc(ptr, ptrlen+buflen+1);
-
+            // if new pointer could be allocated
             if (ptr2) {
+                // make old pointer point to new string
                 ptr = ptr2;
             } else {
+                // free old pointer and return nullpointer
                 free(ptr);
                 ptr = NULL;
             }
@@ -93,14 +95,16 @@ char* read_from_input() {
     return ptr;
 }
 
+// parse and execute a command stored in the string buffer
 int parse_and_execute(struct input_struct* input) {
+    // drop leading whitspace from buffer
     skip_white_spaces(input);
     struct token_struct* token = tokenize(input);
-
+    // if only contains end of file -> return
     if (token == &eof_token) {
         return 0;
-    }
-
+    } 
+    // decompose input into sections
     while (token && token != &eof_token) {
         struct node_struct* cmd = parse_simple_command(token);
 

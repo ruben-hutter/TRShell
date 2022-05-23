@@ -51,7 +51,7 @@ struct token_struct* create_token(char* str) {
     token->text_len = strlen(str);
     // alloc space for temp string
     char* next_str = malloc(token->text_len + 1);
-    // dould not allocate space for temp string -> return
+    // could not allocate space for temp string -> return
     if (!next_str) {
         free(token);
         return NULL;
