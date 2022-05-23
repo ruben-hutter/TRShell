@@ -64,7 +64,8 @@ void make_empty_string(char* input_string) {
     *input_string = '\0';
 }
 
-
+// drops all of string before and including last occurence of delimiter
+// example for delimiter '&': first&second&third -> third
 void crop_string_to_end(char* input_string, char delimiter) {
     // check string length
     int input_len = strlen(input_string);

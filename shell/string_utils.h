@@ -21,7 +21,8 @@ char* get_malloced_empty_string(int length);
 // adds a terminator at the beginning of the string to empty it
 void make_empty_string(char* input_string);
 
-// crop a string
+// drops all of string before and including last occurence of delimiter
+// example for delimiter '&': first&second&third -> third
 void crop_string_to_end(char* input_string, char delimiter);
 
 #endif
