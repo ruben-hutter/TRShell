@@ -1,19 +1,19 @@
-#include "node.h"
+#include "command_tree.h"
 
-struct node_struct* new_node(enum node_type_e type) {
-    struct node_struct* node = malloc(sizeof(struct node_struct));
+struct tree_node* new_node(enum node_type_e type) {
+    struct tree_node* node = malloc(sizeof(struct tree_node));
 
     if (!node) {
         return NULL;
     }
 
-    memset(node, 0, sizeof(struct node_struct));
+    memset(node, 0, sizeof(struct tree_node));
     node->type = type;
 
     return node;
 }
 
-void add_child_node(struct node_struct* parent, struct node_struct* child) {
+void add_child_node(struct tree_node* parent, struct tree_node* child) {
     if (!parent || !child) {
         return;
     }
@@ -21,7 +21,7 @@ void add_child_node(struct node_struct* parent, struct node_struct* child) {
     if (!parent->first_child) {
         parent->first_child = child;
     } else {
-        struct node_struct* sibling = parent->first_child;
+        struct tree_node* sibling = parent->first_child;
 
         while (sibling->next_sibling) {
             sibling = sibling->next_sibling;
@@ -33,7 +33,7 @@ void add_child_node(struct node_struct* parent, struct node_struct* child) {
     parent->children++;
 }
 
-void set_node_val_str(struct node_struct* node, char* val) {
+void set_node_val_str(struct tree_node* node, char* val) {
     node->val_type = VAL_STR;
 
     if (!val) {
@@ -50,15 +50,15 @@ void set_node_val_str(struct node_struct* node, char* val) {
     }
 }
 
-void free_node_tree(struct node_struct* node) {
+void free_node_tree(struct tree_node* node) {
     if (!node) {
         return;
     }
 
-    struct node_struct* child = node->first_child;
+    struct tree_node* child = node->first_child;
 
     while (child) {
-        struct node_struct* next = child->next_sibling;
+        struct tree_node* next = child->next_sibling;
         free_node_tree(child);
         child = next;
     }

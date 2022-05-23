@@ -1,5 +1,5 @@
-#ifndef NODE_H
-#define NODE_H
+#ifndef COMMAND_TREE_H
+#define COMMAND_TREE_H
 
 #include <stdlib.h>
 #include <string.h>
@@ -36,20 +36,20 @@ union symval_u {
     char* str;
 };
 
-struct node_struct {
+struct tree_node {
     enum node_type_e type;              /* type of this node */
     enum val_type_e val_type;           /* type of this node's val field */
     union symval_u val;                 /* value of this node */
     int children;                       /* number of child nodes */
-    struct node_struct* first_child;    /* first child node */
+    struct tree_node* first_child;    /* first child node */
     /* if this is a child node, keep pointers to prev/next siblings */
-    struct node_struct* next_sibling;
-    struct node_struct* prev_sibling;
+    struct tree_node* next_sibling;
+    struct tree_node* prev_sibling;
 };
 
-struct node_struct* new_node(enum node_type_e type);
-void add_child_node(struct node_struct* parent, struct node_struct* child);
-void free_node_tree(struct node_struct* node);
-void set_node_val_str(struct node_struct* node, char* val);
+struct tree_node* new_node(enum node_type_e type);
+void add_child_node(struct tree_node* parent, struct tree_node* child);
+void free_node_tree(struct tree_node* node);
+void set_node_val_str(struct tree_node* node, char* val);
 
 #endif

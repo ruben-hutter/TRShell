@@ -95,7 +95,7 @@ int parse_and_execute(struct buffered_string* buffered_input) {
     } 
     // decompose input into sections
     while (token && token != &eof_token) {
-        struct node_struct* cmd = parse_simple_command(token);
+        struct tree_node* cmd = build_tree_from_root(token);
 
         if (!cmd) {
             break;

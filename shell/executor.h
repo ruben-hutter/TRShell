@@ -10,10 +10,10 @@
 #include <sys/wait.h>
 
 #include "main.h"
-#include "node.h"
+#include "command_tree.h"
 
 char* search_path(char* file);
 int do_exec_cmd(int argc, char** argv);
-int do_simple_command(struct node_struct* node);
+int do_simple_command(struct tree_node* node);
 
 #endif

@@ -84,12 +84,12 @@ static inline void free_argv(int argc, char** argv) {
     }
 }
 
-int do_simple_command(struct node_struct* node) {
+int do_simple_command(struct tree_node* node) {
     if (!node) {
         return 0;
     }
 
-    struct node_struct* child = node->first_child;
+    struct tree_node* child = node->first_child;
     if (!child) {
         return 0;
     }
