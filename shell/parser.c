@@ -26,7 +26,7 @@ struct tree_node* build_tree_from_root(struct token* token) {
         // aloc failed
         if (!word) {
             // free cmd node prepared earlier
-            free_node_tree(root_node);
+            free_tree_from_root(root_node);
             // free passed token as no longer used
             free_token(token);
             return NULL;

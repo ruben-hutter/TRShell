@@ -84,7 +84,7 @@ char* read_from_input() {
     return ptr;
 }
 
-// parse and execute a command stored in the string buffer
+// parse and execute a command stored in the buffered_input
 int parse_and_execute(struct buffered_string* buffered_input) {
     // drop leading whitspace from buffer
     skip_leading_white_spaces(buffered_input);
@@ -93,7 +93,7 @@ int parse_and_execute(struct buffered_string* buffered_input) {
     if (token == &eof_token) {
         return 0;
     } 
-    // decompose input into sections
+    // build command tree from buffered input
     while (token && token != &eof_token) {
         struct tree_node* cmd = build_tree_from_root(token);
 
@@ -102,7 +102,7 @@ int parse_and_execute(struct buffered_string* buffered_input) {
         }
 
         do_simple_command(cmd);
-        free_node_tree(cmd);
+        free_tree_from_root(cmd);
         token = get_next_token(buffered_input);
     }
 
