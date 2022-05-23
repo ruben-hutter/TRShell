@@ -1,6 +1,6 @@
 #include "parser.h"
 
-struct node_struct* parse_simple_command(struct token_struct* token) {
+struct node_struct* parse_simple_command(struct token* token) {
     // nullpointer -> exit
     if (!token) {
         return NULL;
@@ -17,7 +17,7 @@ struct node_struct* parse_simple_command(struct token_struct* token) {
 
     do {
         // if token starts with newline -> abort
-        if (token->text[0] == '\n') {
+        if (token->token_string[0] == '\n') {
             free_token(token);
             break;
         }
@@ -32,12 +32,12 @@ struct node_struct* parse_simple_command(struct token_struct* token) {
             return NULL;
         }
         // make new node to string node contianing the current word
-        set_node_val_str(word, token->text);
+        set_node_val_str(word, token->token_string);
         // set new node as a child of the cmd "head_node"
         add_child_node(cmd, word);
         // free token
         free_token(token);
-    } while ((token = tokenize(input)) != &eof_token);
+    } while ((token = get_next_token(input)) != &eof_token);
 
     return cmd;
 }

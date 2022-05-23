@@ -24,7 +24,7 @@ int main(int argc, char **argv) {
 
         // init new struct representing char buffer for easy processing of the input
         struct buffered_string buffered_input;
-        populate_buffered_string_with(&buffered_input, input_string);
+        populate_buffered_string(&buffered_input, input_string);
         parse_and_execute(&buffered_input);
         free(input_string);
     }
@@ -85,10 +85,10 @@ char* read_from_input() {
 }
 
 // parse and execute a command stored in the string buffer
-int parse_and_execute(struct buffered_string* input) {
+int parse_and_execute(struct buffered_string* buffered_input) {
     // drop leading whitspace from buffer
-    skip_white_spaces(input);
-    struct token_struct* token = tokenize(input);
+    skip_leading_white_spaces(buffered_input);
+    struct token* token = get_next_token(buffered_input);
     // if only contains end of file -> return
     if (token == &eof_token) {
         return 0;
@@ -103,7 +103,7 @@ int parse_and_execute(struct buffered_string* input) {
 
         do_simple_command(cmd);
         free_node_tree(cmd);
-        token = tokenize(input);
+        token = get_next_token(buffered_input);
     }
 
     return 1;

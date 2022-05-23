@@ -1,7 +1,7 @@
 #include "buffered_string.h"
 
 // populates the passed dstruct with the passed string
-void populate_buffered_string_with(struct buffered_string* buffered_string, char* input_string) {
+void populate_buffered_string(struct buffered_string* buffered_string, char* input_string) {
     buffered_string->buffer = input_string;
     buffered_string->buffer_size = strlen(input_string);
     buffered_string->current_pos = INIT_POS;
@@ -56,7 +56,7 @@ char peek_next_char(struct buffered_string* input) {
 }
 
 // moves the reading position in the buffer to the right until non whitespace char is found
-void skip_white_spaces(struct buffered_string* input) {
+void skip_leading_white_spaces(struct buffered_string* input) {
     // either buffered_string pointer or pointer of buffer in input struct is NULL
     if (!input || !input->buffer) {
         return;

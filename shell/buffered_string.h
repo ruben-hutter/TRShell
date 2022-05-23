@@ -22,7 +22,7 @@ struct buffered_string {
 };
 
 // ceates a buffered string contianing the specified string
-void populate_buffered_string_with(struct buffered_string* buffered_string, char* input_string);
+void populate_buffered_string(struct buffered_string* buffered_string, char* input_string);
 // get next char from buffer
 char get_next_char(struct buffered_string* input);
 // moves the read index one char back
@@ -30,6 +30,6 @@ void unget_last_char(struct buffered_string* input);
 // returns the next char without moving the read index
 char peek_next_char(struct buffered_string* input);
 
-void skip_white_spaces(struct buffered_string* input);
+void skip_leading_white_spaces(struct buffered_string* input);
 
 #endif

@@ -1,11 +1,11 @@
-#include "scanner.h"
+#include "token_builder.h"
 
 char* token_buffer = NULL;
 int token_buffer_size = 0;
 int token_buffer_index = -1;
 
-struct token_struct eof_token = {
-    .text_len = 0
+struct token eof_token = {
+    .string_length = 0
 };
 
 // add a character to the token buffer
@@ -29,19 +29,19 @@ void add_to_buffer(char c) {
 }
 
 // create new token struct from string
-struct token_struct* create_token(char* str) {
+struct token* build_token(char* str) {
     // allocate new token struct
-    struct token_struct* token = malloc(sizeof(struct token_struct));
+    struct token* token = malloc(sizeof(struct token));
     //could not allocate struct -> return
     if(!token) {
         return NULL;
     }
 
-    memset(token, 0, sizeof(struct token_struct));
-    // set text length of token to string length of it's containing string
-    token->text_len = strlen(str);
+    memset(token, 0, sizeof(struct token));
+    // set token_string length of token to string length of it's containing string
+    token->string_length = strlen(str);
     // alloc space for temp string
-    char* next_str = malloc(token->text_len + 1);
+    char* next_str = malloc(token->string_length + 1);
     // could not allocate space for temp string -> return
     if (!next_str) {
         free(token);
@@ -50,23 +50,23 @@ struct token_struct* create_token(char* str) {
     // copy input string to temp string
     strcpy(next_str, str);
     // set tokens string to temp string
-    token->text = next_str;
+    token->token_string = next_str;
 
     return token;
 }
 
 // frees all allocated spece of a token
-void free_token(struct token_struct* token) {
-    if (token->text) {
+void free_token(struct token* token) {
+    if (token->token_string) {
         // if token allocated space for string -> free
-        free(token->text);
+        free(token->token_string);
     }
     // free space of token itself
     free(token);
 }
 
 // tokenize an input string
-struct token_struct* tokenize(struct buffered_string* input) {
+struct token* get_next_token(struct buffered_string* input) {
     int end_loop = false;
 
     // pointers to input struct or it's members are null -> return
@@ -144,7 +144,7 @@ struct token_struct* tokenize(struct buffered_string* input) {
     token_buffer[token_buffer_index] = '\0';
 
     // create new token containing the buffered string as it's content string
-    struct token_struct* token = create_token(token_buffer);
+    struct token* token = build_token(token_buffer);
     // could not allocate space for token -> print error
     if (!token) {
         fprintf(stderr, "error: failed to alloc buffer: %s\n", strerror(errno));
