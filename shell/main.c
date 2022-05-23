@@ -9,6 +9,7 @@
 #include "input.h"
 #include "parser.h"
 #include "executor.h"
+#include "scanner.h"
 
 int main(int argc, char **argv) {
     char* input_string;
@@ -35,7 +36,7 @@ int main(int argc, char **argv) {
         //printf("%s\n", input_string);
 
         struct input_struct input;
-        populate_struct(input, input_string);
+        populate_struct(&input, input_string);
         parse_and_execute(&input);
         free(input_string);
     }

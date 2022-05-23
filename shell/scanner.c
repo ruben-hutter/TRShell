@@ -13,6 +13,10 @@ char* token_buffer = NULL;
 int token_buffer_size = 0;
 int token_buffer_index = -1;
 
+struct token_struct eof_token = {
+    .text_len = 0
+};
+
 // add a character to the token buffer
 void add_to_buffer(char c) {
     // append char to end of buffer

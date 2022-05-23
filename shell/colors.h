@@ -18,4 +18,5 @@
 void concatenate_with_style(int num_of_input_strings, char* styled_string, ...);
 // get the length of all passed string concatenated with the style reset char apendet to the end
 int get_concatenated_length_with_style(int num_of_input_strings, ...);
+
 #endif
