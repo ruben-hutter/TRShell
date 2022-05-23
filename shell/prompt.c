@@ -91,7 +91,7 @@ void print_prompt_1(void) {
     // check if in home
     check_if_home();
     // get prefix and prompt
-    char* prefix = create_user_prefix("tobi", last_folder);
+    char* prefix = create_user_prefix("tobi", "test");
     char* prompt = create_user_prompt(PROMPT_1);
     // combine prefix and prompt to prompt_string
     char prompt_string[get_concatenated_length(2, prefix, prompt)];
