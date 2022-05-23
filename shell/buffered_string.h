@@ -1,5 +1,9 @@
-#ifndef INPUT_H
-#define INPUT_H
+#ifndef BUFFERED_STRING_H
+#define BUFFERED_STRING_H
+
+#include <errno.h>
+#include <string.h>
+#include <stdbool.h>
 
 // stands for special return values
 // const char EOF_ = -1;
@@ -11,21 +15,21 @@
 // const long INIT_POS = -2;
 #define INIT_POS -1L
 
-struct input_struct {   
+struct buffered_string {   
     char* buffer;           // the input text
     long buffer_size;       // size of the input text
     long current_pos;       // absolute char position in source
 };
 
-// populates the passed dstruct with the passed string
-void populate_struct(struct input_struct* input_struct, char* input_string);
+// ceates a buffered string contianing the specified string
+void populate_buffered_string_with(struct buffered_string* buffered_string, char* input_string);
 // get next char from buffer
-char get_next_char(struct input_struct* input);
+char get_next_char(struct buffered_string* input);
 // moves the read index one char back
-void unget_last_char(struct input_struct* input);
+void unget_last_char(struct buffered_string* input);
 // returns the next char without moving the read index
-char peek_next_char(struct input_struct* input);
+char peek_next_char(struct buffered_string* input);
 
-void skip_white_spaces(struct input_struct* input);
+void skip_white_spaces(struct buffered_string* input);
 
 #endif

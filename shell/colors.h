@@ -1,6 +1,11 @@
 #ifndef COLORS_H
 #define COLORS_H
 
+#include <string.h>
+#include <stdlib.h>
+#include <stdarg.h>
+#include "string_utils.h"
+
 // colors used for normal users
 #define USER_PRIMARY "\033[38;5;35m"
 #define USER_SECONDARY "\033[38;5;38m"

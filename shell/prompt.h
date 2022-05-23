@@ -1,6 +1,15 @@
 #ifndef PROMPT_H
 #define PROMPT_H
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+
+#include "colors.h"
+#include "main.h"
+#include "string_utils.h"
+
 #define PROMPT_1 " $ "
 #define PROMPT_2 "> "
 #define PROMPT_3 " # "

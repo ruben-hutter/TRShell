@@ -1,6 +1,11 @@
 #ifndef STRING_UTILS_H
 #define STRING_UTILS_H
 
+#include <stdarg.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+
 // get the length of all passed string concatenated
 int get_concatenated_length(int num_of_args, ...);
 

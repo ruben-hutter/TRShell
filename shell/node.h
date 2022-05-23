@@ -1,6 +1,14 @@
 #ifndef NODE_H
 #define NODE_H
 
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <errno.h>
+
+#include "main.h"
+#include "parser.h"
+
 enum node_type_e {
     NODE_COMMAND,       /* simple command */
     NODE_VAR            /* variable name (or simply a word) */

@@ -1,6 +1,15 @@
 #ifndef EXECUTOR_H
 #define EXECUTOR_H
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+#include <errno.h>
+#include <sys/stat.h>
+#include <sys/wait.h>
+
+#include "main.h"
 #include "node.h"
 
 char* search_path(char* file);

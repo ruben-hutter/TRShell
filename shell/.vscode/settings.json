@@ -1,5 +1,13 @@
 {
     "files.associations": {
-        "string.h": "c"
+        "string.h": "c",
+        "*.tcc": "c",
+        "memory_resource": "c",
+        "memory": "c",
+        "fstream": "c",
+        "istream": "c",
+        "ostream": "c",
+        "sstream": "c",
+        "streambuf": "c"
     }
 }

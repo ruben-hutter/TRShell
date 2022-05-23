@@ -1,9 +1,4 @@
-# include <string.h>
-# include <stdlib.h>
-#include <stdarg.h>
-
 # include "colors.h"
-# include "string_utils.h"
 
 // concat input_strings with style reset character at the appendet to the end
 void concatenate_with_style(int num_of_input_strings, char* styled_string, ...) {

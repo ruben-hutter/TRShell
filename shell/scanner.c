@@ -1,13 +1,4 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <errno.h>
-#include <stdbool.h>
-
-#include "shell.h"
 #include "scanner.h"
-#include "input.h"
-#include "string_utils.h"
 
 char* token_buffer = NULL;
 int token_buffer_size = 0;
@@ -75,7 +66,7 @@ void free_token(struct token_struct* token) {
 }
 
 // tokenize an input string
-struct token_struct* tokenize(struct input_struct* input) {
+struct token_struct* tokenize(struct buffered_string* input) {
     int end_loop = false;
 
     // pointers to input struct or it's members are null -> return

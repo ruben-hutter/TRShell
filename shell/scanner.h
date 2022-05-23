@@ -1,8 +1,18 @@
 #ifndef SCANNER_H
 #define SCANNER_H
 
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <errno.h>
+#include <stdbool.h>
+
+#include "main.h"
+#include "buffered_string.h"
+#include "string_utils.h"
+
 struct token_struct {
-    struct input_struct* input;     // source of input
+    struct buffered_string* input;     // source of input
     int text_len;                   // length of token
     char* text;                     // token
 };
@@ -20,7 +30,7 @@ struct token_struct* create_token(char* str);
 void free_token(struct token_struct* token);
 
 // tokenize an input string
-struct token_struct* tokenize(struct input_struct* input);
+struct token_struct* tokenize(struct buffered_string* input);
 
 
 #endif

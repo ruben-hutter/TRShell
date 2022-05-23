@@ -1,10 +1,4 @@
-#include <unistd.h>
-
-#include "shell.h"
 #include "parser.h"
-#include "scanner.h"
-#include "node.h"
-#include "input.h"
 
 struct node_struct* parse_simple_command(struct token_struct* token) {
     // nullpointer -> exit
@@ -19,7 +13,7 @@ struct node_struct* parse_simple_command(struct token_struct* token) {
         return NULL;
     }
     // get original buffered input from token
-    struct input_struct* input = token->input;
+    struct buffered_string* input = token->input;
 
     do {
         // if token starts with newline -> abort

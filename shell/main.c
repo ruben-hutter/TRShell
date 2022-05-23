@@ -1,15 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <errno.h>
-#include <string.h>
-#include <stdbool.h>
-
 #include "main.h"
-#include "shell.h"
-#include "input.h"
-#include "parser.h"
-#include "executor.h"
-#include "scanner.h"
 
 int main(int argc, char **argv) {
     // array containing the users input
@@ -34,9 +23,9 @@ int main(int argc, char **argv) {
         }
 
         // init new struct representing char buffer for easy processing of the input
-        struct input_struct input;
-        populate_struct(&input, input_string);
-        parse_and_execute(&input);
+        struct buffered_string buffered_input;
+        populate_buffered_string_with(&buffered_input, input_string);
+        parse_and_execute(&buffered_input);
         free(input_string);
     }
     exit(EXIT_SUCCESS);
@@ -96,7 +85,7 @@ char* read_from_input() {
 }
 
 // parse and execute a command stored in the string buffer
-int parse_and_execute(struct input_struct* input) {
+int parse_and_execute(struct buffered_string* input) {
     // drop leading whitspace from buffer
     skip_white_spaces(input);
     struct token_struct* token = tokenize(input);

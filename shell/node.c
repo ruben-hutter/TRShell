@@ -1,11 +1,4 @@
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
-#include <errno.h>
-
-#include "shell.h"
 #include "node.h"
-#include "parser.h"
 
 struct node_struct* new_node(enum node_type_e type) {
     struct node_struct* node = malloc(sizeof(struct node_struct));

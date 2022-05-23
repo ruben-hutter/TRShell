@@ -1,19 +1,14 @@
-#include <errno.h>
-#include <string.h>
-#include <stdbool.h>
-
-#include "shell.h"
-#include "input.h"
+#include "buffered_string.h"
 
 // populates the passed dstruct with the passed string
-void populate_struct(struct input_struct* input_struct, char* input_string) {
-    input_struct->buffer = input_string;
-    input_struct->buffer_size = strlen(input_string);
-    input_struct->current_pos = INIT_POS;
+void populate_buffered_string_with(struct buffered_string* buffered_string, char* input_string) {
+    buffered_string->buffer = input_string;
+    buffered_string->buffer_size = strlen(input_string);
+    buffered_string->current_pos = INIT_POS;
 }
 
 // moves the current read position back by one
-void unget_last_char (struct input_struct* input) {
+void unget_last_char (struct buffered_string* input) {
     // no char to remove as positioned at beginning of buffer
     if (input->current_pos < 0) {
         return;
@@ -23,8 +18,8 @@ void unget_last_char (struct input_struct* input) {
 }
 
 // returns the next char in the buffer
-char get_next_char (struct input_struct* input) {
-    // either input_struct pointer or pointer of buffer in input struct is NULL       
+char get_next_char (struct buffered_string* input) {
+    // either buffered_string pointer or pointer of buffer in input struct is NULL       
     if (!input || !input->buffer) {
         // return error char symbolizing that an error occured
         errno = ENODATA;
@@ -44,8 +39,8 @@ char get_next_char (struct input_struct* input) {
 }
 
 // return the next char without incrementinng the current read potision
-char peek_next_char(struct input_struct* input) {
-    // either input_struct pointer or pointer of buffer in input struct is NULL
+char peek_next_char(struct buffered_string* input) {
+    // either buffered_string pointer or pointer of buffer in input struct is NULL
     if (!input || !input->buffer) {
         // return error char symbolizing that an error occured
         errno = ENODATA;
@@ -61,8 +56,8 @@ char peek_next_char(struct input_struct* input) {
 }
 
 // moves the reading position in the buffer to the right until non whitespace char is found
-void skip_white_spaces(struct input_struct* input) {
-    // either input_struct pointer or pointer of buffer in input struct is NULL
+void skip_white_spaces(struct buffered_string* input) {
+    // either buffered_string pointer or pointer of buffer in input struct is NULL
     if (!input || !input->buffer) {
         return;
     }
