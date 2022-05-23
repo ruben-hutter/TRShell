@@ -9,7 +9,7 @@
 
 // init value for the curpos field 
 // const long INIT_POS = -2;
-#define INIT_POS -2L
+#define INIT_POS -1L
 
 struct input_struct {   
     char* buffer;           // the input text
@@ -18,7 +18,7 @@ struct input_struct {
 };
 
 // populates the passed dstruct with the passed string
-void populate_struct(struct input_struct input_struct, char* input_string);
+void populate_struct(struct input_struct* input_struct, char* input_string);
 // get next char from buffer
 char get_next_char(struct input_struct* input);
 // moves the read index one char back
