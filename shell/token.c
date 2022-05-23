@@ -1,4 +1,4 @@
-#include "token_builder.h"
+#include "token.h"
 
 char* token_buffer = NULL;
 int token_buffer_size = 0;

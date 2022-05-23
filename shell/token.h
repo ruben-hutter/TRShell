@@ -1,5 +1,5 @@
-#ifndef TOKEN_BUILDER_H
-#define TOKEN_BUILDER_H
+#ifndef TOKEN_H
+#define TOKEN_H
 
 #include <stdlib.h>
 #include <stdio.h>

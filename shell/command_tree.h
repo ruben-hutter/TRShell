@@ -6,8 +6,8 @@
 #include <stdio.h>
 #include <errno.h>
 
+#include "token.h"
 #include "main.h"
-#include "parser.h"
 
 enum node_type_e {
     NODE_COMMAND,       /* simple command */
@@ -51,5 +51,6 @@ struct tree_node* new_node(enum node_type_e type);
 void add_child_node(struct tree_node* parent, struct tree_node* child);
 void free_tree_from_root(struct tree_node* node);
 void set_node_val_str(struct tree_node* node, char* val);
+struct tree_node* build_tree_from_root(struct token* root_token);
 
 #endif
