@@ -135,7 +135,7 @@ int do_simple_command(struct tree_node* node) {
     char* str;
 
     while (child) {
-        str = child->val.string;
+        str = child->value.string;
         argv[argc] = malloc(strlen(str)+1);
 
         if (!argv[argc]) {

@@ -25,7 +25,7 @@ enum value_type {
     VALUE_STRING             /* signed int */
 };
 
-union symval_u {
+union value {
     long signed_int;
     unsigned long unsigned_int;
     long long signed_long_long;
@@ -39,7 +39,7 @@ union symval_u {
 struct tree_node {
     enum node_type type;              /* type of this node */
     enum value_type value_type;           /* type of this node's val field */
-    union symval_u val;                 /* value of this node */
+    union value value;                 /* value of this node */
     int number_of_children;                       /* number of child nodes */
     struct tree_node* first_child;    /* first child node */
     /* if this is a child node, keep pointers to prev/next siblings */

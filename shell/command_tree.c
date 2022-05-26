@@ -49,7 +49,7 @@ void set_node_val_str(struct tree_node* node, char* string) {
 
     // if passd string pinter is null
     if (!string) {
-        node->val.string = NULL;
+        node->value.string = NULL;
         return;
     }
     
@@ -58,13 +58,13 @@ void set_node_val_str(struct tree_node* node, char* string) {
 
     // alloc failed
     if (!node_string) {
-        node->val.string = NULL;
+        node->value.string = NULL;
         return;
     }
     
     // copy and set node's string
     strcpy(node_string, string);
-    node->val.string = node_string;
+    node->value.string = node_string;
 }
 
 void free_tree_from_root(struct tree_node* node) {
@@ -80,8 +80,8 @@ void free_tree_from_root(struct tree_node* node) {
         child = next;
     }
 
-    if (node->value_type == VALUE_STRING && node->val.string) {
-        free(node->val.string);
+    if (node->value_type == VALUE_STRING && node->value.string) {
+        free(node->value.string);
     }
 
     free(node);
