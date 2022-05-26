@@ -152,6 +152,15 @@ int do_simple_command(struct tree_node* node) {
     }
     argv[argc] = NULL;
 
+    // check if command calls builtin function
+    for(int iterator = 0; iterator < builtin_utility_count; iterator++) {
+        if (strcmp(argv[0], builtin_utilities[iterator].name) == 0) {
+            builtin_utilities[iterator].func(argc, argv);
+            free_argv(argc, argv);
+            return 1;
+        }
+    }
+
     pid_t child_pid = 0;
     if ((child_pid = fork()) == 0) {
         exec_command(argc, argv);

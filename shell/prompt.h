@@ -7,7 +7,7 @@
 #include <string.h>
 
 #include "colors.h"
-#include "main.h"
+#include "shell.h"
 #include "string_utils.h"
 
 #define PROMPT_1 " $ "

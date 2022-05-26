@@ -7,7 +7,7 @@
 #include <errno.h>
 
 #include "token.h"
-#include "main.h"
+#include "shell.h"
 
 enum node_type {
     COMMAND_NODE,       /* simple command */

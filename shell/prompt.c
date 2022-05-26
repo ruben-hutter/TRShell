@@ -89,7 +89,15 @@ void print_prompt_1(void) {
     
     // get prefix and prompt
     char* prefix = create_user_prefix("tobi", "test");
-    char* prompt = create_user_prompt(PROMPT_1);
+
+    // get prompt from environment vars
+    struct symbol_table_entry* entry = get_local_table_entry("PS1");
+    char* prompt;
+    if (entry && entry->value) {
+        prompt = create_user_prompt(entry->value);
+    } else {
+        prompt = create_user_prompt(PROMPT_1);
+    }
     // combine prefix and prompt to prompt_string
     char prompt_string[get_concatenated_length(2, prefix, prompt)];
     make_empty_string(prompt_string);

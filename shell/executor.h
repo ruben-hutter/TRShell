@@ -9,8 +9,9 @@
 #include <sys/stat.h>
 #include <sys/wait.h>
 
-#include "main.h"
 #include "command_tree.h"
+#include "shell.h"
+#include "builtin_utilities.h"
 
 char* search_path(char* file);
 int exec_command(int argc, char** argv);

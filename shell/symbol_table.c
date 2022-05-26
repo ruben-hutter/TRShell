@@ -1,15 +1,25 @@
-#include <symbol_table.h>
+#include "symbol_table.h"
+
+const uint32_t hash_function_prime = 0x01000193;
+const uint32_t hash_function_seed = 0x811C9DC5;
 
 struct symbol_table_stack table_stack;
 int stack_level;
 
-extern const uint32_t hash_function_prime;
-extern const uint32_t hash_function_seed;
-extern uint32_t get_hash_of_byte(unsigned char byte, uint32_t hash);
-extern uint32_t get_hash(char** string, uint32_t hash);
+uint32_t fnva1a(char* string, uint32_t hash) {
+    if (!string) {
+        return 0;
+    }
+
+    unsigned char *p = (unsigned char*) string;
+    while (*p) {
+        hash = (*p++ ^ hash) * hash_function_prime;
+    }
+    return hash;
+}
 
 // get the cell in the entry array depending of the strings hash value
-get_cell(struct symbol_table *table, char* string) {
+int get_cell(struct symbol_table *table, char* string) {
     // nullpinter -> return
     if (!table) {
         return 0;
@@ -41,7 +51,7 @@ struct symbol_table* get_allocated_table() {
     size_t entries_size = sizeof(struct table_entry*) * HASH_TABLE_INIT_SIZE;
     table->entries = malloc(entries_size);
     if (!table->entries) {
-        Ifree(table);
+        free(table);
         fprintf(stderr, "fatal error: symbol table allocation failed");
     }
 
@@ -133,11 +143,11 @@ void free_table(struct symbol_table* table) {
                 next_entry = current_entry->next;
 
                 if (current_entry->name) {
-                    free_malloced_string(current_entry->name);
+                    free(current_entry->name);
                 }
 
                 if (current_entry->value) {
-                    free_malloced_string(current_entry->value);
+                    free(current_entry->value);
                 }
 
                 if (current_entry->function_body) {
@@ -156,7 +166,7 @@ void free_table(struct symbol_table* table) {
 }
 
 // creates an entry for the passed sting and adds it to the specified table
-struct symbol_table_entry* add_to_table(char* string, struct symbol_table* table) {
+struct symbol_table_entry* add_to_specific_table(char* string, struct symbol_table* table) {
 
     // table pinter is NULL
     if (!table) {
@@ -186,3 +196,201 @@ struct symbol_table_entry* add_to_table(char* string, struct symbol_table* table
     return entry;
 }
 
+// remove entry from the table
+int remove_from_specific_table(struct symbol_table_entry* entry, struct symbol_table* table) {
+    // get head of entry list appended to that cell
+    int cell = get_cell(table, entry->name);
+    struct symbol_table_entry* iterator = table->entries[cell];
+    struct symbol_table_entry* temp = NULL;
+
+    // iterate thourgh list and find our target
+    while(iterator) {
+
+        // entry found
+        if(iterator == entry) {
+            // remove from linked list
+            if (!temp) {
+                // entry is head
+                table->entries[cell] = iterator->next;
+            } else {
+                // entry found in list
+                temp->next = iterator->next;
+            }
+
+            // free memory
+            if (entry->value) {
+                free(entry->value);
+            }
+            if (entry->function_body) {
+                free_tree_from_root(entry->function_body);
+            }
+            free(entry->name);
+            free(entry);
+            table->used_cell_count--;
+            return 1;
+        }
+
+        // iterate to next element in list
+        temp = iterator;
+        iterator = iterator->next;
+    }
+}
+    
+// removes the first (and theoretically last) occurence of that entry from the corresponding table
+void remove_from_table(struct symbol_table_entry* entry) {
+    int index = table_stack.table_count - 1;
+    do {
+        if (remove_from_specific_table(entry, table_stack.table_list[index])) {
+            return;
+        }
+        index--;
+    } while(index >= 0);
+}
+
+struct symbol_table_entry* lookup_symbol(char* string, struct symbol_table* table) {
+    // check stringpointer null
+    if (!string) {
+        return NULL;
+    }
+
+    // check table pointer null
+    if (!table) {
+        return NULL;
+    }
+
+    // get cell index
+    int cell = get_cell(table, string);
+
+    // get head of list attatched to this cell
+    struct symbol_table_entry* iterator = table->entries[cell];
+
+    // iterate though list to find entry
+    while(iterator) {
+        if (strcmp(iterator->name, string) == 0){
+            return iterator;
+        }
+        iterator = iterator->next;
+    }
+    return NULL;
+}
+
+// add a string to a table
+struct symbol_table_entry* add_to_table(char* string) {
+    
+    // check nullpointer
+    if (!string) {
+        return NULL;
+    }
+    
+    // check empty string
+    if (*string == '\0') {
+        return NULL;
+    }
+    
+    // get local table
+    struct symbol_table* table = table_stack.local_table;
+
+    // check if entry already added (must be unique cause hashmap)
+    struct symbol_table_entry* entry = lookup_symbol(string, table);
+    if(entry) {
+        return entry;
+    }
+
+    // add entry to table
+    entry = add_to_specific_table(string, table);
+
+    return entry;
+}
+
+// lookup a symbol in the local table
+struct symbol_table_entry* get_local_table_entry(char* string) {
+    return lookup_symbol(string, table_stack.local_table);
+}
+
+// lookup a symbol in all tables of the table stack
+struct symbol_table_entry* get_table_entry(char* string) {
+    int iterator = table_stack.table_count - 1;
+    do {
+        // get table with that index form stack
+        struct symbol_table* current_table = table_stack.table_list[iterator];
+        // lookup entry in that table
+        struct symbol_table_entry* entry = lookup_symbol(string, current_table);
+        // if found return
+        if (entry) {
+            return entry;
+        }
+
+        // go th next higher table
+        iterator--;
+    } while (iterator >= 0);
+}
+
+// get pointer to local table
+struct symbol_table* get_local_table() {
+    return table_stack.local_table;
+}
+
+// get pointer tp the global table
+struct symbol_table* get_global_table() {
+    return table_stack.global_table;
+}
+
+// get pointer to the table stack
+struct symbol_table_stack* get_table_stack() {
+    return &table_stack;
+}
+
+// set the value of a specific entry
+void set_entry_value(struct symbol_table_entry* entry, char* new_value) {
+    // get old value of entry
+    char* old_value = entry->value;
+
+    // check new value for null
+    if (!new_value) {
+        entry->value = NULL;
+    } else {
+        entry->value = get_malloced_empty_string(strlen(new_value));
+        if (!entry->value) {
+            fprintf(stderr, "fatal error: symbol table entry value allocation failed");
+        } else {
+            strcpy(entry->value, new_value);
+        }
+    }
+
+    free(old_value);
+}
+
+// prints the local table to the stdout
+void print_local_table() {
+    // get local table
+    struct symbol_table* table = table_stack.local_table;
+    int index = 0;
+
+    //get stack level dependant indenting
+    int indent = table->stack_level << 2;
+
+    // print header for table
+    fprintf(stderr, "%*sSymbol table [Level %d];\n]", indent, " ", table->stack_level);
+    fprintf(stderr, "*s===========================\n", indent, " ");
+    fprintf(stderr, "*s  No               Symbol                    Val\n", indent, " ");
+    fprintf(stderr, "*s------ -------------------------------- ------------\n", indent, " ");
+
+    // iterate though entries of table if not empty
+    if (table->used_cell_count > 0) {
+        struct symbol_table_entry** iterator = table->entries;
+        struct symbol_table_entry** last_cell = table->entries + table->cell_count;
+
+        // iterate over cells
+        while (iterator < last_cell) {
+            struct symbol_table_entry* current_entry = *iterator;
+
+            // itereate over entries in list attatched to each cell
+            while(current_entry) {
+                index++;
+                fprintf(stderr, "%*s[%04d] %-32s '%s'\n", indent, " ", index, current_entry->name, current_entry->value);
+                current_entry = current_entry->next;
+            }
+            iterator++;
+        }
+    }
+}

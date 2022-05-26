@@ -7,7 +7,7 @@
 #include <errno.h>
 #include <stdbool.h>
 
-#include "main.h"
+#include "shell.h"
 #include "buffered_string.h"
 #include "string_utils.h"
 

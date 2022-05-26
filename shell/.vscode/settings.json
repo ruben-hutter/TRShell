@@ -38,6 +38,7 @@
         "string_view": "c",
         "utility": "c",
         "typeinfo": "c",
-        "valarray": "c"
+        "valarray": "c",
+        "buffered_string.h": "c"
     }
 }
