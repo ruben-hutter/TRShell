@@ -16,7 +16,7 @@ void update_cwd(void) {
 void check_if_home(void) {
     char name[20];
     //get_login_r(name, sizeof(name));
-    printf("current: %s\n", current_working_dir);
+    //printf("current: %s\n", current_working_dir);
     if (strcmp(name, current_working_dir) == 0) {
         strcpy(current_working_dir, "~");
     }

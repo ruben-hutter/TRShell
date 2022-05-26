@@ -1,53 +1,70 @@
 #include "command_tree.h"
 
+// create new node to be added to the tree
 struct tree_node* new_node(enum node_type_e type) {
+    // allocate space for the node
     struct tree_node* node = malloc(sizeof(struct tree_node));
-
+    // could not allocate space -> exit
     if (!node) {
         return NULL;
     }
-
+    // erase data in allocated space (overwrite with 0)
     memset(node, 0, sizeof(struct tree_node));
+    // set node to specified type
     node->type = type;
-
     return node;
 }
 
+// add node as child to parent node
+// TODO: more cnsise implementation using pure doubl linked list (no first child)
 void add_child_node(struct tree_node* parent, struct tree_node* child) {
+    // if any null pointers -> exit
     if (!parent || !child) {
         return;
     }
 
+    // add child
+    // if no child yet, add child as first child
     if (!parent->first_child) {
+        
         parent->first_child = child;
-    } else {
-        struct tree_node* sibling = parent->first_child;
-
-        while (sibling->next_sibling) {
-            sibling = sibling->next_sibling;
-        }
-
-        sibling->next_sibling = child;
-        child->prev_sibling = sibling;
+        parent->children++;
+        return;
     }
+
+    // iterate down the list of children until last reached
+    struct tree_node* sibling = parent->first_child;
+    while (sibling->next_sibling) {
+        sibling = sibling->next_sibling;
+    }
+    // append to list and set pointers in both direcitons (doubly linked list)
+    sibling->next_sibling = child;
+    child->prev_sibling = sibling;
     parent->children++;
 }
 
-void set_node_val_str(struct tree_node* node, char* val) {
+void set_node_val_str(struct tree_node* node, char* string) {
+    // set node type to string node
     node->val_type = VAL_STR;
 
-    if (!val) {
+    // if passd string pinter is null
+    if (!string) {
         node->val.str = NULL;
-    } else {
-        char* val2 = malloc(strlen(val) + 1);
-
-        if (!val2) {
-            node->val.str = NULL;
-        } else {
-            strcpy(val2, val);
-            node->val.str = val2;
-        }
+        return;
     }
+    
+    // alloc space for passed string
+    char* node_string = malloc(strlen(string) + 1);
+
+    // alloc failed
+    if (!node_string) {
+        node->val.str = NULL;
+        return;
+    }
+    
+    // copy and set node's string
+    strcpy(node_string, string);
+    node->val.str = node_string;
 }
 
 void free_tree_from_root(struct tree_node* node) {
@@ -63,11 +80,10 @@ void free_tree_from_root(struct tree_node* node) {
         child = next;
     }
 
-    if (node->val_type == VAL_STR) {
-        if (node->val.str) {
-            free(node->val.str);
-        }
+    if (node->val_type == VAL_STR && node->val.str) {
+        free(node->val.str);
     }
+    
     free(node);
 }
 
@@ -92,20 +108,21 @@ struct tree_node* build_tree_from_root(struct token* root_token) {
             free_token(root_token);
             break;
         }
-        // allocate new tree node for a word of the input
-        struct tree_node* word = new_node(NODE_VAR);
+
+        // allocate new tree node for a token of the input
+        struct tree_node* token = new_node(NODE_VAR);
         // aloc failed
-        if (!word) {
+        if (!token) {
             // free cmd node prepared earlier
             free_tree_from_root(root_node);
             // free passed token as no longer used
             free_token(root_token);
             return NULL;
         }
-        // make new node to string node contianing the current word
-        set_node_val_str(word, root_token->token_string);
+        // make new node to string node contianing the current token
+        set_node_val_str(token, root_token->token_string);
         // set new node as a child of the cmd "head_node"
-        add_child_node(root_node, word);
+        add_child_node(root_node, token);
         // free token
         free_token(root_token);
     } while ((root_token = get_next_token(input)) != &eof_token);

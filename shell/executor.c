@@ -1,58 +1,84 @@
 #include "executor.h"
 
-char* search_path(char* file) {
+// searches a command in all directories listed in $PATH
+char* search_path(char* command_name) {
+    // get comma seperated list of directories
     char* PATH = getenv("PATH");
-    char* p = PATH;
-    char* p2;
+    // pointer to beginning of element
+    char* entry_start = PATH;
+    // pointer to end of element
+    char* entry_end;
 
-    while (p && *p) {
-        p2 = p;
+    // iterate through entries
+    while (entry_start && *entry_start) {
+        // both pointers at start of entry
+        entry_end = entry_start;
 
-        while (*p2 && *p2 != ':') {
-            p2++;
+        // move end pointer back until at end of entry
+        while (*entry_end && *entry_end != ':') {
+            entry_end++;
         }
 
-        int plen = p2 - p;
-        if (!plen) {
-            plen = 1;
+        // get length of entry
+        int entry_length = entry_end - entry_start;
+        if (!entry_length) {
+            entry_length = 1;
         }
 
-        int alen = strlen(file);
-        char path[plen+1+alen+1];
+        // get length of command
+        int command_name_length = strlen(command_name);
 
-        strncpy(path, p, p2-p);
-        path[p2-p] = '\0';
+        // prepare string to store path
+        char path[entry_length+1+command_name_length+1];
 
-        if (p2[-1] != '/') {
+        // copy entry to path
+        strncpy(path, entry_start, entry_end-entry_start);
+        path[entry_end-entry_start] = '\0';
+
+        // if missing append / to end fo path
+        if (entry_end[-1] != '/') {
             strcat(path, "/");
         }
 
-        strcat(path, file);
+        // append command name to path
+        strcat(path, command_name);
 
+        // check if file exists
         struct stat st;
+
+        // exists
         if (stat(path, &st) == 0) {
+            // exists
             if (!S_ISREG(st.st_mode)) {
                 errno = ENOENT;
-                p = p2;
-                if (*p2 == ':') {
-                    p++;
+
+                // move pointers to start of next entry
+                entry_start = entry_end;
+
+                // if one char before first char of next entry -> move one forwad
+                if (*entry_end == ':') {
+                    entry_start++;
                 }
                 continue;
             }
 
-            p = malloc(strlen(path)+1);
-            if (!p) {
+            // malloc space for path
+            entry_start = malloc(strlen(path)+1);
+            if (!entry_start) {
                 return NULL;
             }
 
-            strcpy(p, path);
-            return p;
-        } else {
-            /* file not found */
-            p = p2;
-            if (*p2 == ':') {
-                p++;
-            }
+            // copy path to malloced space and return
+            strcpy(entry_start, path);
+            return entry_start;            
+        }
+
+        // move pointers to start of next entry
+        entry_start = entry_end;
+
+        // if one char before first char of next entry -> move one forwad
+        if (*entry_end == ':') {
+            entry_start++;
         }
     }
 
@@ -60,17 +86,26 @@ char* search_path(char* file) {
     return NULL;
 }
 
-int do_exec_cmd(int argc, char** argv) {
+// executes a command using exec v
+int exec_command(int argc, char** argv) {
+
+    // if starts with / -> assume its a path and try run directly
     if (strchr(argv[0], '/')) {
         execv(argv[0], argv);
-    } else {
-        char* path = search_path(argv[0]);
-        if (!path) {
-            return 0;
-        }
-        execv(path, argv);
-        free(path);
+        return 0;  
     }
+    
+    // search for command with that name
+    char* path = search_path(argv[0]);
+
+    // no command found -> return
+    if (!path) {
+        return 0;
+    }
+
+    // exec command
+    execv(path, argv);
+    free(path);
     return 0;
 }
 
@@ -109,7 +144,8 @@ int do_simple_command(struct tree_node* node) {
         }
 
         strcpy(argv[argc], str);
-        if (++argc >= max_args) {
+        argc++;
+        if (argc >= max_args) {
             break;
         }
         child = child->next_sibling;
@@ -118,7 +154,7 @@ int do_simple_command(struct tree_node* node) {
 
     pid_t child_pid = 0;
     if ((child_pid = fork()) == 0) {
-        do_exec_cmd(argc, argv);
+        exec_command(argc, argv);
         fprintf(stderr, "error: failed to execute command: %s\n", strerror(errno));
         if (errno == ENOEXEC) {
             exit(126);

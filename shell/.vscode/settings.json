@@ -9,6 +9,7 @@
         "ostream": "c",
         "sstream": "c",
         "streambuf": "c",
-        "random": "c"
+        "random": "c",
+        "input_reader.h": "c"
     }
 }

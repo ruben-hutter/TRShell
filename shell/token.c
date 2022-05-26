@@ -22,7 +22,7 @@ void add_to_buffer(char c) {
             errno = ENOMEM;
             return;
         }
-        // update buffer pointer ot new buffer and updaste size
+        // update buffer pointer of new buffer and updaste size
         token_buffer = tmp;
         token_buffer_size *= 2;
     }
@@ -38,7 +38,7 @@ struct token* build_token(char* str) {
     }
 
     memset(token, 0, sizeof(struct token));
-    // set token_string length of token to string length of it's containing string
+    // set token_string length of token to string length of the input string
     token->string_length = strlen(str);
     // alloc space for temp string
     char* next_str = malloc(token->string_length + 1);
@@ -86,7 +86,6 @@ struct token* get_next_token(struct buffered_string* input) {
         }
     }
 
-    // empty string buffer and prepare to write
     token_buffer_index = 0;
     make_empty_string(token_buffer);
 
@@ -103,8 +102,7 @@ struct token* get_next_token(struct buffered_string* input) {
         switch (next_char) {
             // ignore whitespaces
             case ' ':
-                break;
-            // handle tabs
+                // no there isn't a break missing here!!!
             case '\t':
                 // stop processing if tab found in string (NOT AT BEGINNING)
                 if (token_buffer_index > 0) {

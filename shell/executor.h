@@ -13,7 +13,7 @@
 #include "command_tree.h"
 
 char* search_path(char* file);
-int do_exec_cmd(int argc, char** argv);
+int exec_command(int argc, char** argv);
 int do_simple_command(struct tree_node* node);
 
 #endif
