@@ -1,7 +1,7 @@
 #include "command_tree.h"
 
 // create new node to be added to the tree
-struct tree_node* new_node(enum node_type_e type) {
+struct tree_node* new_node(enum node_type type) {
     // allocate space for the node
     struct tree_node* node = malloc(sizeof(struct tree_node));
     // could not allocate space -> exit
@@ -28,7 +28,7 @@ void add_child_node(struct tree_node* parent, struct tree_node* child) {
     if (!parent->first_child) {
         
         parent->first_child = child;
-        parent->children++;
+        parent->number_of_children++;
         return;
     }
 
@@ -40,16 +40,16 @@ void add_child_node(struct tree_node* parent, struct tree_node* child) {
     // append to list and set pointers in both direcitons (doubly linked list)
     sibling->next_sibling = child;
     child->prev_sibling = sibling;
-    parent->children++;
+    parent->number_of_children++;
 }
 
 void set_node_val_str(struct tree_node* node, char* string) {
     // set node type to string node
-    node->val_type = VAL_STR;
+    node->value_type = VALUE_STRING;
 
     // if passd string pinter is null
     if (!string) {
-        node->val.str = NULL;
+        node->val.string = NULL;
         return;
     }
     
@@ -58,13 +58,13 @@ void set_node_val_str(struct tree_node* node, char* string) {
 
     // alloc failed
     if (!node_string) {
-        node->val.str = NULL;
+        node->val.string = NULL;
         return;
     }
     
     // copy and set node's string
     strcpy(node_string, string);
-    node->val.str = node_string;
+    node->val.string = node_string;
 }
 
 void free_tree_from_root(struct tree_node* node) {
@@ -80,10 +80,10 @@ void free_tree_from_root(struct tree_node* node) {
         child = next;
     }
 
-    if (node->val_type == VAL_STR && node->val.str) {
-        free(node->val.str);
+    if (node->value_type == VALUE_STRING && node->val.string) {
+        free(node->val.string);
     }
-    
+
     free(node);
 }
 
@@ -93,7 +93,7 @@ struct tree_node* build_tree_from_root(struct token* root_token) {
         return NULL;
     }
     // allocate new node for command
-    struct tree_node* root_node = new_node(NODE_COMMAND);
+    struct tree_node* root_node = new_node(COMMAND_NODE);
     // allocation failed -> return and free token as not used anymore
     if (!root_node) {
         free_token(root_token);
@@ -110,7 +110,7 @@ struct tree_node* build_tree_from_root(struct token* root_token) {
         }
 
         // allocate new tree node for a token of the input
-        struct tree_node* token = new_node(NODE_VAR);
+        struct tree_node* token = new_node(VARIABLE_NODE);
         // aloc failed
         if (!token) {
             // free cmd node prepared earlier

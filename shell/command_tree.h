@@ -9,45 +9,45 @@
 #include "token.h"
 #include "main.h"
 
-enum node_type_e {
-    NODE_COMMAND,       /* simple command */
-    NODE_VAR            /* variable name (or simply a word) */
+enum node_type {
+    COMMAND_NODE,       /* simple command */
+    VARIABLE_NODE            /* variable name (or simply a word) */
 };
 
-enum val_type_e {
-    VAL_SINT = 1,       /* signed int */
-    VAL_UINT,           /* signed int */
-    VAL_SLLONG,         /* signed int */
-    VAL_ULLONG,         /* signed int */
-    VAL_FLOAT,          /* signed int */
-    VAL_LDOUBLE,        /* signed int */
-    VAL_CHR,            /* signed int */
-    VAL_STR             /* signed int */
+enum value_type {
+    VALUE_SIGNED_INT = 1,       /* signed int */
+    VALUE_UNSIGNED_INT,           /* signed int */
+    VALUE_SIGNED_LONG_LONG,         /* signed int */
+    VALUE_UNSIGNED_LONG_LONG,         /* signed int */
+    VALUE_FLOAT,          /* signed int */
+    VALUE_LONG_DOUBLE,        /* signed int */
+    VALUE_CHAR,            /* signed int */
+    VALUE_STRING             /* signed int */
 };
 
 union symval_u {
-    long sint;
-    unsigned long uint;
-    long long sllong;
-    unsigned long long ullong;
-    double sfloat;
-    long double ldouble;
-    char chr;
-    char* str;
+    long signed_int;
+    unsigned long unsigned_int;
+    long long signed_long_long;
+    unsigned long long unsigned_long_long;
+    double signed_float;
+    long double long_double;
+    char character;
+    char* string;
 };
 
 struct tree_node {
-    enum node_type_e type;              /* type of this node */
-    enum val_type_e val_type;           /* type of this node's val field */
+    enum node_type type;              /* type of this node */
+    enum value_type value_type;           /* type of this node's val field */
     union symval_u val;                 /* value of this node */
-    int children;                       /* number of child nodes */
+    int number_of_children;                       /* number of child nodes */
     struct tree_node* first_child;    /* first child node */
     /* if this is a child node, keep pointers to prev/next siblings */
     struct tree_node* next_sibling;
     struct tree_node* prev_sibling;
 };
 
-struct tree_node* new_node(enum node_type_e type);
+struct tree_node* new_node(enum node_type type);
 void add_child_node(struct tree_node* parent, struct tree_node* child);
 void free_tree_from_root(struct tree_node* node);
 void set_node_val_str(struct tree_node* node, char* val);
