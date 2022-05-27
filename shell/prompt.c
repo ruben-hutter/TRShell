@@ -1,16 +1,5 @@
 #include "prompt.h"
 
-/* checks if currently in home, if so, replace with tilde
-void check_if_home(void) {
-    char name[20];
-    //get_login_r(name, sizeof(name));
-    //printf("current: %s\n", current_working_dir);
-    if (strcmp(name, current_working_dir) == 0) {
-        strcpy(current_working_dir, "~");
-    }
-}
-*/
-
 void print_prompt_1(void) {
     // get username from environment vars
     char* username = get_user_name();
@@ -18,6 +7,7 @@ void print_prompt_1(void) {
     char* pwd = get_current_working_dir();
     // get prefix and prompt
     char* prefix = create_user_prefix(username, pwd);
+    free(pwd);
     // get prompt symbol
     char* prompt = create_user_prompt(get_prompt_symbol_1());
     // combine prefix and prompt to prompt_string
@@ -76,19 +66,20 @@ char* get_user_name(void) {
 
 // gets the current working dir
 char* get_current_working_dir(void) {
+    // get PWD from environment vars
     char* pwd = get_local_table_entry_value("PWD");
     if (!pwd) {
-        pwd = PWD_PLACEHOLDER;
+        // if not found -> return placeholder
+        return PWD_PLACEHOLDER;
     }
-    return pwd;
+    char* dir_name = get_malloced_copy(pwd);
+    crop_string_to_end(dir_name, '/');
+    // check if dir is home
+    if (strcmp(dir_name, "home") == 0) {
+        return "~";
+    }
+    return dir_name;
 }
-
-
-
-
-
-
-
 
 
 

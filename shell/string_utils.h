@@ -23,6 +23,9 @@ void v_concatenate(int num_of_args, char* output_string, va_list input_strings);
 // malloc an empty string of the specified length
 char* get_malloced_empty_string(int length);
 
+// gets a malloced copy of the passed string
+char* get_malloced_copy(char* input_string);
+
 // adds a terminator at the beginning of the string to empty it
 void make_empty_string(char* input_string);
 

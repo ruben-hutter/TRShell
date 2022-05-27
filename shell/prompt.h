@@ -19,8 +19,6 @@
 #define USER_PLACEHOLDER "no_user_name"
 #define PWD_PLACEHOLDER "no_pwd"
 
-// crop the current working directory to only the last folder
-void crop_cwd(void);
 // gets the username of the current user
 char* get_user_name(void);
 // gets the current working dir

@@ -181,8 +181,7 @@ struct symbol_table_entry* add_to_specific_table(char* string, struct symbol_tab
     memset(entry, 0, sizeof(struct symbol_table_entry));
     
     // copy string to entries text field
-    entry->name = get_malloced_empty_string(strlen(string));
-    strcpy(entry->name, string);
+    entry->name = get_malloced_copy(string);
 
     // prepend entry to hash maps linked list for the resulting hash
     // get cell index

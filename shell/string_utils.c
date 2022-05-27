@@ -53,6 +53,14 @@ char* get_malloced_empty_string(int length) {
     return colored_string;
 }
 
+// gets a malloced copy of the passed string
+char* get_malloced_copy(char* input_string) {
+    int input_length = strlen(input_string);
+    char* output_string = get_malloced_empty_string(input_length);
+    strcpy(output_string, input_string);
+    return output_string;
+}
+
 // adds a terminator at the beginning of the string to empty it
 void make_empty_string(char* input_string) {
     *input_string = '\0';
