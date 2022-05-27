@@ -3,9 +3,6 @@
 
 #include "dump.h"
 
-// builtin utilities
-int dump(int argc, char**argv);
-
 // struct for builtin utilities
 struct builtin_utility {
     char* name;

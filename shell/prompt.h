@@ -16,10 +16,17 @@
 #define SEPARATOR " ● "
 #define DELIMITER '/'
 
-// update current working directory
-void update_cwd(void);
+#define USER_PLACEHOLDER "no_user_name"
+#define PWD_PLACEHOLDER "no_pwd"
+
 // crop the current working directory to only the last folder
 void crop_cwd(void);
+// gets the username of the current user
+char* get_user_name(void);
+// gets the current working dir
+char* get_current_working_dir(void);
+// gets the prompt symbol for prompt 1
+char* get_prompt_symbol_1(void);
 // get the prompt prefix containing the user name and the current directory in user colors
 char* create_user_prefix(char* user_name, char* curr_work_dir_name);
 //  get the prompt symbol of the specified prompt in user colors

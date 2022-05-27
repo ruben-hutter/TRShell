@@ -90,6 +90,9 @@ struct symbol_table_entry* get_local_table_entry(char* string);
 // lookup a symbol in all tables of the table stack
 struct symbol_table_entry* get_table_entry(char* string);
 
+// returns the value of the entry with that name if exists
+char* get_local_table_entry_value(char* entry_name);
+
 // get pointer to local table
 struct symbol_table* get_local_table();
 

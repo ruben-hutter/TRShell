@@ -1,18 +1,6 @@
 #include "prompt.h"
 
-char current_working_dir[100];
-char* last_folder;
-
-// update current working directory
-void update_cwd(void) {
-    if (getcwd(current_working_dir, sizeof(current_working_dir)) != NULL) {
-       return;
-    }
-    perror("getcwd() error");
-    return;
-}
-
-// checks if currently in home, if so, replace with tilde
+/* checks if currently in home, if so, replace with tilde
 void check_if_home(void) {
     char name[20];
     //get_login_r(name, sizeof(name));
@@ -20,6 +8,35 @@ void check_if_home(void) {
     if (strcmp(name, current_working_dir) == 0) {
         strcpy(current_working_dir, "~");
     }
+}
+*/
+
+void print_prompt_1(void) {
+    // get username from environment vars
+    char* username = get_user_name();
+    // get current working dir from environment vars
+    char* pwd = get_current_working_dir();
+    // get prefix and prompt
+    char* prefix = create_user_prefix(username, pwd);
+    // get prompt symbol
+    char* prompt = create_user_prompt(get_prompt_symbol_1());
+    // combine prefix and prompt to prompt_string
+    char prompt_string[get_concatenated_length(2, prefix, prompt)];
+    make_empty_string(prompt_string);
+    concatenate(2, prompt_string, prefix, prompt);
+    free(prefix);
+    free(prompt);
+    // print prompt string
+    fprintf(stderr, prompt_string);
+}
+
+// gets the prompt symbol for prompt 1
+char* get_prompt_symbol_1(void) {
+    char* ps1 = get_local_table_entry_value("PS1");
+    if (!ps1) {
+        ps1 = PROMPT_1;
+    }
+    return ps1;
 }
 
 // get the prompt prefix containing the user name and the current directory in user colors
@@ -48,6 +65,67 @@ char* create_user_prompt(char* prompt) {
     return styled_prompt;
 }
 
+// gets the username of the current user
+char* get_user_name(void) {
+    char* name = get_local_table_entry_value("USERNAME");
+    if (!name) {
+        name = USER_PLACEHOLDER;
+    }
+    return name;
+}
+
+// gets the current working dir
+char* get_current_working_dir(void) {
+    char* pwd = get_local_table_entry_value("PWD");
+    if (!pwd) {
+        pwd = PWD_PLACEHOLDER;
+    }
+    return pwd;
+}
+
+
+
+
+
+
+
+
+
+
+
+// -----------------------------------------------------------------------------
+// Check later as not important now!
+// -----------------------------------------------------------------------------
+
+void print_prompt_2(void) {
+    char* prompt_string = create_user_prompt(PROMPT_2);
+    fprintf(stderr, prompt_string);
+    free(prompt_string);
+}
+
+/*
+void print_prompt_3(void) {
+    // update the current working directory
+    update_cwd();
+    // crop to last folder
+    crop_string_to_end(current_working_dir, '/');
+    // check if in home
+    check_if_home();
+    // get prefix and prompt
+    char* prefix = create_user_prefix("tobi", last_folder);
+    char* prompt = create_user_prompt(PROMPT_3);
+    // combine prefix and prompt to prompt_string
+    char prompt_string[get_concatenated_length(2, prefix, prompt)];
+    make_empty_string(prompt_string);
+    concatenate(2, prompt_string, prefix, prompt);
+    // free prefix and prompt
+    free(prefix);
+    free(prompt);
+    // print prompt string
+    fprintf(stderr, prompt_string);
+}
+*/
+
 // get the prompt prefix containing the user name and the current directory in user colors
 char* create_root_prefix(char* user_name, char* curr_work_dir_name) {
     // construct styled version of username + separator
@@ -72,66 +150,4 @@ char* create_root_prompt(char* prompt) {
     char* styled_prompt = get_malloced_empty_string(get_concatenated_length_with_style(2, prompt, ROOT_PRIMARY));
     concatenate_with_style(2, styled_prompt, ROOT_PRIMARY, prompt);
     return styled_prompt;
-}
-
-
-void print_prompt_1(void) {
-    // update the current working directory
-    update_cwd();
-    // crop to last folder
-    crop_string_to_end(current_working_dir, DELIMITER);
-
-    // check if in home
-    // TODO: PLEASE NO HIDDEN SIDEEFFECTS
-    // either replace_home_with_tilde(char* curr_dir) or move to update_cwd(...)
-    // crop_string_...(...) could also be moved
-    check_if_home();
-    
-    // get prefix and prompt
-    char* prefix = create_user_prefix("tobi", "test");
-
-    // get prompt from environment vars
-    struct symbol_table_entry* entry = get_local_table_entry("PS1");
-    char* prompt;
-    if (entry && entry->value) {
-        prompt = create_user_prompt(entry->value);
-    } else {
-        prompt = create_user_prompt(PROMPT_1);
-    }
-    // combine prefix and prompt to prompt_string
-    char prompt_string[get_concatenated_length(2, prefix, prompt)];
-    make_empty_string(prompt_string);
-    concatenate(2, prompt_string, prefix, prompt);
-    // free prefix and prompt
-    free(prefix);
-    free(prompt);
-    // print prompt string
-    fprintf(stderr, prompt_string);
-}
-
-void print_prompt_2(void) {
-    char* prompt_string = create_user_prompt(PROMPT_2);
-    fprintf(stderr, prompt_string);
-    free(prompt_string);
-}
-
-void print_prompt_3(void) {
-    // update the current working directory
-    update_cwd();
-    // crop to last folder
-    crop_string_to_end(current_working_dir, '/');
-    // check if in home
-    check_if_home();
-    // get prefix and prompt
-    char* prefix = create_user_prefix("tobi", last_folder);
-    char* prompt = create_user_prompt(PROMPT_3);
-    // combine prefix and prompt to prompt_string
-    char prompt_string[get_concatenated_length(2, prefix, prompt)];
-    make_empty_string(prompt_string);
-    concatenate(2, prompt_string, prefix, prompt);
-    // free prefix and prompt
-    free(prefix);
-    free(prompt);
-    // print prompt string
-    fprintf(stderr, prompt_string);
 }

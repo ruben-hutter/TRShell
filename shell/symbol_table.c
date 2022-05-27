@@ -307,6 +307,16 @@ struct symbol_table_entry* get_local_table_entry(char* string) {
     return lookup_symbol(string, table_stack.local_table);
 }
 
+// returns the value of the entry with that name if exists
+char* get_local_table_entry_value(char* entry_name) {
+    struct symbol_table_entry* entry = get_local_table_entry(entry_name);
+    char* value;
+    if (entry && entry->value) {
+        return entry->value;
+    }
+    return NULL;
+}
+
 // lookup a symbol in all tables of the table stack
 struct symbol_table_entry* get_table_entry(char* string) {
     int iterator = table_stack.table_count - 1;
@@ -370,10 +380,10 @@ void print_local_table() {
     int indent = table->stack_level << 2;
 
     // print header for table
-    fprintf(stderr, "%*sSymbol table [Level %d];\n]", indent, " ", table->stack_level);
-    fprintf(stderr, "*s===========================\n", indent, " ");
-    fprintf(stderr, "*s  No               Symbol                    Val\n", indent, " ");
-    fprintf(stderr, "*s------ -------------------------------- ------------\n", indent, " ");
+    fprintf(stderr, "%*sSymbol table [Level %d];\n", indent, " ", table->stack_level);
+    fprintf(stderr, "%*s===========================\n", indent, " ");
+    fprintf(stderr, "%*s  No               Symbol                    Val\n", indent, " ");
+    fprintf(stderr, "%*s------ -------------------------------- ------------\n", indent, " ");
 
     // iterate though entries of table if not empty
     if (table->used_cell_count > 0) {
