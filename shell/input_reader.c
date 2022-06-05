@@ -77,12 +77,9 @@ int get_string_from_input(char* buffer, int buffer_size) {
             continue;
         }
         // handle tabs
-        /*if (current_char == '\t') {
-            handle_tabs(&buffer_position);
+        if (current_char == '\t') {
             continue;
-        }*/
-        // handle arrows
-
+        }
 
         // buffer full
         if (buffer_position == buffer_size) {
@@ -94,6 +91,7 @@ int get_string_from_input(char* buffer, int buffer_size) {
         }
         // add char to buffer
         buffer[buffer_position] = current_char;
+        putchar(current_char);
         buffer_position++;
         // handle newline
         if (current_char == '\n') {
@@ -104,19 +102,13 @@ int get_string_from_input(char* buffer, int buffer_size) {
     }
 }
 
-// removes carret notation backspace from terminal and updates buffer pointer
+// removes last char and updates buffer
 void handle_backspace(int* buffer_position) {
-    // handle backspace on empty line
-    if (*buffer_position == 0) {
-        printf("\033[2D\033[0K");
+    if (*buffer_position < 1) {
         return;
     }
-    // handle normal backspace
-    if (*buffer_position > 0) {
-        printf("\033[3D\033[0K");
-        (*buffer_position)--;
-        return;
-    }
+    printf("\033[1D\033[0K");
+    (*buffer_position)--;
 }
 
 // remove tabs from
@@ -146,7 +138,8 @@ void set_tty_raw() {
     new_settings = old_settings;
     /*ICANON normally takes care that one line at a time will be processed
     that means it will return if it sees a "\n" or an EOF or an EOL*/
-    new_settings.c_lflag &= ~(ICANON);          
+    new_settings.c_lflag &= ~(ICANON);
+    new_settings.c_lflag &= ~(ECHO);        
     // apply new settings to stdin
     tcsetattr(STDIN_FILENO, TCSANOW, &new_settings);
 }
