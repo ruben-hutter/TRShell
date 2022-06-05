@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "string_utils.h"
+
 extern int history_size;
 
 extern struct history_entry* history_current;
