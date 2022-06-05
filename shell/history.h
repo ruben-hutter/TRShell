@@ -1,14 +1,14 @@
 #ifndef HISTORY_H
 #define HISTORY_H
 
-# include <stdlib.h>
-#include "history.h"
+#include <stdlib.h>
+#include <string.h>
 
-int history_size = 0;
+extern int history_size;
 
-struct history_entry* history_current;
-struct history_entry* history_head;
-struct history_entry* history_tail;
+extern struct history_entry* history_current;
+extern struct history_entry* history_head;
+extern struct history_entry* history_tail;
 
 struct history_entry {
     char* input_string;
@@ -32,9 +32,7 @@ void remove_entry_from_history(struct history_entry* entry);
 void free_history_entry(struct history_entry* entry);
 
 // resets the history index for get_next and get_previous
-void reset_history_index() {
-    history_current = history_tail;
-}
+void reset_history_index();
 
 // get entry containing the specified string
 // if not found returns NULL

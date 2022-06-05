@@ -1,5 +1,11 @@
 #include "history.h"
 
+int history_size = 0;
+
+struct history_entry* history_current = NULL;
+struct history_entry* history_head = NULL;
+struct history_entry* history_tail = NULL;
+
 // append string to entry
 void append_string_to_history(char* input_string){
     // input string is null
@@ -47,7 +53,7 @@ void remove_string_from_history(char* input_string) {
         return;
     }
     // get node with specified string
-    struct history_entry* entry = get_entry_from_string(input_string);
+    struct history_entry* entry = get_entry_by_string(input_string);
     // remove node from list
     remove_entry_from_history(entry);
     // update size
@@ -99,7 +105,7 @@ void reset_history_index() {
 struct history_entry* get_entry_by_string(char* input_string) {
     // input string is null
     if (!input_string) {
-        return;
+        return NULL;
     }
     // start from first entry
     struct history_entry* current_entry = history_head;
