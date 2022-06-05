@@ -1,7 +1,4 @@
 all:
-<<<<<<< HEAD
-	gcc command_tree.c history.c shell.c buffered_string.c prompt.c colors.c string_utils.c executor.c token.c input_reader.c symbol_table.c init.c builtin_utilities.c dump.c -o trshell.o
-=======
 	gcc command_tree.c shell.c buffered_string.c prompt.c colors.c string_utils.c executor.c token.c input_reader.c symbol_table.c init.c builtin_utilities.c dump.c -o trshell.o
 
 # run this to compile the shell
@@ -67,4 +64,3 @@ debug.o: dump.c dump.h
 clean:
 	rm *.o
 	rm trshell
->>>>>>> 05f9ef96a3f61e14294c733ebe408b3aede2090b
