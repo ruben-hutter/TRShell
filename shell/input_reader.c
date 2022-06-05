@@ -2,11 +2,17 @@
 
 // reads user input from the stdin
 char* read_from_input() {
-    char temp_buffer[1024];
+    char temp_buffer[READ_BUFFER_SIZE];
     char* buffer = NULL;
     char buffer_length = 0;
 
-    while (fgets(temp_buffer, 1024, stdin)) {
+    while (fgets(temp_buffer, READ_BUFFER_SIZE, stdin)) {
+
+        // check if input is control sequence
+        if (is_control_sequence(temp_buffer)) {
+            handle_control_sequence(temp_buffer);
+        }
+        
         // get length of read input
         int temp_buffer_length = strlen(temp_buffer); // ex. "ls -al" -> "ls -al\n" (without '\0')
 
@@ -56,4 +62,41 @@ char* read_from_input() {
     }
 
     return buffer;
+}
+
+// checks if character tripple is a control sequence
+int is_control_sequence(char* sequence) {
+    int length = strlen(sequence);
+    for (int pos = 0; pos < length; pos++) {
+        if (sequence[pos] == '\033' & sequence[pos + 1] == '[') {
+            return true;
+        }
+    }
+    return false;
+}
+
+// hande control sequence
+void handle_control_sequence(char* sequence) {
+    // find posiiton of sequence
+    int length = strlen(sequence);
+    int pos;
+    for (pos = 0; pos < length-2; pos++) {
+        if (sequence[pos] == '\033' & sequence[pos + 1] == '[') {
+            break;
+        }
+    }
+    // interpret sequence
+    switch (sequence[pos + 2])
+    {
+    case 'A':
+        // up arrow pressed
+        printf("UP_ARROW");
+        break;
+    case 'B':
+        // down arrow pressed
+        printf("DOWN_ARROW");
+        break;
+    default:
+        break;
+    }
 }
