@@ -72,13 +72,24 @@ int get_string_from_input(char* buffer, int buffer_size) {
     while(current_char = getchar()) {   
         // handel backspace
         if (current_char == 0x7F) {
-            printf("\b\b\b   \b\b\b");
-            buffer_position--;
+            // handle backspace on empty line
+            if (buffer_position = 0) {
+                printf("\033[1D\033[0K");
+            }
+            // handle normal backspace
+            if (buffer_position > 0) {
+                printf("\033[3D\033[0K");
+                buffer_position--;
+            }
             continue;
         }
         // buffer full
         if (buffer_position == buffer_size) {
             return 1;
+        }
+        // fix underflown buffer
+        if (buffer_position < 0) {
+            buffer_position = 0;
         }
         // add char to buffer
         buffer[buffer_position] = current_char;
