@@ -4,6 +4,6 @@
 #include "../symbol_table.h"
 
 void cd(int argc, char** argv);
-void update_pwd(void);
+void update_pwd(int dest_len);
 
 #endif
