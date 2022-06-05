@@ -111,7 +111,7 @@ void set_tty_raw() {
     new_settings = old_settings;
     /*ICANON normally takes care that one line at a time will be processed
     that means it will return if it sees a "\n" or an EOF or an EOL*/
-    new_Settings.c_lflag &= ~(ICANON);          
+    new_settings.c_lflag &= ~(ICANON);          
     // apply new settings to stdin
     tcsetattr(STDIN_FILENO, TCSANOW, &new_settings);
 }
