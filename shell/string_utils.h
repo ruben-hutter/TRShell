@@ -53,4 +53,6 @@ void free_buffer(int length, char** buffer);
 void cut_at_trailing_newline(char* input_string);
 
 int is_only_whitespace(const char* input_string);
+
+void shift_string_right(char* input_string, int region_start, int region_end);
 #endif
