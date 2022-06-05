@@ -114,7 +114,7 @@ void handle_backspace(int* buffer_position) {
     // handle normal backspace
     if (*buffer_position > 0) {
         printf("\033[3D\033[0K");
-        *buffer_position--;
+        (*buffer_position)--;
         return;
     }
 }
