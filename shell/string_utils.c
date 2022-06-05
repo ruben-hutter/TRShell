@@ -99,3 +99,11 @@ int is_only_whitespace(const char* input_string) {
   }
   return 1;
 }
+
+// shifts the section form reg_start to reg_end one character to the right, leading to a gap at region_start
+// indexes are not checked!
+void shift_string_right(char* input_string, int region_start, int region_end) {
+    for (int current = region_end; current >= region_start; current--) {
+        input_string[current + 1] = input_string[current];
+    }
+}

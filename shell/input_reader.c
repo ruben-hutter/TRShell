@@ -92,19 +92,28 @@ int get_string_from_input(char* buffer, int buffer_size) {
         if (buffer_position == buffer_size) {
             return 1;
         }
-        // fix underflown buffer
-        if (buffer_position < 0) {
-            buffer_position = 0;
+        // handle insert
+        if (buffer_position < buffer_end_position) {
+            // shift buffer to accomodate new char
+            shift_string_right(buffer, buffer_position - 1, buffer_end_position - 1);
+            buffer_end_position++;
+            // delete line
+            remove_line();
         }
         // add char to buffer
         buffer[buffer_position] = current_char;
         putchar(current_char);
         buffer_position++;
         buffer_end_position++;
-        // handle newline
+        // print buffer after insert
+        if (buffer_position < buffer_end_position) {
+            // print buffer after insert
+            printf(buffer);
+        }
+        // handle enter
         if (current_char == '\n') {
-            buffer[buffer_position++] = '\n';
-            buffer[buffer_position] = '\0';
+            buffer[buffer_end_position++] = '\n';
+            buffer[buffer_end_position] = '\0';
             return 1;
         }
     }
@@ -118,19 +127,6 @@ void handle_backspace(int* buffer_position, int* buffer_end_position) {
     printf("\033[1D\033[0K");
     (*buffer_position)--;
     (*buffer_end_position)--;
-}
-
-// remove tabs from
-void handle_tabs(int* buffer_position) {
-    // handle tab on empty line
-    if (*buffer_position == 0) {
-        printf("\033[2D\033[0K");
-    }
-    // handle normal tab
-    if (*buffer_position > 0) {
-        printf("\033[6D\033[0K");
-        *buffer_position--;
-    }
 }
 
 // hande control sequence
