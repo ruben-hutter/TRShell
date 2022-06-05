@@ -84,3 +84,8 @@ void crop_string_to_end(char* input_string, char delimiter) {
         actual_ptr--;
     }
 }
+
+// sets a terminator at the position of the first newline
+void cut_at_trailing_newline(char* input_string) {
+    input_string[strcspn(input_string, "\n")] = 0;
+}

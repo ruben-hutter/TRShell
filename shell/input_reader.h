@@ -16,10 +16,12 @@
 char* read_from_input();
 void handle_tabs(int* buffer_position);
 int get_string_from_input(char* buffer, int buffer_size);
-void handle_backspace(int* buffer_position);
+void handle_backspace(int* buffer_position, int* buffer_end_position);
 // hande control sequence
 void handle_control_sequence(char* sequence);
-
+void handle_arrow(char* buffer, int* buff_pos_ptr, int* buff_end_pos_ptr);
+void remove_line();
+void set_buffer_to_string(char* string, char* buffer, int* buff_pos_ptr, int* buff_end_pos_ptr);
 /*set tty mode to raw*/
 void set_tty_raw();
 

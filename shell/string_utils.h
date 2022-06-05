@@ -52,4 +52,6 @@ int check_buffer_bounds(int* count, int* length, char*** buffer);
 
 void free_buffer(int length, char** buffer);
 
+void cut_at_trailing_newline(char* input_string);
+
 #endif

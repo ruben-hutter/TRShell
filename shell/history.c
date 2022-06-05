@@ -16,6 +16,8 @@ void append_string_to_history(char* input_string){
     struct history_entry* new_entry = (struct history_entry*)malloc(sizeof(struct history_entry*));
     // add data
     new_entry->input_string = input_string;
+    // remove previous occurence
+    remove_string_from_history(input_string);
     // append node to list
     append_entry_to_list(new_entry);
     // increment size
@@ -128,7 +130,9 @@ char* get_next_history_entry_string() {
         return NULL;
     }
     char* input_string = history_current->input_string;
-    history_current = history_current->next_entry;
+    if (history_current->next_entry) {
+        history_current = history_current->next_entry;
+    }
     return input_string;
 }
 
@@ -138,7 +142,9 @@ char* get_previous_history_entry_string() {
         return NULL;
     }
     char* input_string = history_current->input_string;
-    history_current = history_current->previous_entry;
+    if (history_current->previous_entry) {
+        history_current = history_current->previous_entry;
+    }
     return input_string;
 }
 
