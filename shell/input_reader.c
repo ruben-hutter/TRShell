@@ -73,8 +73,8 @@ int get_string_from_input(char* buffer, int buffer_size) {
         // handel backspace
         if (current_char == 0x7F) {
             // handle backspace on empty line
-            if (buffer_position = 0) {
-                printf("\033[1D\033[0K");
+            if (buffer_position == 0) {
+                printf("\033[2D\033[0K");
             }
             // handle normal backspace
             if (buffer_position > 0) {
