@@ -139,6 +139,7 @@ void handle_arrow(char* buffer, int* buff_pos_ptr, int* buff_end_pos_ptr) {
         switch (getchar())
         {
         case 'A':
+            // up arrow
             char* previous_history_string = get_previous_history_entry_string();
             if (previous_history_string) {
                 remove_line();
@@ -148,6 +149,7 @@ void handle_arrow(char* buffer, int* buff_pos_ptr, int* buff_end_pos_ptr) {
             }
             break;
         case 'B':
+            // down arrow
             char* next_history_string = get_next_history_entry_string();
             if (next_history_string) {
                 remove_line();
@@ -157,10 +159,20 @@ void handle_arrow(char* buffer, int* buff_pos_ptr, int* buff_end_pos_ptr) {
             }
             break;
         case 'C':
-            // code for arrow right
+            // right arrow
+            if (*buff_pos_ptr >= *buff_end_pos_ptr) {
+                break;
+            }
+            fprintf(stdout, "\033[1C");
+            (*buff_pos_ptr)++;
             break;
         case 'D':
-            // code for arrow left
+            // left arrow
+            if (*buff_pos_ptr <= 0) {
+                break;
+            }
+            fprintf(stdout, "\033[1D");
+            (*buff_pos_ptr)--;
             break;
         }
     }
