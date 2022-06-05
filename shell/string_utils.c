@@ -89,3 +89,13 @@ void crop_string_to_end(char* input_string, char delimiter) {
 void cut_at_trailing_newline(char* input_string) {
     input_string[strcspn(input_string, "\n")] = 0;
 }
+
+// returs 1 if a string is only whitespace and zero otherwise
+int is_only_whitespace(const char* input_string) {
+    while (*input_string != '\0') {
+    if (!isspace((unsigned char)*input_string))
+      return 0;
+    input_string++;
+  }
+  return 1;
+}

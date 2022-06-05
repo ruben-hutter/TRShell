@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 
 // get the length of all passed string concatenated
 int get_concatenated_length(int num_of_args, ...);
@@ -33,9 +34,6 @@ void make_empty_string(char* input_string);
 // example for delimiter '&': first&second&third -> third
 void crop_string_to_end(char* input_string, char delimiter);
 
-
-
-
 // delete the char at the specified position
 void delete_char_at(char* input_string, size_t char_index);
 
@@ -54,4 +52,5 @@ void free_buffer(int length, char** buffer);
 
 void cut_at_trailing_newline(char* input_string);
 
+int is_only_whitespace(const char* input_string);
 #endif

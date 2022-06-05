@@ -12,6 +12,9 @@ void append_string_to_history(char* input_string){
     if (!input_string) {
         return;
     }
+    if (is_only_whitespace(input_string)) {
+        return;
+    }
     // malloc new node
     struct history_entry* new_entry = (struct history_entry*)malloc(sizeof(struct history_entry*));
     // add data
