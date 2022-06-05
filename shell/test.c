@@ -1,19 +1,53 @@
-#include <stdio.h>
-#include <string.h>
+#include<stdio.h>
+#include <termios.h>            //termios, TCSANOW, ECHO, ICANON
+#include <unistd.h>     //STDIN_FILENO
 
-#include "string_utils.h"
-#include "prompt.h"
 
-int main() {
-    // test string crop
-    char current_working_dir[100] = "/home/ruben";
-    getcwd(current_working_dir, sizeof(current_working_dir));
-    char delimiter = '/';
-    printf("string before crop: %s\n", current_working_dir);
-    crop_string_to_end(current_working_dir, delimiter);
-    printf("string after crop: %s\n", current_working_dir);
+int main(void){   
+    int c;   
+    static struct termios oldt, newt;
 
-    // test home with tilde substitution
-    check_if_home(current_working_dir);
-    printf("string after check home: %s\n", current_working_dir);
+    /*tcgetattr gets the parameters of the current terminal
+    STDIN_FILENO will tell tcgetattr that it should write the settings
+    of stdin to oldt*/
+    tcgetattr( STDIN_FILENO, &oldt);
+    /*now the settings will be copied*/
+    newt = oldt;
+
+    /*ICANON normally takes care that one line at a time will be processed
+    that means it will return if it sees a "\n" or an EOF or an EOL*/
+    newt.c_lflag &= ~(ICANON);          
+
+    /*Those new settings will be set to STDIN
+    TCSANOW tells tcsetattr to change attributes immediately. */
+    tcsetattr( STDIN_FILENO, TCSANOW, &newt);
+
+    /*This is your part:
+    I choose 'e' to end input. Notice that EOF is also turned off
+    in the non-canonical mode*/
+    char input[1024];
+    input[0] = '\0';
+    int counter = 0;
+    while((c=getchar())!= 'e') {
+        if (c == 0x7F) {
+            printf("\b\b\b   \b\b\b");
+            counter--;
+            continue;
+        }
+        input[counter++] = c;
+        if (c == '\n') {
+            input[counter++] = '\n';
+            input[counter] = '\0';
+            printf(input);
+            counter = 0;
+            input[0] == '\0';
+        }
+    }   
+                        
+
+    /*restore the old settings*/
+    tcsetattr( STDIN_FILENO, TCSANOW, &oldt);
+
+
+    return 0;
 }

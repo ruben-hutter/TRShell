@@ -1,5 +1,7 @@
 #include "input_reader.h"
 
+static struct termios old_settings;
+
 // reads user input from the stdin
 char* read_from_input() {
     char temp_buffer[READ_BUFFER_SIZE];
@@ -100,3 +102,40 @@ void handle_control_sequence(char* sequence) {
         break;
     }
 }
+
+void set_tty_raw() {
+    static struct termios new_settings;
+    // get old terminal settings
+    tcgetattr(STDIN_FILENO, &old_settings);
+    // create copy of terminal settings
+    new_settings = old_settings;
+    /*ICANON normally takes care that one line at a time will be processed
+    that means it will return if it sees a "\n" or an EOF or an EOL*/
+    new_Settings.c_lflag &= ~(ICANON);          
+    // apply new settings to stdin
+    tcsetattr(STDIN_FILENO, TCSANOW, &new_settings);
+}
+
+/*
+/*This is your part:
+    I choose 'e' to end input. Notice that EOF is also turned off
+    in the non-canonical mode
+    char input[1024];
+    input[0] = '\0';
+    int counter = 0;
+    while((c=getchar())!= 'e') {
+        if (c == 0x7F) {
+            printf("\b\b\b   \b\b\b");
+            counter--;
+            continue;
+        }
+        input[counter++] = c;
+        if (c == '\n') {
+            input[counter++] = '\n';
+            input[counter] = '\0';
+            printf(input);
+            counter = 0;
+            input[0] == '\0';
+        }
+    } 
+*/
