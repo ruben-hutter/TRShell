@@ -107,14 +107,14 @@ int get_string_from_input(char* buffer, int buffer_size) {
 // removes carret notation backspace from terminal and updates buffer pointer
 void handle_backspace(int* buffer_position) {
     // handle backspace on empty line
-    if (buffer_position == 0) {
+    if (*buffer_position == 0) {
         printf("\033[2D\033[0K");
         return;
     }
     // handle normal backspace
-    if (buffer_position > 0) {
+    if (*buffer_position > 0) {
         printf("\033[3D\033[0K");
-        buffer_position--;
+        *buffer_position--;
         return;
     }
 }
@@ -122,13 +122,13 @@ void handle_backspace(int* buffer_position) {
 // remove tabs from
 void handle_tabs(int* buffer_position) {
     // handle tab on empty line
-    if (buffer_position == 0) {
+    if (*buffer_position == 0) {
         printf("\033[2D\033[0K");
     }
     // handle normal tab
-    if (buffer_position > 0) {
+    if (*buffer_position > 0) {
         printf("\033[6D\033[0K");
-        buffer_position--;
+        *buffer_position--;
     }
 }
 
