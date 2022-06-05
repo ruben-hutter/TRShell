@@ -356,6 +356,7 @@ void set_entry_value(struct symbol_table_entry* entry, char* new_value) {
 
     // check new value for null
     if (!new_value) {
+        printf("im null");
         entry->value = NULL;
     } else {
         entry->value = get_malloced_empty_string(strlen(new_value));
