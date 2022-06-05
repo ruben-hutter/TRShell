@@ -9,7 +9,7 @@
 
 [] cd command
 [] tutorial V
-[] make file refactor
+[~] make file refactor
 
 [] scanner.c -> write comments to make the code clear
 [] scanner -> understand extern struct eof_token
