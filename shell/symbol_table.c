@@ -375,7 +375,7 @@ void print_local_table() {
     struct symbol_table* table = table_stack.local_table;
     int index = 0;
 
-    //get stack level dependant indenting
+    // get stack level dependant indenting
     int indent = table->stack_level << 2;
 
     // print header for table
