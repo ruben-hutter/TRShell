@@ -17,7 +17,7 @@ void print_prompt_1(void) {
     free(prefix);
     free(prompt);
     // print prompt string
-    fprintf(stderr, prompt_string);
+    printf(prompt_string);
 }
 
 // gets the prompt symbol for prompt 1
@@ -90,7 +90,7 @@ char* get_current_working_dir(void) {
 
 void print_prompt_2(void) {
     char* prompt_string = create_user_prompt(PROMPT_2);
-    fprintf(stderr, prompt_string);
+    printf(prompt_string);
     free(prompt_string);
 }
 
