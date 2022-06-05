@@ -1,7 +1,7 @@
 #ifndef BUILTIN_UTILITIES_H
 #define BUILTIN_UTILITIES_H
 
-#include "builtin_utilities/dump.h"
+#include "dump.h"
 #include "builtin_utilities/cd.h"
 
 // struct for builtin utilities

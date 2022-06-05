@@ -12,8 +12,6 @@
 
 #define TAM 1000 
 
-void parseo(char *line, char **argv);
-
 int main(void) {
 
     char cad[TAM];             
@@ -34,7 +32,6 @@ int main(void) {
         if (cad[strlen(cad) - 1] == '\n')                                                           
             cad[strlen(cad) - 1] = '\0';    // lo marcamos como final de sentencia            
 
-        parseo(cad, argv);
 
 
         // Exit para salir del shell

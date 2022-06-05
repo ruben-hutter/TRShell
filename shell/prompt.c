@@ -57,7 +57,7 @@ char* create_user_prompt(char* prompt) {
 
 // gets the username of the current user
 char* get_user_name(void) {
-    char* name = get_local_table_entry_value("USERNAME");
+    char* name = get_local_table_entry_value("USER");
     if (!name) {
         name = USER_PLACEHOLDER;
     }
