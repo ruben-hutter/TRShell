@@ -8,12 +8,9 @@ char* read_from_input() {
     char* buffer = NULL;
     char buffer_length = 0;
 
-    while (fgets(temp_buffer, READ_BUFFER_SIZE, stdin)) {
+    set_tty_raw();
 
-        // check if input is control sequence
-        if (is_control_sequence(temp_buffer)) {
-            handle_control_sequence(temp_buffer);
-        }
+    while (get_string_from_input(temp_buffer, READ_BUFFER_SIZE)/*fgets(temp_buffer, READ_BUFFER_SIZE, stdin)*/) {
         
         // get length of read input
         int temp_buffer_length = strlen(temp_buffer); // ex. "ls -al" -> "ls -al\n" (without '\0')
@@ -47,10 +44,12 @@ char* read_from_input() {
             
             // only contains newline
             if (temp_buffer_length == 1) {
+                void restore_old_tty_settings();
                 return buffer;
             }
 
             if (temp_buffer[temp_buffer_length-2] != '\\') {
+                void restore_old_tty_settings();
                 return buffer;
             }
 
@@ -62,47 +61,55 @@ char* read_from_input() {
 
         buffer_length += temp_buffer_length;
     }
-
+    void restore_old_tty_settings();
     return buffer;
 }
 
-// checks if character tripple is a control sequence
-int is_control_sequence(char* sequence) {
-    int length = strlen(sequence);
-    for (int pos = 0; pos < length; pos++) {
-        if (sequence[pos] == '\033' & sequence[pos + 1] == '[') {
-            return true;
+int get_string_from_input(char* buffer, int buffer_size) {
+    int buffer_position = 0;
+    int current_char;
+    // get chars from stdin
+    while(current_char = getchar()) {   
+        // handel backspace
+        if (current_char == 0x7F) {
+            // handle backspace on empty line
+            if (buffer_position = 0) {
+                printf("\033[1D\033[0K");
+            }
+            // handle normal backspace
+            if (buffer_position > 0) {
+                printf("\033[3D\033[0K");
+                buffer_position--;
+            }
+            continue;
+        }
+        // buffer full
+        if (buffer_position == buffer_size) {
+            return 1;
+        }
+        // fix underflown buffer
+        if (buffer_position < 0) {
+            buffer_position = 0;
+        }
+        // add char to buffer
+        buffer[buffer_position] = current_char;
+        buffer_position++;
+        // handle newline
+        if (current_char == '\n') {
+            buffer[buffer_position++] = '\n';
+            buffer[buffer_position] = '\0';
+            return 1;
         }
     }
-    return false;
 }
+
 
 // hande control sequence
 void handle_control_sequence(char* sequence) {
-    // find posiiton of sequence
-    int length = strlen(sequence);
-    int pos;
-    for (pos = 0; pos < length-2; pos++) {
-        if (sequence[pos] == '\033' & sequence[pos + 1] == '[') {
-            break;
-        }
-    }
-    // interpret sequence
-    switch (sequence[pos + 2])
-    {
-    case 'A':
-        // up arrow pressed
-        printf("UP_ARROW");
-        break;
-    case 'B':
-        // down arrow pressed
-        printf("DOWN_ARROW");
-        break;
-    default:
-        break;
-    }
+    //TODO: implementation
 }
 
+/*set tty mode to raw*/
 void set_tty_raw() {
     static struct termios new_settings;
     // get old terminal settings
@@ -114,6 +121,12 @@ void set_tty_raw() {
     new_settings.c_lflag &= ~(ICANON);          
     // apply new settings to stdin
     tcsetattr(STDIN_FILENO, TCSANOW, &new_settings);
+}
+
+/*restore the old settings*/
+void restore_old_tty_settings() {
+    /*restore the old settings*/
+    tcsetattr( STDIN_FILENO, TCSANOW, &old_settings);
 }
 
 /*
