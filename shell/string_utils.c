@@ -107,3 +107,10 @@ void shift_string_right(char* input_string, int region_start, int region_end) {
         input_string[current + 1] = input_string[current];
     }
 }
+
+// put a the section from form reg_start to reg_end to the std out using putchar
+void put_string_section(char* input_string, int region_start, int region_end) {
+    for (int current = region_start; current <= region_end; current++) {
+        putchar(input_string[current]);
+    }
+}

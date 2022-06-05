@@ -32,7 +32,7 @@ char* read_from_input() {
 
         // failed allocating buffer
         if (!buffer) { 
-            fprintf(stderr, "error: failed to alloc buffer: %s\n", strerror(errno));
+            printf("error: failed to alloc buffer: %s\n", strerror(errno));
             return NULL;
         }
 
@@ -95,20 +95,24 @@ int get_string_from_input(char* buffer, int buffer_size) {
         // handle insert
         if (buffer_position < buffer_end_position) {
             // shift buffer to accomodate new char
-            shift_string_right(buffer, buffer_position - 1, buffer_end_position - 1);
+            shift_string_right(buffer, buffer_position, buffer_end_position);
             buffer_end_position++;
-            // delete line
-            remove_line();
-        }
-        // add char to buffer
-        buffer[buffer_position] = current_char;
-        putchar(current_char);
-        buffer_position++;
-        buffer_end_position++;
-        // print buffer after insert
-        if (buffer_position < buffer_end_position) {
-            // print buffer after insert
-            printf(buffer);
+            // delete line right of cursor
+            printf("\033[K");
+            // add char to buffer
+            buffer[buffer_position] = current_char;
+            // print rest of string after insert
+            put_string_section(buffer, buffer_position, buffer_end_position - 1);
+            // reset cursor position
+            printf("\033[%dD", buffer_end_position - buffer_position);
+            buffer_position++;
+            buffer_end_position++;
+        } else {
+            // add char to buffer
+            buffer[buffer_position] = current_char;
+            putchar(current_char);
+            buffer_position++;
+            buffer_end_position++;
         }
         // handle enter
         if (current_char == '\n') {
@@ -159,7 +163,7 @@ void handle_arrow(char* buffer, int* buff_pos_ptr, int* buff_end_pos_ptr) {
             if (*buff_pos_ptr >= *buff_end_pos_ptr) {
                 break;
             }
-            fprintf(stdout, "\033[1C");
+            printf("\033[1C");
             (*buff_pos_ptr)++;
             break;
         case 'D':
@@ -167,7 +171,7 @@ void handle_arrow(char* buffer, int* buff_pos_ptr, int* buff_end_pos_ptr) {
             if (*buff_pos_ptr <= 0) {
                 break;
             }
-            fprintf(stdout, "\033[1D");
+            printf("\033[1D");
             (*buff_pos_ptr)--;
             break;
         }
@@ -178,9 +182,9 @@ void handle_arrow(char* buffer, int* buff_pos_ptr, int* buff_end_pos_ptr) {
 // ersae line and reprint prompt
 void remove_line() {
     // erase line
-    fprintf(stdout, "\033[2K");
+    printf("\033[2K");
     // move cursor to beginning of line
-    fprintf(stdout, "\033[0G");
+    printf("\033[0G");
 }
 
 void set_buffer_to_string(char* string, char* buffer, int* buff_pos_ptr, int* buff_end_pos_ptr) {
