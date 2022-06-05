@@ -10,12 +10,13 @@
 #include "prompt.h"
 
 #define READ_BUFFER_SIZE 1024
+#define TERMINAL_BACKSPACE 0x7F
 
 // reads user input from the stdin
 char* read_from_input();
-
+void handle_tabs(int* buffer_position);
 int get_string_from_input(char* buffer, int buffer_size);
-
+void handle_backspace(int* buffer_position);
 // hande control sequence
 void handle_control_sequence(char* sequence);
 

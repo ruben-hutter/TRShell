@@ -67,22 +67,23 @@ char* read_from_input() {
 
 int get_string_from_input(char* buffer, int buffer_size) {
     int buffer_position = 0;
+    int* buff_pos_ptr = &buffer_position;
     int current_char;
     // get chars from stdin
-    while(current_char = getchar()) {   
+    while(current_char = getchar()) {
         // handel backspace
-        if (current_char == 0x7F) {
-            // handle backspace on empty line
-            if (buffer_position == 0) {
-                printf("\033[2D\033[0K");
-            }
-            // handle normal backspace
-            if (buffer_position > 0) {
-                printf("\033[3D\033[0K");
-                buffer_position--;
-            }
+        if (current_char == TERMINAL_BACKSPACE) {
+            handle_backspace(buff_pos_ptr);
             continue;
         }
+        // handle tabs
+        /*if (current_char == '\t') {
+            handle_tabs(&buffer_position);
+            continue;
+        }*/
+        // handle arrows
+
+
         // buffer full
         if (buffer_position == buffer_size) {
             return 1;
@@ -103,9 +104,36 @@ int get_string_from_input(char* buffer, int buffer_size) {
     }
 }
 
+// removes carret notation backspace from terminal and updates buffer pointer
+void handle_backspace(int* buffer_position) {
+    // handle backspace on empty line
+    if (buffer_position == 0) {
+        printf("\033[2D\033[0K");
+        return;
+    }
+    // handle normal backspace
+    if (buffer_position > 0) {
+        printf("\033[3D\033[0K");
+        buffer_position--;
+        return;
+    }
+}
+
+// remove tabs from
+void handle_tabs(int* buffer_position) {
+    // handle tab on empty line
+    if (buffer_position == 0) {
+        printf("\033[2D\033[0K");
+    }
+    // handle normal tab
+    if (buffer_position > 0) {
+        printf("\033[6D\033[0K");
+        buffer_position--;
+    }
+}
 
 // hande control sequence
-void handle_control_sequence(char* sequence) {
+void handle_arrow(char* sequence) {
     //TODO: implementation
 }
 
