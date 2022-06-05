@@ -75,7 +75,7 @@ char* get_current_working_dir(void) {
     char* dir_name = get_malloced_copy(pwd);
     crop_string_to_end(dir_name, '/');
     // check if dir is home
-    if (strcmp(dir_name, "ruben") == 0) {
+    if (strcmp(dir_name, get_user_name()) == 0) {
         return "~";
     }
     return dir_name;
