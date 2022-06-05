@@ -11,6 +11,7 @@
 #include "token.h"
 #include "buffered_string.h"
 #include "init.h"
+#include "history.h"
 
 // function prototypes of shell
 int main(int argc, char **argv);
