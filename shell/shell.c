@@ -24,11 +24,13 @@ int main(int argc, char **argv) {
             break;
         }
 
+        // add input string to history
+        append_string_to_history(input_string);
         // init new struct representing char buffer for easy processing of the input string
         struct buffered_string buffered_input;
         populate_buffered_string(&buffered_input, input_string);
+        // parse input
         parse_and_execute(&buffered_input);
-        free(input_string);
     }
     exit(EXIT_SUCCESS);
 }
