@@ -56,5 +56,7 @@ int is_only_whitespace(const char* input_string);
 
 void shift_string_right(char* input_string, int region_start, int region_end);
 
+void shift_string_left(char* input_string, int region_start, int region_end);
+
 void put_string_section(char* input_string, int region_start, int region_end);
 #endif
