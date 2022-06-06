@@ -111,7 +111,7 @@ void shift_string_right(char* input_string, int region_start, int region_end) {
 // shifts the section form reg_start to reg_end one character to the left, leading to the char at reggion_start to be overwritten
 // indexes are not checked!
 void shift_string_left(char* input_string, int region_start, int region_end) {
-    for (int current = region_start; current < region_end; current++) {
+    for (int current = region_start; current <= region_end; current++) {
         input_string[current] = input_string[current + 1];
     }
 }

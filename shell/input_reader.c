@@ -89,7 +89,7 @@ int get_string_from_input(char* buffer, int buffer_size) {
             continue;
         }
         // buffer full
-        if (buffer_position == buffer_size) {
+        if (buffer_end_position == buffer_size) {
             return 1;
         }
         // handle insert
@@ -104,7 +104,8 @@ int get_string_from_input(char* buffer, int buffer_size) {
             // print rest of string after insert
             put_string_section(buffer, buffer_position, buffer_end_position - 1);
             // reset cursor position
-            printf("\033[%dD", buffer_end_position - buffer_position);
+            printf("\033[%dD", buffer_end_position - buffer_position - 1);
+            buffer_position++;
         } else {
             // add char to buffer
             buffer[buffer_position] = current_char;
@@ -116,6 +117,9 @@ int get_string_from_input(char* buffer, int buffer_size) {
         if (current_char == '\n') {
             buffer[buffer_end_position++] = '\n';
             buffer[buffer_end_position] = '\0';
+            printf("\n");
+            printf(buffer);
+            printf("\n");
             return 1;
         }
     }
@@ -126,17 +130,23 @@ void handle_backspace(char* buffer, int* buffer_position, int* buffer_end_positi
     if (*buffer_position < 1) {
         return;
     }
-    (*buffer_position)--;
-    // shift buffer to left to remove unused char
-    shift_string_left(buffer, *buffer_position, *buffer_end_position);
+    // move cursor position to deltable character
+    printf("\033[1D");
     // delete line right of cursor
     printf("\033[K");
-    // print rest of string
-    put_string_section(buffer, *buffer_position, *(buffer_end_position) - 1);
+    // move buffer position to deltable character
+    (*buffer_position)--;
+    // shift buffer to left to remove deletable char
+    shift_string_left(buffer, *buffer_position, *buffer_end_position);
+    // update buffer end positionzjuü98
     (*buffer_end_position)--;
-    
+    // print rest of buffer
+    put_string_section(buffer, *(buffer_position), *(buffer_end_position)-1);
+    if (*(buffer_position) == (*buffer_end_position)) {
+        return;
+    }
     // reset cursor position
-    printf("\033[%dD", buffer_end_position - buffer_position);
+    printf("\033[%dD", *buffer_end_position - *buffer_position);
 };
 
 // hande control sequence
