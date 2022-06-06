@@ -105,8 +105,8 @@ int get_string_from_input(char* buffer, int buffer_size) {
             put_string_section(buffer, buffer_position, buffer_end_position - 1);
             // reset cursor position
             printf("\033[%dD", buffer_end_position - buffer_position);
-            buffer_position++;
-            buffer_end_position++;
+            //buffer_position++;
+            //buffer_end_position++;
         } else {
             // add char to buffer
             buffer[buffer_position] = current_char;
