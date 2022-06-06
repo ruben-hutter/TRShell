@@ -49,4 +49,7 @@ char* get_previous_history_entry_string();
 // gets the n-th entry from the back, starting with 0
 char* get_nth_history_entry_string(int index);
 
+// print history to console
+void print_history();
+
 #endif

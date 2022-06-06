@@ -4,6 +4,7 @@ struct builtin_utility builtin_utilities[] =
     {
         {"dump", dump},
         {"cd", cd},
+        {"ht", ht},
     };
 
 int builtin_utility_count = sizeof(builtin_utilities)/sizeof(struct builtin_utility);

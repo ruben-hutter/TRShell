@@ -164,3 +164,17 @@ char* get_nth_history_entry_string(int index) {
     }
     return entry->input_string;
 }
+
+// print history to console
+void print_history() {
+    int index = 0;
+    // start from first entry
+    struct history_entry* current_entry = history_head;
+    // while not at end -> continue searching
+    while (current_entry) {
+        printf("%d        ", index);
+        printf(current_entry->input_string);
+        printf("\n");
+        current_entry = current_entry->next_entry;
+    }
+}
