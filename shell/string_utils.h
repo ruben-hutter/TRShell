@@ -43,6 +43,10 @@ char* subsitute_section_with_string(char* input_string, char* substitute_string,
 // returns a pointer to the first occurence of any of the chars in the chars string
 char* is_any_char_present_in(char* input_string, char* chars);
 
+
+
+
+
 // n puts a string in quotes
 char* add_quotes(char* input_string, int add_quotes);
 
@@ -57,4 +61,5 @@ int is_only_whitespace(const char* input_string);
 void shift_string_right(char* input_string, int region_start, int region_end);
 
 void put_string_section(char* input_string, int region_start, int region_end);
+
 #endif

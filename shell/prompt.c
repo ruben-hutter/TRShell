@@ -61,7 +61,8 @@ char* get_user_name(void) {
     if (!name) {
         name = USER_PLACEHOLDER;
     }
-    return name;
+    char* user_name = get_malloced_copy(name);
+    return user_name;
 }
 
 // gets the current working dir
@@ -75,8 +76,9 @@ char* get_current_working_dir(void) {
     char* dir_name = get_malloced_copy(pwd);
     crop_string_to_end(dir_name, '/');
     // check if dir is home
+    char* user_name = get_user_name();
     if (strcmp(dir_name, get_user_name()) == 0) {
-        return "~";
+        strcpy(dir_name, HOME);
     }
     return dir_name;
 }

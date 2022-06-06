@@ -18,6 +18,7 @@
 
 #define USER_PLACEHOLDER "no_user_name"
 #define PWD_PLACEHOLDER "no_pwd"
+#define HOME "~";
 
 // gets the username of the current user
 char* get_user_name(void);
