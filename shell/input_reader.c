@@ -76,7 +76,7 @@ int get_string_from_input(char* buffer, int buffer_size) {
     while(current_char = getchar()) {
         // handel backspace
         if (current_char == TERMINAL_BACKSPACE) {
-            handle_backspace(buff_pos_ptr, buff_end_pos_ptr);
+            handle_backspace(buffer, buff_pos_ptr, buff_end_pos_ptr);
             continue;
         }
         // handle tabs
@@ -105,8 +105,6 @@ int get_string_from_input(char* buffer, int buffer_size) {
             put_string_section(buffer, buffer_position, buffer_end_position - 1);
             // reset cursor position
             printf("\033[%dD", buffer_end_position - buffer_position);
-            //buffer_position++;
-            //buffer_end_position++;
         } else {
             // add char to buffer
             buffer[buffer_position] = current_char;
@@ -124,14 +122,22 @@ int get_string_from_input(char* buffer, int buffer_size) {
 }
 
 // removes last char and updates buffer
-void handle_backspace(int* buffer_position, int* buffer_end_position) {
+void handle_backspace(char* buffer, int* buffer_position, int* buffer_end_position) {
     if (*buffer_position < 1) {
         return;
     }
-    printf("\033[1D\033[0K");
     (*buffer_position)--;
+    // shift buffer to left to remove unused char
+    shift_string_left(buffer, *buffer_position, *buffer_end_position);
+    // delete line right of cursor
+    printf("\033[K");
+    // print rest of string
+    put_string_section(buffer, *buffer_position, *(buffer_end_position) - 1);
     (*buffer_end_position)--;
-}
+    
+    // reset cursor position
+    printf("\033[%dD", buffer_end_position - buffer_position);
+};
 
 // hande control sequence
 void handle_arrow(char* buffer, int* buff_pos_ptr, int* buff_end_pos_ptr) {
