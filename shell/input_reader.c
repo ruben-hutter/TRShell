@@ -5,13 +5,13 @@ static struct termios old_settings;
 // reads user input from the stdin
 char* read_from_input() {
     char temp_buffer[READ_BUFFER_SIZE];
+    memset(temp_buffer, '\0', sizeof(char)*READ_BUFFER_SIZE);
     char* buffer = NULL;
     char buffer_length = 0;
 
     set_tty_raw();
 
     while (get_string_from_input(temp_buffer, READ_BUFFER_SIZE)/*fgets(temp_buffer, READ_BUFFER_SIZE, stdin)*/) {
-        
         // get length of read input
         int temp_buffer_length = strlen(temp_buffer); // ex. "ls -al" -> "ls -al\n" (without '\0')
 
@@ -92,6 +92,14 @@ int get_string_from_input(char* buffer, int buffer_size) {
         if (buffer_end_position == buffer_size) {
             return 1;
         }
+        // handle enter
+        if (current_char == '\n') {
+            buffer[buffer_end_position++] = '\n';
+            // eventually add terminator to buffer here!!!
+            putchar('\n');
+            return 1;
+        }
+
         // handle insert
         if (buffer_position < buffer_end_position) {
             // shift buffer to accomodate new char
@@ -112,15 +120,6 @@ int get_string_from_input(char* buffer, int buffer_size) {
             putchar(current_char);
             buffer_position++;
             buffer_end_position++;
-        }
-        // handle enter
-        if (current_char == '\n') {
-            buffer[buffer_end_position++] = '\n';
-            buffer[buffer_end_position] = '\0';
-            printf("\n");
-            printf(buffer);
-            printf("\n");
-            return 1;
         }
     }
 }
