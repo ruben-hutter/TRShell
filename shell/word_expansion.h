@@ -16,6 +16,12 @@ int is_name(char* string);
 size_t get_closing_quote_index(char* string);
 size_t get_closing_brace_index(char* string);
 int substitute_word(char** start_pointer, char** pointer, size_t length, char*(func)(char*), int add_quotes);
+
+/*
+ * allready in c file
+ */
 char* expand_tilde(char* string);
+size_t find_closing_quote(char* data);
+size_t find_closing_brace(char* data);
 
 #endif

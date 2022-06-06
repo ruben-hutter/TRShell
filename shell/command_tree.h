@@ -16,13 +16,13 @@ enum node_type {
 
 enum value_type {
     VALUE_SIGNED_INT = 1,       /* signed int */
-    VALUE_UNSIGNED_INT,           /* signed int */
-    VALUE_SIGNED_LONG_LONG,         /* signed int */
-    VALUE_UNSIGNED_LONG_LONG,         /* signed int */
-    VALUE_FLOAT,          /* signed int */
-    VALUE_LONG_DOUBLE,        /* signed int */
-    VALUE_CHAR,            /* signed int */
-    VALUE_STRING             /* signed int */
+    VALUE_UNSIGNED_INT,           /* unsigned int */
+    VALUE_SIGNED_LONG_LONG,         /* signed long long */
+    VALUE_UNSIGNED_LONG_LONG,         /* unsigned long long */
+    VALUE_FLOAT,          /* float */
+    VALUE_LONG_DOUBLE,        /* long double */
+    VALUE_CHAR,            /* char */
+    VALUE_STRING             /* string */
 };
 
 union value {
@@ -47,10 +47,15 @@ struct tree_node {
     struct tree_node* prev_sibling;
 };
 
+// creates a new node
 struct tree_node* new_node(enum node_type type);
+// add a child to a parent node
 void add_child_node(struct tree_node* parent, struct tree_node* child);
+// remove rest of tree from root node
 void free_tree_from_root(struct tree_node* node);
+// set string value to node
 void set_node_val_str(struct tree_node* node, char* val);
+// make a tree from a given root node
 struct tree_node* build_tree_from_root(struct token* root_token);
 
 #endif

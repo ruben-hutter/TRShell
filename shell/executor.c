@@ -14,7 +14,7 @@ char* search_path(char* command_name) {
         // both pointers at start of entry
         entry_end = entry_start;
 
-        // move end pointer back until at end of entry
+        // move end pointer back until the end of entry
         while (*entry_end && *entry_end != ':') {
             entry_end++;
         }
@@ -35,7 +35,7 @@ char* search_path(char* command_name) {
         strncpy(path, entry_start, entry_end-entry_start);
         path[entry_end-entry_start] = '\0';
 
-        // if missing append / to end fo path
+        // if missing append / to end of path
         if (entry_end[-1] != '/') {
             strcat(path, "/");
         }
@@ -46,7 +46,6 @@ char* search_path(char* command_name) {
         // check if file exists
         struct stat st;
 
-        // exists
         if (stat(path, &st) == 0) {
             // exists
             if (!S_ISREG(st.st_mode)) {
