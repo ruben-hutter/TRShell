@@ -381,8 +381,7 @@ void print_local_table() {
     // print header for table
     fprintf(stderr, "%*sSymbol table [Level %d];\n", indent, " ", table->stack_level);
     fprintf(stderr, "%*s===========================\n", indent, " ");
-    fprintf(stderr, "%*s  No               Symbol                    Val\n", indent, " ");
-    fprintf(stderr, "%*s------ -------------------------------- ------------\n", indent, " ");
+    fprintf(stderr, "%*sNo     Symbol                           Val\n", indent, " ");
 
     // iterate though entries of table if not empty
     if (table->used_cell_count > 0) {
