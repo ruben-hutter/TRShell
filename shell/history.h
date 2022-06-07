@@ -6,7 +6,7 @@
 
 #include "string_utils.h"
 
-#define CHANGE_BUFFER_SIZE 50 
+#define CHANGE_BUFFER_SIZE 10 
 
 extern int history_size;
 extern int change_buffer_index;
