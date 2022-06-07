@@ -111,7 +111,7 @@ struct tree_node* build_tree_from_root(struct token* root_token) {
 
         // allocate new tree node for a token of the input
         struct tree_node* token = new_node(VARIABLE_NODE);
-        // aloc failed
+        // alloc failed
         if (!token) {
             // free cmd node prepared earlier
             free_tree_from_root(root_node);
@@ -128,4 +128,9 @@ struct tree_node* build_tree_from_root(struct token* root_token) {
     } while ((root_token = get_next_token(input)) != &eof_token);
 
     return root_node;
+}
+
+void print_command_tree() {
+    // traverse tree and print out nodes
+
 }

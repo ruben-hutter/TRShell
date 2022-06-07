@@ -133,6 +133,7 @@ int do_simple_command(struct tree_node* node) {
     char* argv[max_args+1];     // keep 1 for the terminating NULL arg
     char* str;
 
+    // add every child as an array entry
     while (child) {
         str = child->value.string;
         argv[argc] = malloc(strlen(str)+1);
@@ -152,7 +153,7 @@ int do_simple_command(struct tree_node* node) {
     argv[argc] = NULL;
 
     // check if command calls builtin function
-    for(int iterator = 0; iterator < builtin_utility_count; iterator++) {
+    for (int iterator = 0; iterator < builtin_utility_count; iterator++) {
         if (strcmp(argv[0], builtin_utilities[iterator].name) == 0) {
             builtin_utilities[iterator].func(argc, argv);
             free_argv(argc, argv);
@@ -160,6 +161,7 @@ int do_simple_command(struct tree_node* node) {
         }
     }
 
+    // let a subprocess execute the command
     pid_t child_pid = 0;
     if ((child_pid = fork()) == 0) {
         exec_command(argc, argv);
@@ -176,6 +178,8 @@ int do_simple_command(struct tree_node* node) {
         return 0;
     }
 
+    // wait for the command to be executed,
+    // and return an error code if command failed
     int status = 0;
     waitpid(child_pid, &status, 0);
     free_argv(argc, argv);

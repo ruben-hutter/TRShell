@@ -57,5 +57,7 @@ void free_tree_from_root(struct tree_node* node);
 void set_node_val_str(struct tree_node* node, char* val);
 // make a tree from a given root node
 struct tree_node* build_tree_from_root(struct token* root_token);
+// traverse tree and print out nodes
+void print_command_tree(void);
 
 #endif
