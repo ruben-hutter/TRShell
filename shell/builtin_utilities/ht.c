@@ -11,5 +11,6 @@ void ht(int argc, char** argv) {
 }
 
 void recall_history() {
+    printf(">>> imagine accessing a history element!\n");
     return;
 }

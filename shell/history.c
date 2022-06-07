@@ -35,6 +35,9 @@ void append_entry_to_list(struct history_entry* entry) {
     if (!entry) {
         return;
     }
+    if (!history_head){
+        history_head = entry;
+    }
     // no next entry as this entry is the last one
     entry->next_entry = NULL;
     // previous entry will be the current lst one
@@ -171,10 +174,10 @@ void print_history() {
     // start from first entry
     struct history_entry* current_entry = history_head;
     // while not at end -> continue searching
+    fprintf(stderr, "Index  Command\n");
     while (current_entry) {
-        printf("%d        ", index);
-        printf(current_entry->input_string);
-        printf("\n");
+        fprintf(stderr, "%-6d %s",index, current_entry->input_string);
         current_entry = current_entry->next_entry;
+        index++;
     }
 }
