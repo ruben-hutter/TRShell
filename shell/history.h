@@ -6,7 +6,13 @@
 
 #include "string_utils.h"
 
+#define CHANGE_BUFFER_SIZE 50 
+
 extern int history_size;
+extern int change_buffer_index;
+extern int change_buffer_size;
+
+extern char** change_buffer;
 
 extern struct history_entry* history_current;
 extern struct history_entry* history_head;
@@ -17,6 +23,12 @@ struct history_entry {
     struct history_entry* previous_entry;
     struct history_entry* next_entry;
 };
+
+// append string to histories change buffer
+void append_string_to_changes(char* input_string);
+
+// apply changes in change buffer to history
+void apply_history_changes();
 
 // append string to entry
 void append_string_to_history(char* input_string);

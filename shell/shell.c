@@ -30,7 +30,8 @@ int main(int argc, char **argv) {
         // parse input
         parse_and_execute(&buffered_input);
         // add input string to history
-        append_string_to_history(input_string);
+        append_string_to_changes(input_string);
+        apply_history_changes();
     }
     exit(EXIT_SUCCESS);
 }

@@ -20,13 +20,11 @@ void recall_history(int index) {
         printf("Index %d out of the history list of length %d!\n", index, history_size);
         return;
     }
-    printf("RETRIEVED> %s", hist_string);
-    //hist_string = get_malloced_copy(hist_string);
-    // update history as command will be called
-    // append_string_to_history(hist_string);
+    hist_string = get_malloced_copy(hist_string);
     // populate the buffered string
-    //populate_buffered_string(&buffered_input, hist_string);
-    //parse_and_execute(&buffered_input);
-    
+    populate_buffered_string(&buffered_input, hist_string);
+    parse_and_execute(&buffered_input);
+    // update history as command will be called
+    append_string_to_changes(hist_string);
     return;
 }

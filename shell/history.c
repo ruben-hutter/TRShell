@@ -1,10 +1,52 @@
 #include "history.h"
 
 int history_size = 0;
+int change_buffer_index = 0;
+int change_buffer_size = CHANGE_BUFFER_SIZE;
+
+char** change_buffer = NULL;
 
 struct history_entry* history_current = NULL;
 struct history_entry* history_head = NULL;
 struct history_entry* history_tail = NULL;
+
+// append string to histories change buffer
+void append_string_to_changes(char* input_string) {
+    // if buffer does not exist -> create buffer
+    if (!change_buffer) {
+        change_buffer = malloc(CHANGE_BUFFER_SIZE*sizeof(char*)); 
+    }
+    if (change_buffer_index >= change_buffer_size) {
+        // increase buffers allocated size
+        char** new_buffer = realloc(change_buffer, 2*change_buffer_size*sizeof(char*));
+            // check for failed allocation
+            if (new_buffer) {
+                change_buffer = new_buffer;
+            } else {
+                free(change_buffer);
+                change_buffer = NULL;
+            }
+    }
+    change_buffer[change_buffer_index++] = input_string;
+}
+
+// apply changes in change buffer to history
+void apply_history_changes() {
+    // set ind(ex to last valid element if buffer completely filled
+    if (change_buffer_index >= change_buffer_size) {
+        change_buffer_index = change_buffer_size;
+    }
+    // append all changes to history
+    while (change_buffer_index > 0) {
+        append_string_to_history(change_buffer[change_buffer_index - 1]);
+        change_buffer_index--;
+    }
+    // shrink buffer if expanded
+    if (change_buffer_size > CHANGE_BUFFER_SIZE) {
+        free(change_buffer);
+        change_buffer = NULL;
+    }
+}
 
 // append string to entry
 void append_string_to_history(char* input_string){

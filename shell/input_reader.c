@@ -20,7 +20,7 @@ char* read_from_input() {
             buffer = malloc(temp_buffer_length+1);
         } else {
             // increase buffers allocated size
-            char *new_buffer = realloc(buffer, buffer_length+temp_buffer_length+1);
+            char* new_buffer = realloc(buffer, buffer_length+temp_buffer_length+1);
             // check for failed allocation
             if (new_buffer) {
                 buffer = new_buffer;
