@@ -23,8 +23,6 @@ void append_string_to_history(char* input_string){
     remove_string_from_history(input_string);
     // append node to list
     append_entry_to_list(new_entry);
-    // increment size
-    history_size++;
     // reset history index
     reset_history_index();
 }
@@ -48,6 +46,8 @@ void append_entry_to_list(struct history_entry* entry) {
     }
     // update tail pointer
     history_tail = entry;
+    // increment size
+    history_size++;
 }
 
 // remove entry from list if exists
@@ -64,8 +64,6 @@ void remove_string_from_history(char* input_string) {
     struct history_entry* entry = get_entry_by_string(input_string);
     // remove node from list
     remove_entry_from_history(entry);
-    // update size
-    history_size--;
 }
 
 // remove the specified entry from the list
@@ -92,6 +90,8 @@ void remove_entry_from_history(struct history_entry* entry) {
     }
     // free deleted node
     free_history_entry(entry);
+    // update size
+    history_size--;
 }
 
 // free a entry and its contents
@@ -162,7 +162,7 @@ char* get_nth_history_entry_string(int index) {
     }
     // iterate through list to get n-th element
     struct history_entry* entry = history_head;
-    for (int counter = 0; counter < history_size; counter++) {
+    for (int counter = 0; counter < index; counter++) {
         entry = entry->next_entry;
     }
     return entry->input_string;
