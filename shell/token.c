@@ -68,6 +68,8 @@ void free_token(struct token* token) {
 // tokenize an input string
 struct token* get_next_token(struct buffered_string* input) {
     int end_loop = false;
+    int quotes = false;
+    int backslash = false;
 
     // pointers to input struct or it's members are null -> return
     if (!input || !input->buffer || !input->buffer_size) {
@@ -103,6 +105,10 @@ struct token* get_next_token(struct buffered_string* input) {
             // ignore whitespaces
             case ' ':
                 // stop processing if space found (NOT AT BEGINNING)
+                if (quotes) {
+                    add_to_buffer(next_char);
+                    continue;
+                }
                 if (token_buffer_index > 0) {
                     end_loop = true;
                 }
@@ -125,6 +131,15 @@ struct token* get_next_token(struct buffered_string* input) {
                 }
                 // stop processing
                 end_loop = true;
+                break;
+            // if you have quotes handle spaces differently
+            // by switching variable quotes
+            case '"':
+                quotes = !quotes;
+                break;
+            // next char will be just appended
+            case '\\':
+                backslash = !backslash;
                 break;
             // if not special character -> append to buffer
             default:
