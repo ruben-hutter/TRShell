@@ -19,9 +19,9 @@ int main(int argc, char **argv) {
         }   
 
         // if string empty or only newline
-        if (input_string[0] == '\0' || strcmp(input_string, "\n") == true) {
+        if (input_string[0] == '\0' || strcmp(input_string, "\n") == 0) {
             free(input_string);
-            break;
+            continue;
         }
 
         // init new struct representing char buffer for easy processing of the input string
