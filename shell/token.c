@@ -104,11 +104,17 @@ struct token* get_next_token(struct buffered_string* input) {
         switch (next_char) {
             // ignore whitespaces
             case ' ':
-                // stop processing if space found (NOT AT BEGINNING)
                 if (quotes) {
+                    add_to_buffer('\\');
                     add_to_buffer(next_char);
                     continue;
                 }
+                if (backslash) {
+                    add_to_buffer(next_char);
+                    backslash = !backslash;
+                    continue;
+                }
+                // stop processing if space found (NOT AT BEGINNING)
                 if (token_buffer_index > 0) {
                     end_loop = true;
                 }
@@ -139,6 +145,7 @@ struct token* get_next_token(struct buffered_string* input) {
                 break;
             // next char will be just appended
             case '\\':
+                add_to_buffer(next_char);
                 backslash = !backslash;
                 break;
             // if not special character -> append to buffer
