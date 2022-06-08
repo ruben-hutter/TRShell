@@ -9,4 +9,4 @@
 
 [x] cd command
 [] tutorial V
-[~] make file refactor
+[] make file refactor

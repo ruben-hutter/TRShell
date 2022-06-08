@@ -1,6 +1,5 @@
 #include "cd.h"
 #include "../string_utils.h"
-#include <errno.h>
 
 errno;
 

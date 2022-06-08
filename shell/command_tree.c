@@ -130,7 +130,19 @@ struct tree_node* build_tree_from_root(struct token* root_token) {
     return root_node;
 }
 
-void print_command_tree() {
+void print_command_tree(struct tree_node* node) {
     // traverse tree and print out nodes
+    if (!node) {
+        return;
+    }
 
+    printf("Root: %s -> ", node->value);
+
+    struct tree_node* child = node->first_child;
+
+    while (child) {
+        struct tree_node* next = child->next_sibling;
+        printf("child: %s -> ", child->value);
+        child = next;
+    }
 }

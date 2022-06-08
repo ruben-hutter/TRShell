@@ -54,7 +54,7 @@ struct token* build_token(char* str) {
 
     // debug
     printf("[build_token]: %s\n", token_buffer);
-    //print_token(token);
+    print_token(token);
     return token;
 }
 
@@ -160,13 +160,4 @@ struct token* get_next_token(struct buffered_string* input) {
     // debug
     printf("[get_next_token]: %s\n", token_buffer);
     return token;
-}
-
-// print token (debug)
-void print_token(struct token* token) {
-    printf("token_input_buffer: %s\n", token->input->buffer);
-    printf("token_input_buffer_size: %d\n", token->input->buffer_size);
-    printf("string_current_pos: %d\n", token->input->current_pos);
-    printf("string_length: %s\n", token->string_length);
-    printf("token_string: %s\n", token->token_string);
 }

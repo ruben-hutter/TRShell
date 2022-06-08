@@ -27,7 +27,5 @@ struct token* build_token(char* str);
 void free_token(struct token* token);
 // tokenize an input string
 struct token* get_next_token(struct buffered_string* input);
-// print token (debug)
-void print_token(struct token* token);
 
 #endif
