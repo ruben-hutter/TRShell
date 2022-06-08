@@ -1,8 +1,6 @@
 #include "cd.h"
 #include "../string_utils.h"
 
-errno;
-
 void cd(int argc, char** argv) {
     int dest_len;
     if (argc < 2) {
