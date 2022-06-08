@@ -52,9 +52,6 @@ struct token* build_token(char* str) {
     // set tokens string to temp string
     token->token_string = next_str;
 
-    // debug
-    printf("[build_token]: %s\n", token_buffer);
-    print_token(token);
     return token;
 }
 
@@ -66,8 +63,6 @@ void free_token(struct token* token) {
     }
     // free space of token itself
     free(token);
-    // debug
-    printf("[free_token]: %s\n", token_buffer);
 }
 
 // tokenize an input string
@@ -107,7 +102,11 @@ struct token* get_next_token(struct buffered_string* input) {
         switch (next_char) {
             // ignore whitespaces
             case ' ':
-                // no there isn't a break missing here!!!
+                // stop processing if space found (NOT AT BEGINNING)
+                if (token_buffer_index > 0) {
+                    end_loop = true;
+                }
+                break;
             case '\t':
                 // stop processing if tab found in string (NOT AT BEGINNING)
                 if (token_buffer_index > 0) {
