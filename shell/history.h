@@ -28,7 +28,7 @@ struct history_entry {
 void append_string_to_changes(char* input_string);
 
 // apply changes in change buffer to history
-void apply_history_changes();
+void apply_history_changes(void);
 
 // append string to entry
 void append_string_to_history(char* input_string);
@@ -46,28 +46,32 @@ void remove_entry_from_history(struct history_entry* entry);
 void free_history_entry(struct history_entry* entry);
 
 // frees the whole history from tail to head
-void free_complete_history();
+void free_complete_history(void);
+
+void free_history_pointers(void);
+
+void free_change_buffer(void);
 
 // resets the history index for get_next and get_previous
-void reset_history_index();
+void reset_history_index(void);
 
 // get entry containing the specified string
 // if not found returns NULL
 struct history_entry* get_entry_by_string(char* input_string);
 
 // gets the histiry entry with the next higher index
-char* get_next_history_entry_string();
+char* get_next_history_entry_string(void);
 
 // gets the history entry with the next lower index
-char* get_previous_history_entry_string();
+char* get_previous_history_entry_string(void);
 
 // returns 1 if at end of history
-int is_at_head();
+int is_at_head(void);
 
 // gets the n-th entry from the back, starting with 0
 char* get_nth_history_entry_string(int index);
 
 // print history to console
-void print_history();
+void print_history(void);
 
 #endif
