@@ -87,7 +87,7 @@ void crop_string_to_end(char* input_string, char delimiter) {
 
 // sets a terminator at the position of the first newline
 void cut_at_trailing_newline(char* input_string) {
-    input_string[strcspn(input_string, "\n")] = 0;
+    input_string[strcspn(input_string, "\n")] = '\0';
 }
 
 // returs 1 if a string is only whitespace and zero otherwise

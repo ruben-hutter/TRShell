@@ -175,7 +175,6 @@ struct history_entry* get_entry_by_string(char* input_string) {
 // gets the histiry entry with the next higher index
 char* get_next_history_entry_string() {
     if (!history_current) {
-        printf("___________NULL___________");
         return NULL;
     }
     char* input_string = history_current->input_string;
@@ -195,6 +194,11 @@ char* get_previous_history_entry_string() {
         history_current = history_current->previous_entry;
     }
     return input_string;
+}
+
+// returns true if more elements available
+int is_at_head() {
+    return history_current == history_head;
 }
 
 // gets the n-th entry from the back, starting with 0

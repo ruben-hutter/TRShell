@@ -84,7 +84,6 @@ int get_string_from_input(char* buffer, int buffer_size) {
         if (current_char == '\t') {
             char* result = autocomplete(buffer);
             if (!result) {
-                printf("ignore completion");
                 continue;
             }
             remove_line();

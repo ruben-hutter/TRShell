@@ -58,6 +58,9 @@ char* get_next_history_entry_string();
 // gets the history entry with the next lower index
 char* get_previous_history_entry_string();
 
+// returns 1 if at end of history
+int is_at_head();
+
 // gets the n-th entry from the back, starting with 0
 char* get_nth_history_entry_string(int index);
 
