@@ -50,6 +50,9 @@ int parse_and_execute(struct buffered_string* buffered_input) {
         // build_tree_from_root automatically gets following tokens
         struct tree_node* cmd = build_tree_from_root(curr_token);
 
+        // print tree
+        print_command_tree(cmd);
+
         // check nullpointer
         if (!cmd) {
             break;
