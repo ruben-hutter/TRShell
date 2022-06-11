@@ -3,7 +3,7 @@
 // searches a command in all directories listed in $PATH
 char* search_path(char* command_name) {
     // get comma seperated list of directories
-    char* PATH = getenv("PATH");
+    char* PATH = get_local_table_entry_value("PATH");
     // pointer to beginning of element
     char* entry_start = PATH;
     // pointer to end of element

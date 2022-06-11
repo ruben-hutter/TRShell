@@ -105,7 +105,6 @@ struct token* get_next_token(struct buffered_string* input) {
             // ignore whitespaces
             case ' ':
                 if (quotes) {
-                    add_to_buffer('\\');
                     add_to_buffer(next_char);
                     continue;
                 }
@@ -145,7 +144,6 @@ struct token* get_next_token(struct buffered_string* input) {
                 break;
             // next char will be just appended
             case '\\':
-                add_to_buffer(next_char);
                 backslash = !backslash;
                 break;
             // if not special character -> append to buffer
