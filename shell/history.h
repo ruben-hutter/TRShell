@@ -45,6 +45,9 @@ void remove_entry_from_history(struct history_entry* entry);
 // free a entry and its contents
 void free_history_entry(struct history_entry* entry);
 
+// frees the whole history from tail to head
+void free_complete_history();
+
 // resets the history index for get_next and get_previous
 void reset_history_index();
 

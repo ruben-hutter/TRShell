@@ -147,6 +147,40 @@ void free_history_entry(struct history_entry* entry) {
     free(entry);
 }
 
+void free_complete_history() {
+    // set current to tail
+    reset_history_index();
+    // start from first entry
+    struct history_entry* current_entry = history_tail;
+    struct history_entry* next_entry;
+    // while not at end -> continue searching
+    while (current_entry) {
+        next_entry = current_entry->previous_entry;
+        free_history_entry(current_entry);
+    }
+    free_history_pointers();
+    free_change_buffer();
+    // return null if not found
+    return NULL;
+}
+
+void free_history_pointers() {
+    history_head = NULL;
+    history_tail = NULL;
+    history_current = NULL;
+}
+
+void free_change_buffer() {
+    for (int idx = 0; idx < change_buffer_index; idx++) {
+        if (change_buffer[idx]) {
+            free(change_buffer[idx]);
+        }
+    }
+    if (change_buffer) {
+        free(change_buffer);
+    }
+}
+
 // resets the history index for get_next and get_previous
 void reset_history_index() {
     history_current = history_tail;
