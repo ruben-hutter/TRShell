@@ -1,5 +1,16 @@
 #include "prompt.h"
 
+// print prompt for current user
+void print_prompt(void) {
+    // check if root
+    char* username = get_user_name();
+    if (strcmp("root", username) == 0) {
+        print_prompt_3();
+        return;
+    }
+    print_prompt_1();
+}
+
 void print_prompt_1(void) {
     // get username from environment vars
     char* username = get_user_name();
@@ -83,41 +94,31 @@ char* get_current_working_dir(void) {
     return dir_name;
 }
 
-
-
-
-// -----------------------------------------------------------------------------
-// Check later as not important now!
-// -----------------------------------------------------------------------------
-
 void print_prompt_2(void) {
     char* prompt_string = create_user_prompt(PROMPT_2);
     printf(prompt_string);
     free(prompt_string);
 }
 
-/*
 void print_prompt_3(void) {
-    // update the current working directory
-    update_cwd();
-    // crop to last folder
-    crop_string_to_end(current_working_dir, '/');
-    // check if in home
-    check_if_home();
+    // get username from environment vars
+    char* username = "root";
+    // get current working dir from environment vars
+    char* pwd = get_current_working_dir();
     // get prefix and prompt
-    char* prefix = create_user_prefix("tobi", last_folder);
-    char* prompt = create_user_prompt(PROMPT_3);
+    char* prefix = create_root_prefix(username, pwd);
+    free(pwd);
+    // get prompt symbol
+    char* prompt = create_root_prompt(get_prompt_symbol_3());
     // combine prefix and prompt to prompt_string
     char prompt_string[get_concatenated_length(2, prefix, prompt)];
     make_empty_string(prompt_string);
     concatenate(2, prompt_string, prefix, prompt);
-    // free prefix and prompt
     free(prefix);
     free(prompt);
     // print prompt string
-    fprintf(stderr, prompt_string);
+    printf(prompt_string);
 }
-*/
 
 // get the prompt prefix containing the user name and the current directory in user colors
 char* create_root_prefix(char* user_name, char* curr_work_dir_name) {
@@ -144,3 +145,44 @@ char* create_root_prompt(char* prompt) {
     concatenate_with_style(2, styled_prompt, ROOT_PRIMARY, prompt);
     return styled_prompt;
 }
+
+// gets the prompt symbol for prompt 1
+char* get_prompt_symbol_3(void) {
+    char* ps3 = get_local_table_entry_value("PS3");
+    if (!ps3) {
+        ps3 = PROMPT_1;
+    }
+    return ps3;
+}
+
+
+
+// -----------------------------------------------------------------------------
+// Check later as not important now!
+// -----------------------------------------------------------------------------
+
+
+/*
+void print_prompt_3(void) {
+    // update the current working directory
+    update_cwd();
+    // crop to last folder
+    crop_string_to_end(current_working_dir, '/');
+    // check if in home
+    check_if_home();
+    // get prefix and prompt
+    char* prefix = create_user_prefix("tobi", last_folder);
+    char* prompt = create_user_prompt(PROMPT_3);
+    // combine prefix and prompt to prompt_string
+    char prompt_string[get_concatenated_length(2, prefix, prompt)];
+    make_empty_string(prompt_string);
+    concatenate(2, prompt_string, prefix, prompt);
+    // free prefix and prompt
+    free(prefix);
+    free(prompt);
+    // print prompt string
+    fprintf(stderr, prompt_string);
+}
+*/
+
+

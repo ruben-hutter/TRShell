@@ -8,7 +8,7 @@ int main(int argc, char **argv) {
     char* input_string;
     
     while(true) {
-        print_prompt_1();
+        print_prompt();
 
         // read user input from stdin
         input_string = read_from_input();

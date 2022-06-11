@@ -158,7 +158,7 @@ void handle_arrow(char* buffer, int* buff_pos_ptr, int* buff_end_pos_ptr) {
             char* previous_history_string = get_previous_history_entry_string();
             if (previous_history_string) {
                 remove_line();
-                print_prompt_1();
+                print_prompt();
                 set_buffer_to_string(previous_history_string, buffer, buff_pos_ptr, buff_end_pos_ptr);
                 printf(buffer);
             }
@@ -168,7 +168,7 @@ void handle_arrow(char* buffer, int* buff_pos_ptr, int* buff_end_pos_ptr) {
             char* next_history_string = get_next_history_entry_string();
             if (next_history_string) {
                 remove_line();
-                print_prompt_1();
+                print_prompt();
                 set_buffer_to_string(next_history_string, buffer, buff_pos_ptr, buff_end_pos_ptr);
                 printf(buffer);
             }
