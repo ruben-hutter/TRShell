@@ -48,6 +48,7 @@ char* read_from_input() {
                 return buffer;
             }
 
+            // second last char wasn't a line-brake char
             if (temp_buffer[temp_buffer_length-2] != '\\') {
                 void restore_old_tty_settings();
                 return buffer;

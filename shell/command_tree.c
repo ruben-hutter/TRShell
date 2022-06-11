@@ -110,9 +110,9 @@ struct tree_node* build_tree_from_root(struct token* root_token) {
         }
 
         // allocate new tree node for a token of the input
-        struct tree_node* token = new_node(VARIABLE_NODE);
-        // aloc failed
-        if (!token) {
+        struct tree_node* node = new_node(VARIABLE_NODE);
+        // alloc failed
+        if (!node) {
             // free cmd node prepared earlier
             free_tree_from_root(root_node);
             // free passed token as no longer used
@@ -120,12 +120,30 @@ struct tree_node* build_tree_from_root(struct token* root_token) {
             return NULL;
         }
         // make new node to string node contianing the current token
-        set_node_val_str(token, root_token->token_string);
+        set_node_val_str(node, root_token->token_string);
         // set new node as a child of the cmd "head_node"
-        add_child_node(root_node, token);
+        add_child_node(root_node, node);
         // free token
         free_token(root_token);
     } while ((root_token = get_next_token(input)) != &eof_token);
 
     return root_node;
+}
+
+void print_command_tree(struct tree_node* node) {
+    // traverse tree and print out nodes
+    if (!node) {
+        return;
+    }
+
+    int i = 0;
+
+    struct tree_node* child = node->first_child;
+
+    while (child) {
+        struct tree_node* next = child->next_sibling;
+        printf("child %d: %s -> ", i++, child->value.string);
+        child = next;
+    }
+    printf("\n");
 }

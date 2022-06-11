@@ -12,6 +12,7 @@ int main(int argc, char **argv) {
 
         // read user input from stdin
         input_string = read_from_input();
+        printf("[main] input_string: %s\n", input_string);
 
         // check for nullpointer
         if (!input_string) {
@@ -49,6 +50,9 @@ int parse_and_execute(struct buffered_string* buffered_input) {
         // build tree storing command and tokens of the users input
         // build_tree_from_root automatically gets following tokens
         struct tree_node* cmd = build_tree_from_root(curr_token);
+
+        // print tree
+        print_command_tree(cmd);
 
         // check nullpointer
         if (!cmd) {
