@@ -175,8 +175,5 @@ struct token* get_next_token(struct buffered_string* input) {
     // add pointer to input buffer to token
     // contains the original input string that was used to construct the tokens content string
     token->input = input;
-    
-    // debug
-    printf("[get_next_token]: %s\n", token_buffer);
     return token;
 }
