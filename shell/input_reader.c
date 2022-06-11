@@ -5,7 +5,7 @@ static struct termios old_settings;
 // reads user input from the stdin
 char* read_from_input() {
     char temp_buffer[READ_BUFFER_SIZE];
-    memset(temp_buffer, '\0', sizeof(char)*READ_BUFFER_SIZE);
+    memset(temp_buffer, '\0', READ_BUFFER_SIZE * sizeof(char));
     char* buffer = NULL;
     char buffer_length = 0;
 
@@ -73,6 +73,7 @@ int get_string_from_input(char* buffer, int buffer_size) {
     int* buff_end_pos_ptr = &buffer_end_position;
     int current_char;
 
+    memset(buffer, '\0', READ_BUFFER_SIZE * sizeof(char));
     // get chars from stdin
     while(current_char = getchar()) {
         // handel backspace
