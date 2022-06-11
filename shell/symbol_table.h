@@ -70,6 +70,9 @@ struct symbol_table* stack_pop();
 // free all memory allocated for a symbol table
 void free_table(struct symbol_table* table);
 
+// free all tables on table stack
+void free_table_stack(void);
+
 // creates an entry for the passed sting and adds it to the specified table
 struct symbol_table_entry* add_to_specific_table(char* string, struct symbol_table* table);
 

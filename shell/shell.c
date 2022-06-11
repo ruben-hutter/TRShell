@@ -33,6 +33,7 @@ int main(int argc, char **argv) {
         append_string_to_changes(input_string);
         apply_history_changes();
     }
+    free_everything();
     exit(EXIT_SUCCESS);
 }
 
@@ -63,4 +64,11 @@ int parse_and_execute(struct buffered_string* buffered_input) {
     }
 
     return 0;
+}
+
+void free_everything() {
+    // free symbol table
+    free_table_stack();
+    // free history
+    free_complete_history();
 }

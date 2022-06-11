@@ -165,6 +165,12 @@ void free_table(struct symbol_table* table) {
     free(table);
 }
 
+// free all tables on table stack
+void free_table_stack() {
+    free_table(table_stack.local_table);
+    free_table(table_stack.global_table);
+}
+
 // creates an entry for the passed sting and adds it to the specified table
 struct symbol_table_entry* add_to_specific_table(char* string, struct symbol_table* table) {
 

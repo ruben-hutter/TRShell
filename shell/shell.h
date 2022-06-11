@@ -12,9 +12,11 @@
 #include "buffered_string.h"
 #include "init.h"
 #include "history.h"
+#include "symbol_table.h"
 
 // function prototypes of shell
 int main(int argc, char **argv);
 int parse_and_execute(struct buffered_string* buffered_input);
+void free_everything(void);
 
 #endif
