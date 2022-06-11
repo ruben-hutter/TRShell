@@ -7,7 +7,6 @@ char* autocomplete(char* approach) {
 
 // returns the history entry with hte best match
 char* querry_history(char* approach) {
-    printf("init completion");
     char* current_entry = NULL;
     int appr_length = strlen(approach);
     int best_match_length = 0;
@@ -15,10 +14,8 @@ char* querry_history(char* approach) {
 
     // if first letter not match -> ignore
     reset_history_index();
-    printf("reste idx");
-    current_entry = get_previous_history_entry_string();
-    while (current_entry) {
-        printf("loop outer");
+    while (!is_at_head()) {
+        current_entry = get_previous_history_entry_string();
         // if not matching lengths -> ignore
         if (strlen(approach) > strlen(current_entry)) {
             continue;
@@ -27,7 +24,6 @@ char* querry_history(char* approach) {
         // start comparing
         int curr_match_length = 0;
         while ((curr_match_length <= appr_length) && (approach[curr_match_length] == current_entry[curr_match_length])) {
-            printf("loop inner");
             curr_match_length++;
         }
         
@@ -38,9 +34,8 @@ char* querry_history(char* approach) {
                 free(best_entry);
             }
             best_entry = get_malloced_copy(current_entry);
-            printf("new best");
+            cut_at_trailing_newline(best_entry);
         }
-        current_entry = get_previous_history_entry_string();
     }
     return best_entry;
 }

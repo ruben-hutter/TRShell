@@ -9,6 +9,8 @@
 #include "token.h"
 #include "shell.h"
 
+struct token;
+
 enum node_type {
     COMMAND_NODE,       /* simple command */
     VARIABLE_NODE            /* variable name (or simply a word) */

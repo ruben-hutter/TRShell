@@ -45,6 +45,9 @@ void remove_entry_from_history(struct history_entry* entry);
 // free a entry and its contents
 void free_history_entry(struct history_entry* entry);
 
+// frees the whole history from tail to head
+void free_complete_history();
+
 // resets the history index for get_next and get_previous
 void reset_history_index();
 
@@ -57,6 +60,9 @@ char* get_next_history_entry_string();
 
 // gets the history entry with the next lower index
 char* get_previous_history_entry_string();
+
+// returns 1 if at end of history
+int is_at_head();
 
 // gets the n-th entry from the back, starting with 0
 char* get_nth_history_entry_string(int index);

@@ -13,6 +13,8 @@
 #include "shell.h"
 #include "builtin_utilities.h"
 
+struct tree_node;
+
 char* search_path(char* file);
 int exec_command(int argc, char** argv);
 int do_simple_command(struct tree_node* node);
