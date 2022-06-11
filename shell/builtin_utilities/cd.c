@@ -11,11 +11,6 @@ void cd(int argc, char** argv) {
     } else {
         // cd with a PATH
         dest_path = *(argv+1);
-        if (strchr(dest_path, ' ')) {
-            // destination contains spaces
-            printf("has space\n");
-            // prepend them with backslash
-        }
         chdir(dest_path);
     }
     // update pwd
