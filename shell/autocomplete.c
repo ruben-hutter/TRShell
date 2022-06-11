@@ -16,7 +16,8 @@ char* querry_history(char* approach) {
     // if first letter not match -> ignore
     reset_history_index();
     printf("reste idx");
-    while (current_entry = get_next_history_entry_string()) {
+    current_entry = get_previous_history_entry_string();
+    while (current_entry) {
         printf("loop outer");
         // if not matching lengths -> ignore
         if (strlen(approach) > strlen(current_entry)) {
@@ -39,6 +40,7 @@ char* querry_history(char* approach) {
             best_entry = get_malloced_copy(current_entry);
             printf("new best");
         }
+        current_entry = get_previous_history_entry_string();
     }
     return best_entry;
 }
