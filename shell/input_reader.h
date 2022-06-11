@@ -8,6 +8,7 @@
 #include <termios.h>  
 
 #include "prompt.h"
+#include "autocomplete.h"
 
 #define READ_BUFFER_SIZE 1024
 #define TERMINAL_BACKSPACE 0x7F

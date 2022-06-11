@@ -81,6 +81,15 @@ int get_string_from_input(char* buffer, int buffer_size) {
         }
         // handle tabs
         if (current_char == '\t') {
+            char* result = autocomplete(buffer);
+            if (!result) {
+                printf("ignore completion");
+                continue;
+            }
+            remove_line();
+            print_prompt();
+            set_buffer_to_string(result, buffer, buff_pos_ptr, buff_end_pos_ptr);
+            printf(result);
             continue;
         }
         // hadle ararows

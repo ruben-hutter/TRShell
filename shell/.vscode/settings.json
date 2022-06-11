@@ -39,6 +39,7 @@
         "utility": "c",
         "typeinfo": "c",
         "valarray": "c",
-        "buffered_string.h": "c"
+        "buffered_string.h": "c",
+        "autocomplete.h": "c"
     }
 }
