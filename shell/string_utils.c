@@ -37,7 +37,7 @@ void concatenate(int num_of_args, char* output_string, ...) {
 }
 
 // concatenate all strings in the va_list to output string
-// note that output_string must be of succficient length to fit concatenation
+// note that output_string must be of sufficient length to fit concatenation
 void v_concatenate(int num_of_args, char* output_string, va_list input_strings) {
     int iter;
     for (iter = 0; iter < num_of_args; iter++) {
@@ -126,14 +126,36 @@ void put_string_section(char* input_string, int region_start, int region_end) {
 
 // manipulates the given string for autocompletion [autocomplete]
 void auto_string_manip(char* string) {
+    char* pre;
+    char* path;
+    char* n_complete;
     char slash = '/';
+    char* delimiter = "\\ \"";  // backslash, space and double-quotes
+
+    // get pre
+
+    // get path
+
+    // get n_complete
 
     if (strchr(string, slash)) {
         // already entered a part of path
         // take only last part of given path
-        crop_string_to_end(string, '/');
+        crop_string_to_end(string, slash);
+        // tokenize string
+        char* tok = strtok(string, delimiter);
+        while (tok != NULL) {
+            tok_concat(tok);
+            pch = strtok (NULL, " ,.-");
+        }
+    } else {
+        // only command and a part of a word is given
     }
     printf("string after crop: %s\n", string);
+}
+
+// takes destination string and input and concats it with a space in between
+void tok_concat(char* destination, char* input_string) {
 }
 
 // checkes if a string is a word
@@ -149,4 +171,9 @@ int is_single_word(char* string) {
         return true;
     }
     return false;
+}
+
+// free string array
+void free_string_arr(char** string_arr, int arr_length) {
+    // TODO
 }
