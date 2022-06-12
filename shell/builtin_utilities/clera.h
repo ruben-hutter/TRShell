@@ -3,8 +3,6 @@
 
 #include <stdlib.h>
 
-#include "../shell.h"
-
 void clera(int argc, char** argv);
 
 #endif

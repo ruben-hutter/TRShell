@@ -5,14 +5,29 @@ char* last_approach = NULL;
 
 char* autocomplete(char* approach) {
     update_last_approach(approach);
+    // test: approach is empty string
+    if (is_only_whitespace(approach)) {
+        return NULL;
+    }
     // test: approach is single word
     if (is_single_word(approach)) {
         // complete binaries and builtins
-        querry_directories(approach);
         return querry_directories(approach);
+    }
+    // check if approach is history querry
+    if (is_history_querry(approach)) {
+        return querry_history(approach);
     }
     // complete directories
     return querry_binaries(approach);
+}
+
+// returns 1 if the approach is a history querry
+int is_history_querry(char* approach) {
+    if (approach[0] == '?' && strlen(approach) > 2) {
+        return 1;
+    }
+    return 0;
 }
 
 // updates the last_approach with a malloced copy of the current one
@@ -174,36 +189,6 @@ void append_builtin_utilities_to_list(char** name_list, int* name_list_length, i
     }
 }
 
-// searches the list for a unique possible match of the approach and returns the match
-// if no match NULL is returned
-char* compare_against_list(char* approach, char** entry_list, int list_length) {
-    int approach_length = strlen(approach);
-    bool found = false;
-    char* match = NULL;
-    // iterate over lsit to find matches
-    for (int index = 0; index < list_length; index++) {
-        // if not matching -> continue
-        if (!string_starts_with(entry_list[index], approach)) {
-            continue;
-        }
-        // if match was previously found -> return NULL as match is not unique
-        if (found) {
-            print_entry_list(entry_list, list_length);
-            return NULL;
-        }
-        found = true;
-        match = get_malloced_copy(entry_list[index]);
-    }
-    return match;
-}
-
-// returns true iff the input_string starts with the pattern_string
-int string_starts_with(const char* input_string, const char* pattern_string) {
-    if(strncmp(input_string, pattern_string, strlen(pattern_string)) == 0) {
-        return true;
-    }
-    return false;
-}
 
 // prints all entries of a list in a ls like fashion to the std out
 void print_matching_entries_from_list(char** entry_list, int list_length, char* approach) {
@@ -279,37 +264,24 @@ void free_approach_split(struct approach_split* ap_split) {
     free(ap_split);
 }
 
-/* returns the history entry with the best match
-char* querry_history(char* approach) {
-    char* current_entry = NULL;
-    int appr_length = strlen(approach);
-    char* best_entry = NULL;
-
-    // if first letter not match -> ignore
+// returns the first match to the approach
+// if no match found, NULL is returned 
+char* querry_history(char* raw_approach) {
+    char* approach[strlen(raw_approach) - 2];
+    // copy section without "? "
+    strncpy(approach, raw_approach + 2, strlen(raw_approach) - 2);
+    char* curr_string = get_previous_history_entry_string();
+    char* match = NULL;
     reset_history_index();
-    while (!is_at_head()) {
-        current_entry = get_previous_history_entry_string();
-        // if not matching lengths -> ignore
-        if (strlen(approach) > strlen(current_entry)) {
+
+    for (int idx = 0; idx < history_size; idx++) {
+        // if not matching -> continue
+        if (!string_starts_with(curr_string, approach)) {
+            curr_string = get_previous_history_entry_string();
             continue;
         }
-
-        // start comparing
-        int curr_match_length = 0;
-        while ((curr_match_length <= appr_length) && (approach[curr_match_length] == current_entry[curr_match_length])) {
-            curr_match_length++;
-        }
-        
-        // if new best update best
-        if (curr_match_length > hist_rating) {
-            hist_rating = curr_match_length;
-            if (best_entry) {
-                free(best_entry);
-            }
-            best_entry = get_malloced_copy(current_entry);
-            cut_at_trailing_newline(best_entry);
-        }
+        match = get_malloced_copy(curr_string);
+        return match;
     }
-    return best_entry;
+    return NULL;
 }
-*/
