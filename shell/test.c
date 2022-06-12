@@ -2,11 +2,8 @@
 
 #include"string_utils.h"
 
-
-int main(void){   
-    char* test_string = get_malloced_copy("0123456789");
-    shift_string_left(test_string, 5, 9);
-    printf(test_string);
-    free(test_string);
+int main(void) {
+    char* string = "asds  ";
+    printf("is single word: %d\n", is_single_word(string));
     return 0;
 }

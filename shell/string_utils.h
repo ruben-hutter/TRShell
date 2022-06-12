@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
+#include <stdbool.h>
 
 // get the length of all passed string concatenated
 int get_concatenated_length(int num_of_args, ...);
@@ -40,13 +41,6 @@ void delete_char_at(char* input_string, size_t char_index);
 // subsitiutes the section between start and end of first_string with the second_string
 char* subsitute_section_with_string(char* input_string, char* substitute_string, size_t start, size_t end);
 
-// returns a pointer to the first occurence of any of the chars in the chars string
-char* is_any_char_present_in(char* input_string, char* chars);
-
-
-
-
-
 // n puts a string in quotes
 char* add_quotes(char* input_string, int add_quotes);
 
@@ -63,5 +57,11 @@ void shift_string_right(char* input_string, int region_start, int region_end);
 void shift_string_left(char* input_string, int region_start, int region_end);
 
 void put_string_section(char* input_string, int region_start, int region_end);
+
+// manipulates the given string for autocompletion [autocomplete]
+void auto_string_manip(char* string);
+
+// checkes if a string is a word
+int is_single_word(char* string);
 
 #endif

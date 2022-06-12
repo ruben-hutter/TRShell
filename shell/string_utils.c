@@ -90,14 +90,15 @@ void cut_at_trailing_newline(char* input_string) {
     input_string[strcspn(input_string, "\n")] = '\0';
 }
 
-// returs 1 if a string is only whitespace and zero otherwise
+// returs true if a string is only whitespace, otherwise false
 int is_only_whitespace(const char* input_string) {
     while (*input_string != '\0') {
-    if (!isspace((unsigned char)*input_string))
-      return 0;
-    input_string++;
-  }
-  return 1;
+        if (!isspace((unsigned char)*input_string)) {
+            return false;
+        }
+        input_string++;
+    }
+    return true;
 }
 
 // shifts the section form reg_start to reg_end one character to the right, leading to a gap at region_start
@@ -121,4 +122,26 @@ void put_string_section(char* input_string, int region_start, int region_end) {
     for (int current = region_start; current <= region_end; current++) {
         putchar(input_string[current]);
     }
+}
+
+// manipulates the given string for autocompletion [autocomplete]
+void auto_string_manip(char* string) {
+    // do stuff
+    int str_len = strlen(string);
+    char actual_char;
+    int idx;
+}
+
+// checkes if a string is a word
+int is_single_word(char* string) {
+    char space = ' ';
+    char* spaces = strchr(string, space);
+    if (!spaces) {
+        return true;
+    }
+    // check if something else than spaces after first space
+    if (is_only_whitespace(spaces)) {
+        return true;
+    }
+    return false;
 }

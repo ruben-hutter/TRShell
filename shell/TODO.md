@@ -1,5 +1,7 @@
 # Project TODO list
 
+[] comment all code meaningfully
+
 ## Tobi
 
 ## Ruben
