@@ -90,10 +90,11 @@ char* get_current_working_dir() {
     char* dir_name = get_malloced_copy(pwd);
     crop_string_to_end(dir_name, '/');
     // check if dir is home
-    char* user_name = get_user_name();
-    if (strcmp(dir_name, get_user_name()) == 0) {
+    char* username = get_user_name();
+    if (strcmp(dir_name, username) == 0) {
         strcpy(dir_name, HOME);
     }
+    free(username);
     return dir_name;
 }
 
