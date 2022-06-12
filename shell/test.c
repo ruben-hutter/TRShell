@@ -2,11 +2,12 @@
 
 #include"string_utils.h"
 
-
-int main(void){   
-    char* test_string = get_malloced_copy("0123456789");
-    shift_string_left(test_string, 5, 9);
-    printf(test_string);
-    free(test_string);
+int main(void) {
+    char* str1 = "cd os/proj/trsh\\ shell/shell\\ s";
+    char* str2 = "cd os/proj/\"trsh shell\"/\"shell s";
+    char* str3 = "cd \"os/proj/trsh shell/shell s";
+    char* str4 = "cd o";
+    char* string = get_malloced_copy(str4);
+    auto_string_manip(string);
     return 0;
 }
