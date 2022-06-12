@@ -1,8 +1,8 @@
 #include "token.h"
 
 char* token_buffer = NULL;
-int token_buffer_size = 0;
 int token_buffer_index = -1;
+int token_buffer_size;
 
 struct token eof_token = {
     .string_length = 0
@@ -79,7 +79,7 @@ struct token* get_next_token(struct buffered_string* input) {
 
     // token buffer does noes not exist -> create it
     if (!token_buffer) {
-        token_buffer_size = 1024;
+        token_buffer_size = TOKEN_BUFFER_SIZE;
         token_buffer = malloc(token_buffer_size);
         // could not allocate buffer -> return
         if (!token_buffer) {

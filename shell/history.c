@@ -18,7 +18,7 @@ void append_string_to_changes(char* input_string) {
     }
     if (change_buffer_index >= change_buffer_size) {
         // increase buffers allocated size
-        char** new_buffer = realloc(change_buffer, 2*change_buffer_size*sizeof(char*));
+        char** new_buffer = realloc(change_buffer, 2 * change_buffer_size * sizeof(char*));
             // check for failed allocation
             if (new_buffer) {
                 change_buffer = new_buffer;
@@ -169,14 +169,17 @@ void free_history_pointers() {
 }
 
 void free_change_buffer() {
-    for (int idx = 0; idx < change_buffer_index; idx++) {
+    if (!change_buffer) {
+        return;
+    }
+
+    int idx;
+    for (idx = 0; idx < change_buffer_index; idx++) {
         if (change_buffer[idx]) {
             free(change_buffer[idx]);
         }
     }
-    if (change_buffer) {
-        free(change_buffer);
-    }
+    free(change_buffer);
 }
 
 // resets the history index for get_next and get_previous

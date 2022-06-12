@@ -11,6 +11,8 @@
 #include "buffered_string.h"
 #include "string_utils.h"
 
+#define TOKEN_BUFFER_SIZE 1024
+
 struct token {
     struct buffered_string* input;     // source of input
     int string_length;                   // length of token
