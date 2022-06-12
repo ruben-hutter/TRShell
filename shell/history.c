@@ -157,6 +157,7 @@ void free_complete_history() {
     while (current_entry) {
         next_entry = current_entry->previous_entry;
         free_history_entry(current_entry);
+        current_entry = next_entry;
     }
     free_history_pointers();
     free_change_buffer();
