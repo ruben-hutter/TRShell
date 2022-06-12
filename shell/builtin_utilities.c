@@ -6,6 +6,7 @@ struct builtin_utility builtin_utilities[] =
         {"cd", cd},
         {"ht", ht},
         {"exit", exit_shell},
+        {"clera", clera},
     };
 
 int builtin_utility_count = sizeof(builtin_utilities)/sizeof(struct builtin_utility);
