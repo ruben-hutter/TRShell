@@ -56,7 +56,7 @@ int string_starts_with(const char* input_string, const char* pattern_string);
 void print_matching_entries_from_list(char** entry_list, int list_length, char* approach);
 
 // manipulates the given string for autocompletion
-void auto_string_manip(char* string);
+struct approach_split* auto_string_manip(char* string);
 
 // frees an approach split object
 void free_approach_split(struct approach_split* ap_split);

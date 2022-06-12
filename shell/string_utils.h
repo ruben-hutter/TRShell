@@ -58,14 +58,6 @@ void shift_string_left(char* input_string, int region_start, int region_end);
 
 void put_string_section(char* input_string, int region_start, int region_end);
 
-
-
-
-
-
-// takes destination string and input and concats it with a space in between
-void tok_concat(char* destination, char* input_string);
-
 // checkes if a string is a word
 int is_single_word(char* string);
 

@@ -1,14 +1,18 @@
 # Project TODO list
 
 [] comment all code meaningfully
+[] man page to builtin_utils
+[] list builtin_utils
 
 ## Tobi
 
 ## Ruben
 
-[~] make file refactor
+[~] makefile refactor
 [] tilde for path change
 [] string manip
+[] concatenate_with_space() [string_utils]
+[] string_between_char(char* string, char delimiter) [string_utils]
 
 ---
 
