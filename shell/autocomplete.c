@@ -198,7 +198,7 @@ char* compare_against_list(char* approach, char** entry_list, int list_length) {
 }
 
 // returns true iff the input_string starts with the pattern_string
-bool string_starts_with(const char* input_string, const char* pattern_string) {
+int string_starts_with(const char* input_string, const char* pattern_string) {
     if(strncmp(input_string, pattern_string, strlen(pattern_string)) == 0) {
         return true;
     }
@@ -209,6 +209,36 @@ bool string_starts_with(const char* input_string, const char* pattern_string) {
 void print_matching_entries_from_list(char** entry_list, int list_length, char* approach) {
     // group entries to lines
     // print all lines
+}
+
+// manipulates the given string for autocompletion [autocomplete]
+void auto_string_manip(char* string) {
+    char* pre;
+    char* path;
+    char* n_complete;
+    char slash = '/';
+    char* delimiter = "\\ \"";  // backslash, space and double-quotes
+
+    // get pre
+
+    // get path
+
+    // get n_complete
+
+    if (strchr(string, slash)) {
+        // already entered a part of path
+        // take only last part of given path
+        crop_string_to_end(string, slash);
+        // tokenize string
+        char* tok = strtok(string, delimiter);
+        while (tok != NULL) {
+            tok_concat(tok);
+            pch = strtok (NULL, " ,.-");
+        }
+    } else {
+        // only command and a part of a word is given
+    }
+    printf("string after crop: %s\n", string);
 }
 
 // frees an apprach split struct with all its members

@@ -50,10 +50,13 @@ char* querry_binaries(char* approach);
 char* compare_against_list(char* approach, char** entry_list, int list_length);
 
 // returns true iff the input_string starts with the pattern_string
-bool string_starts_with(const char* input_string, const char* pattern_string);
+int string_starts_with(const char* input_string, const char* pattern_string);
 
 // prints all entries of a list in a ls like fashion to the std out
 void print_matching_entries_from_list(char** entry_list, int list_length, char* approach);
+
+// manipulates the given string for autocompletion
+void auto_string_manip(char* string);
 
 // frees an approach split object
 void free_approach_split(struct approach_split* ap_split);

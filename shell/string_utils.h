@@ -69,9 +69,6 @@ void put_string_section(char* input_string, int region_start, int region_end);
 
 
 
-// manipulates the given string for autocompletion [autocomplete]
-void auto_string_manip(char* string);
-
 // takes destination string and input and concats it with a space in between
 void tok_concat(char* destination, char* input_string);
 
