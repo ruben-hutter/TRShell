@@ -10,6 +10,7 @@
 // struct for builtin utilities
 struct builtin_utility {
     char* name;
+    char* description;
     void (*func)(int argc, char** argv);
 };
 
