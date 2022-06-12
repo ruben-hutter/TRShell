@@ -167,8 +167,10 @@ void free_table(struct symbol_table* table) {
 
 // free all tables on table stack
 void free_table_stack() {
-    free_table(table_stack.local_table);
-    free_table(table_stack.global_table);
+    int i = 0;
+    for (i; i < table_stack.table_count; i++) {
+        free_table(table_stack.table_list[i]);
+    }
 }
 
 // creates an entry for the passed sting and adds it to the specified table

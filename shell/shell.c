@@ -1,5 +1,7 @@
 #include "shell.h"
 
+int running = true;
+
 int main(int argc, char **argv) {
     // init shell
     init_shell();
@@ -7,7 +9,7 @@ int main(int argc, char **argv) {
     // string to store users input
     char* input_string;
     
-    while(true) {
+    while(running) {
         print_prompt();
 
         // read user input from stdin
@@ -66,9 +68,12 @@ int parse_and_execute(struct buffered_string* buffered_input) {
     return 0;
 }
 
+// free everything
 void free_everything() {
     // free symbol table
     free_table_stack();
     // free history
     free_complete_history();
+    // free token_buffer
+    free_token_buffer();
 }

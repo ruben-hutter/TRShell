@@ -111,5 +111,4 @@ void set_entry_value(struct symbol_table_entry* entry, char* new_value);
 // prints the local table to the stdout
 void print_local_table();
 
-
 #endif

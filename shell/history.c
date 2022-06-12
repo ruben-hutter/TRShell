@@ -160,8 +160,6 @@ void free_complete_history() {
     }
     free_history_pointers();
     free_change_buffer();
-    // return null if not found
-    //return NULL;
 }
 
 void free_history_pointers() {

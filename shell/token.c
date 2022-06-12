@@ -177,3 +177,11 @@ struct token* get_next_token(struct buffered_string* input) {
     token->input = input;
     return token;
 }
+
+// free token buffer
+void free_token_buffer() {
+    if (!token_buffer) {
+        return;
+    }
+    free(token_buffer);
+}
