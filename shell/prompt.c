@@ -154,7 +154,7 @@ char* create_root_prompt(char* prompt) {
 char* get_prompt_symbol_3() {
     char* ps3 = get_local_table_entry_value("PS3");
     if (!ps3) {
-        ps3 = PROMPT_1;
+        ps3 = PROMPT_3;
     }
     return ps3;
 }
