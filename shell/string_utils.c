@@ -126,15 +126,20 @@ void put_string_section(char* input_string, int region_start, int region_end) {
 
 // manipulates the given string for autocompletion [autocomplete]
 void auto_string_manip(char* string) {
-    // do stuff
-    int str_len = strlen(string);
-    char actual_char;
-    int idx;
+    char slash = '/';
+
+    if (strchr(string, slash)) {
+        // already entered a part of path
+        // take only last part of given path
+        crop_string_to_end(string, '/');
+    }
+    printf("string after crop: %s\n", string);
 }
 
 // checkes if a string is a word
 int is_single_word(char* string) {
     char space = ' ';
+    // check if string contains at least a space
     char* spaces = strchr(string, space);
     if (!spaces) {
         return true;
