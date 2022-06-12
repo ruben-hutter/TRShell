@@ -24,7 +24,7 @@ char* autocomplete(char* approach) {
 
 // returns 1 if the approach is a history querry
 int is_history_querry(char* approach) {
-    if (approach[0] == '?' && strlen(approach) > 1) {
+    if (approach[0] == '?' && strlen(approach) > 2) {
         return 1;
     }
     return 0;
