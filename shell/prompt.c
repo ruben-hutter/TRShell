@@ -1,23 +1,26 @@
 #include "prompt.h"
 
 // print prompt for current user
-void print_prompt(void) {
+void print_prompt() {
     // check if root
     char* username = get_user_name();
     if (strcmp("root", username) == 0) {
         print_prompt_3();
+        free(username);
         return;
     }
+    free(username);
     print_prompt_1();
 }
 
-void print_prompt_1(void) {
+void print_prompt_1() {
     // get username from environment vars
     char* username = get_user_name();
     // get current working dir from environment vars
     char* pwd = get_current_working_dir();
     // get prefix and prompt
     char* prefix = create_user_prefix(username, pwd);
+    free(username);
     free(pwd);
     // get prompt symbol
     char* prompt = create_user_prompt(get_prompt_symbol_1());
@@ -32,7 +35,7 @@ void print_prompt_1(void) {
 }
 
 // gets the prompt symbol for prompt 1
-char* get_prompt_symbol_1(void) {
+char* get_prompt_symbol_1() {
     char* ps1 = get_local_table_entry_value("PS1");
     if (!ps1) {
         ps1 = PROMPT_1;
@@ -77,7 +80,7 @@ char* get_user_name(void) {
 }
 
 // gets the current working dir
-char* get_current_working_dir(void) {
+char* get_current_working_dir() {
     // get PWD from environment vars
     char* pwd = get_local_table_entry_value("PWD");
     if (!pwd) {
@@ -94,13 +97,13 @@ char* get_current_working_dir(void) {
     return dir_name;
 }
 
-void print_prompt_2(void) {
+void print_prompt_2() {
     char* prompt_string = create_user_prompt(PROMPT_2);
     printf(prompt_string);
     free(prompt_string);
 }
 
-void print_prompt_3(void) {
+void print_prompt_3() {
     // get username from environment vars
     char* username = "root";
     // get current working dir from environment vars
@@ -147,7 +150,7 @@ char* create_root_prompt(char* prompt) {
 }
 
 // gets the prompt symbol for prompt 1
-char* get_prompt_symbol_3(void) {
+char* get_prompt_symbol_3() {
     char* ps3 = get_local_table_entry_value("PS3");
     if (!ps3) {
         ps3 = PROMPT_1;
