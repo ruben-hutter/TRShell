@@ -11,6 +11,8 @@
 #include "buffered_string.h"
 #include "string_utils.h"
 
+#define TOKEN_BUFFER_SIZE 1024
+
 struct token {
     struct buffered_string* input;     // source of input
     int string_length;                   // length of token
@@ -25,6 +27,8 @@ void add_to_buffer(char c);
 struct token* build_token(char* str);
 // frees all allocated spece of a token
 void free_token(struct token* token);
+// free token buffer
+void free_token_buffer(void);
 // tokenize an input string
 struct token* get_next_token(struct buffered_string* input);
 

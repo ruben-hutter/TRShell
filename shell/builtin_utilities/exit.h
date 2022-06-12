@@ -3,6 +3,8 @@
 
 #include <stdlib.h>
 
+#include "../shell.h"
+
 void exit_shell(int argc, char** argv);
 
 #endif

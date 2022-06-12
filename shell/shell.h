@@ -14,6 +14,8 @@
 #include "history.h"
 #include "symbol_table.h"
 
+extern int running;
+
 // function prototypes of shell
 int main(int argc, char **argv);
 int parse_and_execute(struct buffered_string* buffered_input);
