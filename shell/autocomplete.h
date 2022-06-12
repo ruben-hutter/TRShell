@@ -24,6 +24,9 @@ char* autocomplete(char* approach);
 // updates the last_approach with a malloced copy of the current one
 void update_last_approach(char* approach);
 
+// returns 1 if the approach is a history querry
+int is_history_querry(char* approach);
+
 // returns the single matching history entry if existing
 // returns null on single or multiple matches
 char* querry_history(char* approach);

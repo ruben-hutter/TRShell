@@ -9,14 +9,25 @@ char* autocomplete(char* approach) {
     if (is_only_whitespace(approach)) {
         return NULL;
     }
+    // check if approach is history querry
+    if (is_history_querry(approach)) {
+        return querry_history(approach);
+    }
     // test: approach is single word
     if (is_single_word(approach)) {
         // complete binaries and builtins
-        querry_directories(approach);
         return querry_directories(approach);
     }
     // complete directories
     return querry_binaries(approach);
+}
+
+// returns 1 if the approach is a history querry
+int is_history_querry(char* approach) {
+    if (approach[0] == '?' && strlen(approach) > 1) {
+        return 1;
+    }
+    return 0;
 }
 
 // updates the last_approach with a malloced copy of the current one
@@ -229,37 +240,21 @@ void free_approach_split(struct approach_split* ap_split) {
     free(ap_split);
 }
 
-/* returns the history entry with the best match
+// returns the first match to the approach
+// if no match found, NULL is returned 
 char* querry_history(char* approach) {
-    char* current_entry = NULL;
-    int appr_length = strlen(approach);
-    char* best_entry = NULL;
-
-    // if first letter not match -> ignore
+    char* curr_string = get_previous_history_entry_string();
+    char* match = NULL;
     reset_history_index();
-    while (!is_at_head()) {
-        current_entry = get_previous_history_entry_string();
-        // if not matching lengths -> ignore
-        if (strlen(approach) > strlen(current_entry)) {
+
+    for (int idx = 0; idx < history_size; idx++) {
+        // if not matching -> continue
+        if (!string_starts_with(curr_string, approach)) {
+            curr_string = get_previous_history_entry_string();
             continue;
         }
-
-        // start comparing
-        int curr_match_length = 0;
-        while ((curr_match_length <= appr_length) && (approach[curr_match_length] == current_entry[curr_match_length])) {
-            curr_match_length++;
-        }
-        
-        // if new best update best
-        if (curr_match_length > hist_rating) {
-            hist_rating = curr_match_length;
-            if (best_entry) {
-                free(best_entry);
-            }
-            best_entry = get_malloced_copy(current_entry);
-            cut_at_trailing_newline(best_entry);
-        }
+        match = get_malloced_copy(curr_string);
+        return match;
     }
-    return best_entry;
+    return NULL;
 }
-*/
