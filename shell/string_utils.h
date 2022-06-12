@@ -41,12 +41,6 @@ void delete_char_at(char* input_string, size_t char_index);
 // subsitiutes the section between start and end of first_string with the second_string
 char* subsitute_section_with_string(char* input_string, char* substitute_string, size_t start, size_t end);
 
-<<<<<<< HEAD
-// returns a pointer to the first occurence of any of the chars in the chars string
-char* is_any_char_present_in(char* input_string, char* chars);
-
-=======
->>>>>>> c9531a01088ea06cffdf39aa3a6b19bbd873c321
 // n puts a string in quotes
 char* add_quotes(char* input_string, int add_quotes);
 
