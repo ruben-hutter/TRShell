@@ -58,10 +58,12 @@ void shift_string_left(char* input_string, int region_start, int region_end);
 
 void put_string_section(char* input_string, int region_start, int region_end);
 
+// searches the list for a unique possible match of the approach and returns the match
+// if no match NULL is returned
+char* compare_against_list(char* approach, char** entry_list, int list_length);
 
-
-
-
+// returns true iff the input_string starts with the pattern_string
+int string_starts_with(const char* input_string, const char* pattern_string);
 
 // takes destination string and input and concats it with a space in between
 void tok_concat(char* destination, char* input_string);

@@ -45,13 +45,6 @@ void append_builtin_utilities_to_list(char** name_list, int* name_list_length, i
 // returns null on single or multiple matches
 char* querry_binaries(char* approach);
 
-// searches the list for a unique possible match of the approach and returns the match
-// if no match NULL is returned
-char* compare_against_list(char* approach, char** entry_list, int list_length);
-
-// returns true iff the input_string starts with the pattern_string
-int string_starts_with(const char* input_string, const char* pattern_string);
-
 // prints all entries of a list in a ls like fashion to the std out
 void print_matching_entries_from_list(char** entry_list, int list_length, char* approach);
 
