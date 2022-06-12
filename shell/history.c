@@ -58,7 +58,7 @@ void append_string_to_history(char* input_string){
         return;
     }
     // malloc new node
-    struct history_entry* new_entry = (struct history_entry*)malloc(sizeof(struct history_entry*));
+    struct history_entry* new_entry = (struct history_entry*)malloc(sizeof(struct history_entry));
     // add data
     new_entry->input_string = input_string;
     // remove previous occurence
