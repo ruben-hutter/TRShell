@@ -43,10 +43,6 @@ char* subsitute_section_with_string(char* input_string, char* substitute_string,
 // returns a pointer to the first occurence of any of the chars in the chars string
 char* is_any_char_present_in(char* input_string, char* chars);
 
-
-
-
-
 // n puts a string in quotes
 char* add_quotes(char* input_string, int add_quotes);
 

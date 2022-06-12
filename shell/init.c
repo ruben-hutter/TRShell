@@ -4,10 +4,9 @@
 void init_shell() {
     // init symbol table
     init_table();
-
+    // add environment variables to symbol table
     struct symbol_table_entry* entry;
     char **p2 = environ;
-    
     while(*p2) {
         char *eq = strchr(*p2, '=');
         if (eq) {
@@ -26,11 +25,13 @@ void init_shell() {
         }
         p2++;
     }
-    
+    // add prompt symbols to symbol table
     entry = add_to_table("PS1");
     set_entry_value(entry, "$ ");
-    
+
     entry = add_to_table("PS2");
     set_entry_value(entry, "> ");
-    
+
+    entry = add_to_table("PS3");
+    set_entry_value(entry, "# ");
 }
