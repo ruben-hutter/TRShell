@@ -9,14 +9,14 @@ char* autocomplete(char* approach) {
     if (is_only_whitespace(approach)) {
         return NULL;
     }
-    // check if approach is history querry
-    if (is_history_querry(approach)) {
-        return querry_history(approach);
-    }
     // test: approach is single word
     if (is_single_word(approach)) {
         // complete binaries and builtins
         return querry_directories(approach);
+    }
+    // check if approach is history querry
+    if (is_history_querry(approach)) {
+        return querry_history(approach);
     }
     // complete directories
     return querry_binaries(approach);
@@ -242,7 +242,10 @@ void free_approach_split(struct approach_split* ap_split) {
 
 // returns the first match to the approach
 // if no match found, NULL is returned 
-char* querry_history(char* approach) {
+char* querry_history(char* raw_approach) {
+    char* approach[strlen(raw_approach) - 2];
+    // copy section without "? "
+    strncpy(approach, raw_approach + 2, strlen(raw_approach) - 2);
     char* curr_string = get_previous_history_entry_string();
     char* match = NULL;
     reset_history_index();

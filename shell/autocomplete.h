@@ -57,4 +57,8 @@ void auto_string_manip(char* string);
 // frees an approach split object
 void free_approach_split(struct approach_split* ap_split);
 
+// returns the first match to the approach
+// if no match found, NULL is returned 
+char* querry_history(char* raw_approach);
+
 #endif
