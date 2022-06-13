@@ -7,7 +7,6 @@ char* autocomplete(char* approach) {
     //update_last_approach(approach);
     // test: approach is empty string
     if (is_only_whitespace(approach)) {
-        printf("is e_str");
         return NULL;
     }
     // check if approach is history querry
@@ -18,8 +17,7 @@ char* autocomplete(char* approach) {
     if (is_single_word(approach)) {
         // complete binaries and builtins
         printf("is sgl_wrd");
-        return NULL;
-        //return querry_binaries(approach);
+        return querry_binaries(approach);
     }
     printf("succ");
     return "foo";
@@ -85,7 +83,9 @@ char* querry_binaries(char* approach) {
     // get list of binaries
     int* binaries_length;
     *binaries_length = 0;
+    // get list of all binaries including builtins
     char** binaries_list = get_binaries(binaries_length);
+    /*
     // compare approach against list
     char* match = compare_against_list(approach, binaries_list, *binaries_length);
     // on double match
@@ -95,12 +95,17 @@ char* querry_binaries(char* approach) {
     }
     free_string_arr(binaries_list, *binaries_length);
     return match;
+    */
+    char* str = "succ_string";
+    char* match = get_malloced_copy(str);
+    return match;
 }
 
 // returns a list of all binaries at the locations specified in PATH
 char** get_binaries(int* name_list_index) {
     // create list to store dir and file names
     char** name_list = malloc(DEFAULT_LENGTH * sizeof(char*));
+    /*
     // current mex cap of the list
     int* name_list_length;
     *name_list_length = DEFAULT_LENGTH;
@@ -148,6 +153,7 @@ char** get_binaries(int* name_list_index) {
         }
     }
     append_builtin_utilities_to_list(name_list, name_list_length, name_list_index);
+    */
     return name_list;
 }
 
