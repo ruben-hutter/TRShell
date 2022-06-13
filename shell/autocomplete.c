@@ -65,7 +65,7 @@ char* querry_directories(char* approach) {
         print_matching_entries_from_list(name_list, name_list_index, ap_split->n_complete);
     }
     // free name list
-    free_string_array(name_list, name_list_index);
+    free_string_arr(name_list, name_list_index);
     // free an approach split object
     free_approach_split(ap_split);
     return match;
@@ -85,7 +85,7 @@ char* querry_binaries(char* approach) {
         // print all matching
         print_matching_entries_from_list(binaries_list, binaries_length, approach);
     }
-    free_string_array(binaries_list, binaries_length);
+    free_string_arr(binaries_list, binaries_length);
     return match;
 }
 
@@ -155,7 +155,7 @@ void append_names_to_list(char* path, char** name_list, int* name_list_length, i
             if (name_list_index >= name_list_length) {
                 char** new_list = realloc(name_list, 2 * (*name_list_length) * sizeof(char*));
                 if (!new_list) {
-                    free_string_array(name_list, name_list_index);
+                    free_string_arr(name_list, name_list_index);
                     return;
                 }
                 name_list = new_list;
@@ -178,7 +178,7 @@ void append_builtin_utilities_to_list(char** name_list, int* name_list_length, i
         if (name_list_index >= name_list_length) {
             char** new_list = realloc(name_list, 2 * (*name_list_length) * sizeof(char*));
             if (!new_list) {
-                free_string_array(name_list, name_list_index);
+                free_string_arr(name_list, name_list_index);
                 return;
             }
             name_list = new_list;
@@ -209,11 +209,12 @@ struct approach_split* auto_string_manip(char* string) {
     char space = ' ';
 
     // get pre
-    char* pre = strchar(string, space);
+    char* pre = strchr(string, space);
+    printf("pre: %s\n", pre);
     m_pre = get_malloced_copy(pre);
 
     // get n_complete
-    char* n_complete = strrchr(string, slash);
+    char* n_complete = strchr(string, slash);
     if (!n_complete) {
         // path not partially given
         // take rest after command
@@ -227,43 +228,26 @@ struct approach_split* auto_string_manip(char* string) {
         return app_split;
     }
     m_n_complete = get_malloced_copy(n_complete);
+    // format n_complete
     format_n_complete(m_n_complete);
 
     // get path
-    char* path = strtok(NULL, delimiter);
-    if (path) {
-        m_path = get_malloced_copy(path);
-    }
 
     // bind everything to struct
-    app_split->pre = pre;
-    app_split->path = path;
-    app_split->n_complete = n_complete;
-
-    if (strchr(string, slash)) {
-        // already entered a part of path
-        // take only last part of given path
-        crop_string_to_end(string, slash);
-        // tokenize string
-        char* tok = strtok(string, delimiter);
-        while (tok != NULL) {
-            tok_concat(tok);
-            pch = strtok (NULL, " ,.-");
-        }
-    } else {
-        // only command and a part of a word is given
-    }
-    printf("string after crop: %s\n", string);
+    app_split->pre = m_pre;
+    app_split->path = m_path;
+    app_split->n_complete = m_n_complete;
+    return app_split;
 }
 
 // format n_complete string
 void format_n_complete(char* n_complete) {
-    char single_quotes = "'";
+    char* single_quotes = "'";
     char* back_n_quotes = "\\\"";
     // remove double-quotes & backslashes
     remove_chars_from_string(n_complete, back_n_quotes);
     // put between single-quotes
-    string_bwn_char(n_complete, single_quotes);
+    string_bwn_char(&n_complete, single_quotes);
 }
 
 // frees an apprach split struct with all its members
