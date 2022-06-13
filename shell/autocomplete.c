@@ -243,7 +243,7 @@ struct approach_split* auto_string_manip(char* string) {
         return app_split;
     }
     unsigned int n_complete_len = (string + string_len) - n_complete - 1;
-    m_n_complete = get_malloc_empty_string(n_complete_len);
+    m_n_complete = get_malloced_empty_string(n_complete_len);
     strncpy(m_n_complete, n_complete + 1, n_complete_len);
     printf("n_complete: %s\n", m_n_complete);
 
