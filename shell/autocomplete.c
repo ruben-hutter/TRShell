@@ -199,7 +199,8 @@ void print_matching_entries_from_list(char** entry_list, int list_length, char* 
 // manipulates the given string for autocompletion [autocomplete]
 struct approach_split* auto_string_manip(char* string) {
     // struct ptr to return
-    struct approach_split* app_split;
+    struct approach_split* app_split = (struct approach_split*)
+        malloc(sizeof(struct approach_split));
     // members to bind to struct
     char* m_pre;
     char* m_path;
@@ -207,18 +208,22 @@ struct approach_split* auto_string_manip(char* string) {
     // delimiters
     char slash = '/';
     char space = ' ';
+    // input length
+    int string_len = strlen(string);
 
     // get pre
     char* pre = strchr(string, space);
-    printf("pre: %s\n", pre);
-    m_pre = get_malloced_copy(pre);
+    unsigned int pre_len = pre - string;
+    m_pre = get_malloced_empty_string(pre_len);
+    strncpy(m_pre, string, pre_len);
+    printf("pre: %s\n", m_pre);
 
     // get n_complete
     char* n_complete = strchr(string, slash);
     if (!n_complete) {
         // path not partially given
         // take rest after command
-        n_complete = strrchr(string, space);
+        unsigned int n_complete_len = string_len - pre + 1;
         m_n_complete = get_malloced_copy(n_complete);
         // format n_complete
         format_n_complete(m_n_complete);
