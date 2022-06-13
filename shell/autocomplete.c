@@ -366,7 +366,7 @@ char* concat_name_to_path(char* path, char* name) {
 // checks if a file is executable
 int is_executable_file(struct stat* entry_info) {
     return (
-        (entry_info->st_mode & S_IFMT) != S_IFDIR
+        !S_ISDIR(entry_info->st_mode)
         && (
             (entry_info->st_mode & S_IXUSR)
             || (entry_info->st_mode & S_IXGRP)
