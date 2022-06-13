@@ -151,7 +151,7 @@ char** get_binaries(int* bin_lst_idx) {
             entry_start++;
         }
     }
-    //append_builtin_utilities_to_list(binaries, bin_cnt_ptr, bin_lst_idx);
+    append_builtin_utilities_to_list(&binaries, bin_cnt_ptr, bin_lst_idx);
     return binaries;
 }
 
@@ -181,21 +181,21 @@ void append_names_to_list(char* path, char*** list_ptr, int* list_len_ptr, int* 
 }
 
 // appends the naems of all builtin utilities to the list
-void append_builtin_utilities_to_list(char** name_list, int* name_list_length, int* name_list_index) {
+void append_builtin_utilities_to_list(char*** list_ptr, int* list_len_ptr, int* list_idx_ptr) {
     // iterate over builtin utilities
     for (int idx = 0; idx < builtin_utility_count; idx++) {
         // expand buffer if necessary
-        if (name_list_index >= name_list_length) {
-            char** new_list = realloc(name_list, 2 * (*name_list_length) * sizeof(char*));
+        if (*list_idx_ptr >= *list_len_ptr) {
+            char** new_list = (char**) realloc(*list_ptr, 2 * (*list_len_ptr) * sizeof(char*));
             if (!new_list) {
-                free_string_arr(name_list, *name_list_index);
+                free_string_arr(*list_ptr, *list_idx_ptr);
                 return;
             }
-            name_list = new_list;
-            *name_list_length *= 2;
+            *list_ptr = new_list;
+            (*list_len_ptr) *= 2;
         }
         // append new element
-        name_list[(*name_list_index)++] = get_malloced_copy(builtin_utilities[idx].name);
+        (*list_ptr)[(*list_idx_ptr)++] = get_malloced_copy(builtin_utilities[idx].name);
     }
 }
 

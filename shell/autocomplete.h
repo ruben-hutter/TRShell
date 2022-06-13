@@ -42,7 +42,7 @@ char** get_binaries(int* binaries_length);
 void append_names_to_list(char* path, char*** name_list, int* name_list_length, int* name_list_index);
 
 // appends the naems of all builtin utilities to the list
-void append_builtin_utilities_to_list(char** name_list, int* name_list_length, int* name_list_index);
+void append_builtin_utilities_to_list(char*** name_list, int* name_list_length, int* name_list_index);
 
 // returns the single matching binaries if existing
 // returns null on single or multiple matches
