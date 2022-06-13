@@ -85,9 +85,9 @@ char* querry_binaries(char* approach) {
     int* binaries_length = &bin_len;
     // get list of all binaries including builtins
     char** binaries_list = get_binaries(binaries_length);
-    /*
     // compare approach against list
     char* match = compare_against_list(approach, binaries_list, *binaries_length);
+    /*
     // on double match
     if (!match) {
         // print all matching
@@ -96,8 +96,8 @@ char* querry_binaries(char* approach) {
     free_string_arr(binaries_list, *binaries_length);
     return match;
     */
-    char* str = "succ_string";
-    char* match = get_malloced_copy(str);
+    // char* str = "succ_string";
+    // char* match = get_malloced_copy(str);
     return match;
 }
 
@@ -226,7 +226,6 @@ struct approach_split* auto_string_manip(char* string) {
     unsigned int pre_len = pre - string + 1;
     m_pre = get_malloced_empty_string(pre_len);
     strncpy(m_pre, string, pre_len);
-    printf("pre: [%s]\n", m_pre);
 
     // get n_complete
     char* n_complete = strrchr(string, slash);
@@ -236,7 +235,6 @@ struct approach_split* auto_string_manip(char* string) {
         unsigned int n_complete_len = string_len - pre_len - 1;
         m_n_complete = get_malloced_empty_string(n_complete_len);
         strncpy(m_n_complete, pre + 1, n_complete_len);
-        printf("n_complete: [%s]\n", m_n_complete);
         // format n_complete
         format_n_complete(&m_n_complete);
         // bind everything to struct
@@ -249,13 +247,11 @@ struct approach_split* auto_string_manip(char* string) {
     strncpy(m_n_complete, n_complete + 1, n_complete_len);
     // format n_complete
     format_n_complete(&m_n_complete);
-    printf("n_complete: [%s]\n", m_n_complete);
 
     // get path
     unsigned int path_len = string_len - pre_len - n_complete_len;
     m_path = get_malloced_empty_string(path_len);
     strncpy(m_path, pre + 1, path_len);
-    printf("path: [%s]\n", m_path);
 
     // bind everything to struct
     app_split->pre = m_pre;
