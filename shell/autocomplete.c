@@ -204,12 +204,7 @@ void print_matching_entries_from_list(char** entry_list, int list_length, char* 
     // print all lines
 }
 
-struct approach_split* auto_string_manip(char* string) {
-    return NULL;
-}
-
-/*
-// manipulates the given string for autocompletion [autocomplete]
+// manipulates the given string for autocompletion
 struct approach_split* auto_string_manip(char* string) {
     // struct ptr to return
     struct approach_split* app_split = (struct approach_split*)
@@ -264,7 +259,6 @@ struct approach_split* auto_string_manip(char* string) {
     app_split->n_complete = m_n_complete;
     return app_split;
 }
-*/
 
 // format n_complete string
 void format_n_complete(char* n_complete) {

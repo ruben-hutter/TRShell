@@ -51,8 +51,6 @@ char* querry_binaries(char* approach);
 // prints all entries of a list in a ls like fashion to the std out
 void print_matching_entries_from_list(char** entry_list, int list_length, char* approach);
 
-struct approach_split* auto_string_manip(char* string);
-
 // manipulates the given string for autocompletion
 struct approach_split* auto_string_manip(char* string);
 
