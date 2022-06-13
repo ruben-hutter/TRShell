@@ -16,10 +16,8 @@ char* autocomplete(char* approach) {
     // test: approach is single word
     if (is_single_word(approach)) {
         // complete binaries and builtins
-        printf("is sgl_wrd");
         return querry_binaries(approach);
     }
-    printf("succ");
     return NULL;
     /*
     
@@ -87,17 +85,12 @@ char* querry_binaries(char* approach) {
     char** binaries_list = get_binaries(binaries_length);
     // compare approach against list
     char* match = compare_against_list(approach, binaries_list, *binaries_length);
-    /*
     // on double match
     if (!match) {
         // print all matching
         print_matching_entries_from_list(binaries_list, *binaries_length, approach);
     }
     free_string_arr(binaries_list, *binaries_length);
-    return match;
-    */
-    // char* str = "succ_string";
-    // char* match = get_malloced_copy(str);
     return match;
 }
 
@@ -110,7 +103,6 @@ char** get_binaries(int* bin_lst_idx) {
     int* bin_cnt_ptr = &bin_cnt;
     // current insert position in the list
     *bin_lst_idx = 0;
-
     // add dir and file names to list
     // get comma seperated list of directories
     char* env_path = get_local_table_entry_value("PATH");
@@ -164,20 +156,25 @@ void append_binaries_to_list(char* path, char*** list_ptr, int* list_len_ptr,
     if ((dir = opendir(path)) != NULL) {
         // append all file and directory names to list
         while ((entry = readdir(dir)) != NULL) {
-            if (strcmp(".", entry->d_name) == 0
-                || strcmp("..", entry->d_name) == 0) {
+            // ignore . link
+            if (strcmp(".", entry->d_name) == 0) {
+                continue;
+            }
+            // ignore .. link
+            if (strcmp("..", entry->d_name) == 0) {
                 continue;
             }
             // get file information
-            char* abs_path = concat_name_to_path(path, entry->d_name);
             struct stat entry_info;
+            // get abs path of file
+            char* abs_path = concat_name_to_path(path, entry->d_name);
+            // handle inaccessible file info
             if (stat(abs_path, &entry_info) == -1) {
                 continue;
             }
-            // check if file is not a directory and is executable by one of the
-            // permission classes (owner, group, others)
-            if (is_executable_file(&entry_info)) {
-                // DO
+            // ignore directories and files that are not executable
+            if (!is_executable_file(&entry_info)) {
+                continue;
             }
             free(abs_path);
             // expand buffer if necessary
@@ -222,6 +219,12 @@ void append_builtin_utilities_to_list(char*** list_ptr, int* list_len_ptr, int* 
 void print_matching_entries_from_list(char** entry_list, int list_length, char* approach) {
     // group entries to lines
     // print all lines
+    for (int idx = 0; idx < list_length; idx++) {
+        if (!string_starts_with(entry_list[idx], approach)) {
+            continue;
+        }
+        printf("%s\n", entry_list[idx]);
+    }
 }
 
 // manipulates the given string for autocompletion
@@ -356,10 +359,9 @@ char* compare_against_list(char* approach, char** entry_list, int list_length) {
 
 // concatenates path with filename
 char* concat_name_to_path(char* path, char* name) {
-    char* backslash = "\\";
-    int len = get_concatenated_length(3, path, backslash, name);
+    int len = get_concatenated_length(2, path, name);
     char* concat_string = get_malloced_empty_string(len);
-    concatenate(3, concat_string, path, backslash, name);
+    concatenate(2, concat_string, path, name);
     return concat_string;
 }
 
