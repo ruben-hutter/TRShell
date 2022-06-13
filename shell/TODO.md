@@ -12,6 +12,8 @@
 [] tilde for path change
 [~] string manip
 [x] string_between_char(char* string, char delimiter) [string_utils]
+[] autocomplete -> get_binaries() refactor with strtok
+[] executor -> search_path() refactor with strtok
 
 ---
 

@@ -20,7 +20,7 @@ char* autocomplete(char* approach) {
         return querry_binaries(approach);
     }
     printf("succ");
-    return "foo";
+    return NULL;
     /*
     
     // complete directories
@@ -81,8 +81,8 @@ char* querry_directories(char* approach) {
 // returns null on single or multiple matches
 char* querry_binaries(char* approach) {
     // get list of binaries
-    int* binaries_length;
-    *binaries_length = 0;
+    int bin_len = 0;
+    int* binaries_length = &bin_len;
     // get list of all binaries including builtins
     char** binaries_list = get_binaries(binaries_length);
     /*
@@ -104,11 +104,10 @@ char* querry_binaries(char* approach) {
 // returns a list of all binaries at the locations specified in PATH
 char** get_binaries(int* name_list_index) {
     // create list to store dir and file names
-    char** name_list = malloc(DEFAULT_LENGTH * sizeof(char*));
-    /*
+    char** name_list = (char**) malloc(DEFAULT_LENGTH * sizeof(char*));
     // current mex cap of the list
-    int* name_list_length;
-    *name_list_length = DEFAULT_LENGTH;
+    int name_list_len = DEFAULT_LENGTH;
+    int* name_list_len_ptr = &name_list_len;
     // current insert position in the list
     *name_list_index = 0;
 
@@ -143,7 +142,7 @@ char** get_binaries(int* name_list_index) {
             strcat(path, "/");
         }
         // get file and dir names in that folder and add to list
-        append_names_to_list(path, name_list, name_list_length, name_list_index);
+        append_names_to_list(path, name_list, name_list_len_ptr, name_list_index);
         // process next path
         // move pointers to start of next entry
         entry_start = entry_end;
@@ -152,6 +151,7 @@ char** get_binaries(int* name_list_index) {
             entry_start++;
         }
     }
+    /*
     append_builtin_utilities_to_list(name_list, name_list_length, name_list_index);
     */
     return name_list;
@@ -179,8 +179,6 @@ void append_names_to_list(char* path, char** name_list, int* name_list_length, i
             name_list[(*name_list_index)++] = get_malloced_copy(ent->d_name);
         }
         closedir (dir);
-    } else {
-        return;
     }
 }
 
