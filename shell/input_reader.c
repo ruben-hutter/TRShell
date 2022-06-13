@@ -1,6 +1,7 @@
 #include "input_reader.h"
 
 static struct termios old_settings;
+int dump_buffer_flag = 0;
 
 // reads user input from the stdin
 char* read_from_input() {
@@ -67,6 +68,7 @@ char* read_from_input() {
 }
 
 int get_string_from_input(char* buffer, int buffer_size) {
+    // init buffer indexes
     int buffer_position = 0;
     int buffer_end_position = 0;
     int* buff_pos_ptr = &buffer_position;
@@ -74,6 +76,18 @@ int get_string_from_input(char* buffer, int buffer_size) {
     int current_char;
 
     memset(buffer, '\0', READ_BUFFER_SIZE * sizeof(char));
+    
+    // handle previous buffer dumped
+    if (dump_buffer_flag) {
+        // reset buffer dump flag
+        dump_buffer_flag = 0;
+        if (last_approach) {
+            // move last approach to buffer
+            set_buffer_to_string(last_approach, buffer, buff_pos_ptr, buff_end_pos_ptr);
+            printf(last_approach);
+        } 
+    }
+
     // get chars from stdin
     while(current_char = getchar()) {
         // handel backspace
@@ -85,6 +99,10 @@ int get_string_from_input(char* buffer, int buffer_size) {
         if (current_char == '\t') {
             char* result = autocomplete(buffer);
             if (!result) {
+                // handle dump buffer flag
+                if (dump_buffer_flag) {
+                    return 0;
+                }
                 continue;
             }
             remove_line();
@@ -93,7 +111,7 @@ int get_string_from_input(char* buffer, int buffer_size) {
             printf(result);
             continue;
         }
-        // hadle ararows
+        // hadle arrows
         if (current_char == '\033') {
             handle_arrow(buffer, buff_pos_ptr, buff_end_pos_ptr);
             continue;
@@ -132,6 +150,11 @@ int get_string_from_input(char* buffer, int buffer_size) {
             buffer_end_position++;
         }
     }
+}
+
+// initiates the dump of the current line buffer
+void dump_buffer() {
+    dump_buffer_flag = 1;
 }
 
 // removes last char and updates buffer

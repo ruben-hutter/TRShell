@@ -17,6 +17,8 @@ struct approach_split {
     char* n_complete;
 };
 
+extern char * last_approach;
+
 // tries to autocomplete the approach and returns the completed version if a unique one exists
 // returns NULL if none or multiple possible matches are found.
 // multiple matches ar printed to the command line

@@ -4,7 +4,7 @@
 char* last_approach = NULL;
 
 char* autocomplete(char* approach) {
-    //update_last_approach(approach);
+    update_last_approach(approach);
     // test: approach is empty string
     if (is_only_whitespace(approach)) {
         return NULL;
@@ -220,6 +220,10 @@ void print_matching_entries_from_list(char** entry_list, int list_length, char* 
         printf("%-26s%c", entry_list[idx], format[format_index % 3]);
         format_index++;
     }
+    // print newline if no already happened above
+    if (format_index % 3 != 0) {
+        printf("\n");
+    } 
 }
 
 // manipulates the given string for autocompletion
@@ -344,6 +348,7 @@ char* compare_against_list(char* approach, char** entry_list, int list_length) {
         // if match was previously found -> return NULL as match is not unique
         if (found) {
             print_matching_entries_from_list(entry_list, list_length, approach);
+            dump_buffer();
             return NULL;
         }
         found = true;

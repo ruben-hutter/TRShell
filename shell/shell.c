@@ -17,6 +17,9 @@ int main(int argc, char **argv) {
 
         // check for nullpointer
         if (!input_string) {
+            if (dump_buffer_flag) {
+                continue;
+            }
             exit(EXIT_SUCCESS);
         }   
 
