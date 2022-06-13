@@ -62,7 +62,7 @@ char* querry_directories(char* approach) {
     // current insert position in the list
     int* name_list_index;
     *name_list_index = 0;
-    append_names_to_list(ap_split->path, &name_list, name_list_length, name_list_index);
+    append_binaries_to_list(ap_split->path, &name_list, name_list_length, name_list_index);
     // compare against list
     char* match = compare_against_list(ap_split->n_complete, name_list, *name_list_index);
     // on double match
@@ -142,7 +142,7 @@ char** get_binaries(int* bin_lst_idx) {
             strcat(path, "/");
         }
         // get file and dir names in that folder and add to list
-        append_names_to_list(path, &binaries, bin_cnt_ptr, bin_lst_idx);
+        append_binaries_to_list(path, &binaries, bin_cnt_ptr, bin_lst_idx);
         // process next path
         // move pointers to start of next entry
         entry_start = entry_end;
@@ -156,16 +156,34 @@ char** get_binaries(int* bin_lst_idx) {
 }
 
 // append the names of all files at the specified path to the list
-void append_names_to_list(char* path, char*** list_ptr, int* list_len_ptr, int* list_idx_ptr) {
+void append_binaries_to_list(char* path, char*** list_ptr, int* list_len_ptr,
+                            int* list_idx_ptr) {
     DIR *dir;
-    struct dirent *ent;
+    struct dirent *entry;
     // open dir at path
     if ((dir = opendir(path)) != NULL) {
         // append all file and directory names to list
-        while ((ent = readdir(dir)) != NULL) {
+        while ((entry = readdir(dir)) != NULL) {
+            if (strcmp(".", entry->d_name) == 0
+                || strcmp("..", entry->d_name) == 0) {
+                continue;
+            }
+            // get file information
+            char* abs_path = concat_name_to_path(path, entry->d_name);
+            struct stat entry_info;
+            if (stat(abs_path, &entry_info) == -1) {
+                continue;
+            }
+            // check if file is not a directory and is executable by one of the
+            // permission classes (owner, group, others)
+            if (is_executable_file(&entry_info)) {
+                // DO
+            }
+            free(abs_path);
             // expand buffer if necessary
             if (*list_idx_ptr >= *list_len_ptr) {
-                char** new_list = (char**) realloc(*list_ptr, 2 * (*list_len_ptr) * sizeof(char*));
+                char** new_list = (char**) realloc(*list_ptr,
+                    2 * (*list_len_ptr) * sizeof(char*));
                 if (!new_list) {
                     free_string_arr(*list_ptr, *list_idx_ptr);
                     return;
@@ -174,7 +192,7 @@ void append_names_to_list(char* path, char*** list_ptr, int* list_len_ptr, int* 
                 (*list_len_ptr) *= 2;
             }
             // append new element
-            (*list_ptr)[(*list_idx_ptr)++] = get_malloced_copy(ent->d_name);
+            (*list_ptr)[(*list_idx_ptr)++] = get_malloced_copy(entry->d_name);
         }
         closedir(dir);
     }
@@ -334,4 +352,25 @@ char* compare_against_list(char* approach, char** entry_list, int list_length) {
         match = get_malloced_copy(entry_list[index]);
     }
     return match;
+}
+
+// concatenates path with filename
+char* concat_name_to_path(char* path, char* name) {
+    char* backslash = "\\";
+    int len = get_concatenated_length(3, path, backslash, name);
+    char* concat_string = get_malloced_empty_string(len);
+    concatenate(3, concat_string, path, backslash, name);
+    return concat_string;
+}
+
+// checks if a file is executable
+int is_executable_file(struct stat* entry_info) {
+    return (
+        (entry_info->st_mode & S_IFMT) != S_IFDIR
+        && (
+            (entry_info->st_mode & S_IXUSR)
+            || (entry_info->st_mode & S_IXGRP)
+            || (entry_info->st_mode & S_IXOTH)
+        )
+    );
 }
