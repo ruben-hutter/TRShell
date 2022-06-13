@@ -62,7 +62,7 @@ char* querry_directories(char* approach) {
     // current insert position in the list
     int* name_list_index;
     *name_list_index = 0;
-    append_names_to_list(ap_split->path, name_list, name_list_length, name_list_index);
+    append_names_to_list(ap_split->path, &name_list, name_list_length, name_list_index);
     // compare against list
     char* match = compare_against_list(ap_split->n_complete, name_list, *name_list_index);
     // on double match
@@ -142,7 +142,7 @@ char** get_binaries(int* name_list_index) {
             strcat(path, "/");
         }
         // get file and dir names in that folder and add to list
-        append_names_to_list(path, name_list, name_list_len_ptr, name_list_index);
+        append_names_to_list(path, &name_list, name_list_len_ptr, name_list_index);
         // process next path
         // move pointers to start of next entry
         entry_start = entry_end;
@@ -158,27 +158,27 @@ char** get_binaries(int* name_list_index) {
 }
 
 // append the names of all files at the specified path to the list
-void append_names_to_list(char* path, char** name_list, int* name_list_length, int* name_list_index) {
+void append_names_to_list(char* path, char*** name_list, int* name_list_length, int* name_list_index) {
     DIR *dir;
     struct dirent *ent;
     // open dir at path
-    if ((dir = opendir (path)) != NULL) {
+    if ((dir = opendir(path)) != NULL) {
         // append all file and directory names to list
-        while ((ent = readdir (dir)) != NULL) {
+        while ((ent = readdir(dir)) != NULL) {
             // expand buffer if necessary
-            if (name_list_index >= name_list_length) {
-                char** new_list = realloc(name_list, 2 * (*name_list_length) * sizeof(char*));
+            if (*name_list_index >= *name_list_length) {
+                char** new_list = (char**) realloc(*name_list, 2 * (*name_list_length) * sizeof(char*));
                 if (!new_list) {
-                    free_string_arr(name_list, *name_list_index);
+                    free_string_arr(*name_list, *name_list_index);
                     return;
                 }
-                name_list = new_list;
+                *name_list = new_list;
                 *name_list_length *= 2;
             }
             // append new element
-            name_list[(*name_list_index)++] = get_malloced_copy(ent->d_name);
+            *name_list[(*name_list_index)++] = get_malloced_copy(ent->d_name);
         }
-        closedir (dir);
+        closedir(dir);
     }
 }
 

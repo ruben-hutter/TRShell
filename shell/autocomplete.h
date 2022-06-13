@@ -39,7 +39,7 @@ char* querry_directories(char* approach);
 char** get_binaries(int* binaries_length);
 
 // append the names of all files and directories at the specified path to the list
-void append_names_to_list(char* path, char** name_list, int* name_list_length, int* name_list_index);
+void append_names_to_list(char* path, char*** name_list, int* name_list_length, int* name_list_index);
 
 // appends the naems of all builtin utilities to the list
 void append_builtin_utilities_to_list(char** name_list, int* name_list_length, int* name_list_index);
