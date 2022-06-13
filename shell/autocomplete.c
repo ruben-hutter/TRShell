@@ -197,18 +197,42 @@ void print_matching_entries_from_list(char** entry_list, int list_length, char* 
 }
 
 // manipulates the given string for autocompletion [autocomplete]
-void auto_string_manip(char* string) {
-    char* pre;
-    char* path;
-    char* n_complete;
+struct approach_split* auto_string_manip(char* string) {
+    // struct ptr to return
+    struct approach_split* app_split;
+    // members to bind to struct
+    char* m_pre;
+    char* m_path;
+    char* m_n_complete;
+    // delimiters
     char slash = '/';
-    char* delimiter = "\\ \"";  // backslash, space and double-quotes
+    char space = ' ';
 
     // get pre
-
-    // get path
+    char* pre = strchar(string, space);
+    m_pre = get_malloced_copy(pre);
 
     // get n_complete
+    char* n_complete = strrchr(string, slash);
+    if (!n_complete) {
+        // path not partially given
+        // take rest after command
+        n_complete = strrchr(string, space);
+        // remove double-quotes & backslashes
+        // put between single-quotes
+        m_n_complete = get_malloced_copy(n_complete);
+    }
+
+    // get path
+    char* path = strtok(NULL, delimiter);
+    if (path) {
+        m_path = get_malloced_copy(path);
+    }
+
+    // bind everything to struct
+    app_split->pre = pre;
+    app_split->path = path;
+    app_split->n_complete = n_complete;
 
     if (strchr(string, slash)) {
         // already entered a part of path

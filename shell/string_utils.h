@@ -61,9 +61,6 @@ char* compare_against_list(char* approach, char** entry_list, int list_length);
 // returns true iff the input_string starts with the pattern_string
 int string_starts_with(const char* input_string, const char* pattern_string);
 
-// takes destination string and input and concats it with a space in between
-void tok_concat(char* destination, char* input_string);
-
 // checkes if a string is a word
 int is_single_word(char* string);
 
