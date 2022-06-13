@@ -102,14 +102,14 @@ char* querry_binaries(char* approach) {
 }
 
 // returns a list of all binaries at the locations specified in PATH
-char** get_binaries(int* name_list_index) {
+char** get_binaries(int* bin_lst_idx) {
     // create list to store dir and file names
-    char** name_list = (char**) malloc(DEFAULT_LENGTH * sizeof(char*));
+    char** binaries = (char**) malloc(DEFAULT_LENGTH * sizeof(char*));
     // current mex cap of the list
-    int name_list_len = DEFAULT_LENGTH;
-    int* name_list_len_ptr = &name_list_len;
+    int bin_cnt = DEFAULT_LENGTH;
+    int* bin_cnt_ptr = &bin_cnt;
     // current insert position in the list
-    *name_list_index = 0;
+    *bin_lst_idx = 0;
 
     // add dir and file names to list
     // get comma seperated list of directories
@@ -142,7 +142,7 @@ char** get_binaries(int* name_list_index) {
             strcat(path, "/");
         }
         // get file and dir names in that folder and add to list
-        append_names_to_list(path, &name_list, name_list_len_ptr, name_list_index);
+        append_names_to_list(path, &binaries, bin_cnt_ptr, bin_lst_idx);
         // process next path
         // move pointers to start of next entry
         entry_start = entry_end;
@@ -151,10 +151,8 @@ char** get_binaries(int* name_list_index) {
             entry_start++;
         }
     }
-    /*
-    append_builtin_utilities_to_list(name_list, name_list_length, name_list_index);
-    */
-    return name_list;
+    //append_builtin_utilities_to_list(binaries, bin_cnt_ptr, bin_lst_idx);
+    return binaries;
 }
 
 // append the names of all files at the specified path to the list
