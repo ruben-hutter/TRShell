@@ -18,12 +18,8 @@ char* autocomplete(char* approach) {
         // complete binaries and builtins
         return querry_binaries(approach);
     }
-    return NULL;
-    /*
-    
     // complete directories
     return querry_directories(approach);
-    */
 }
 
 // returns 1 if the approach is a history querry
@@ -46,28 +42,171 @@ void update_last_approach(char* approach) {
 // returns the single matching directories if existing
 // returns null on single or multiple matches
 char* querry_directories(char* approach) {
-    bool found = false;
+    bool no_path = false;
     // split string into pre, path and pth_approach
     struct approach_split* ap_split = auto_string_manip(approach);
-    // get all dir and file names at path
-    int* dirs_length;
-    *dirs_length = 0;
+    // set path in case of null
+    if (!ap_split->path) {
+        no_path = true;
+        ap_split->path = get_current_working_path();
+    }
     // create list to store dir and file names
-    char** name_list = malloc(DEFAULT_LENGTH * sizeof(char*));
+    char** dirs = (char**) malloc(DEFAULT_LENGTH * sizeof(char*));
     // current mex cap of the list
-    int* name_list_length;
-    *name_list_length = DEFAULT_LENGTH;
+    int dirs_len = DEFAULT_LENGTH;
+    int* dirs_len_ptr = &dirs_len;
     // current insert position in the list
-    int* name_list_index;
-    *name_list_index = 0;
-    append_binaries_to_list(ap_split->path, &name_list, name_list_length, name_list_index);
+    int dirs_idx = 0;
+    int* dirs_idx_ptr = &dirs_idx;
+    append_files_to_list(ap_split->path, &dirs, dirs_len_ptr, dirs_idx_ptr);
+    append_dirs_to_list(ap_split->path, &dirs, dirs_len_ptr, dirs_idx_ptr);
     // compare against list
-    char* match = compare_against_list(ap_split->n_complete, name_list, *name_list_index);
+    char* match = compare_against_list(ap_split->n_complete, dirs, dirs_idx);
+
+     //DEBUG-------------------------------
+    printf("\nlooking for: %s", ap_split->n_complete);
+    if (match) {
+        printf("\nmatch: %s", match);
+    } else {
+        printf("\nno match :(");
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //DEBUG-------------------------------
+
     // free name list
-    free_string_arr(name_list, *name_list_index);
+    free_string_arr(dirs, dirs_idx);
+    // handle no match
+    if (!match) {
+        // free an approach split object
+        free_approach_split(ap_split);
+        return match;
+    }
+    // reconstruct input
+    if (no_path) {
+        int ipt_len = get_concatenated_length(3, ap_split->pre, " ", match);
+        char* input = get_malloced_empty_string(ipt_len);
+        concatenate(3, input, ap_split->pre, " ", match);
+        free(match);
+        match = input;
+    } else {
+        int ipt_len = get_concatenated_length(4, ap_split->pre, " ", ap_split->path, match);
+        char* input = get_malloced_empty_string(ipt_len);
+        concatenate(4, input, ap_split->pre, " ", ap_split->path, match);
+        free(match);
+        match = input;
+    }
     // free an approach split object
     free_approach_split(ap_split);
     return match;
+}
+
+// append the names of all files at the specified path to the list
+void append_files_to_list(char* path, char*** list_ptr, int* list_len_ptr,
+                            int* list_idx_ptr) {
+    DIR *dir;
+    struct dirent *entry;
+    // open dir at path
+    if ((dir = opendir(path)) != NULL) {
+        // append all file and directory names to list
+        while ((entry = readdir(dir)) != NULL) {
+            // ignore . link
+            if (strcmp(".", entry->d_name) == 0) {
+                continue;
+            }
+            // ignore .. link
+            if (strcmp("..", entry->d_name) == 0) {
+                continue;
+            }
+            // get file information
+            struct stat entry_info;
+            // get abs path of file
+            char* abs_path = concat_name_to_path(path, entry->d_name);
+            // handle inaccessible file info
+            if (stat(abs_path, &entry_info) == -1) {
+                continue;
+            }
+            // ignore directories and files that are not executable
+            if (S_ISDIR(entry_info.st_mode)) {
+                continue;
+            }
+            free(abs_path);
+            // expand buffer if necessary
+            if (*list_idx_ptr >= *list_len_ptr) {
+                char** new_list = (char**) realloc(*list_ptr,
+                    2 * (*list_len_ptr) * sizeof(char*));
+                if (!new_list) {
+                    free_string_arr(*list_ptr, *list_idx_ptr);
+                    return;
+                }
+                *list_ptr = new_list;
+                (*list_len_ptr) *= 2;
+            }
+            // append new element
+            (*list_ptr)[(*list_idx_ptr)++] = get_malloced_copy(entry->d_name);
+        }
+        closedir(dir);
+    }
+}
+
+// append the names of all directories at the specified path to the list
+void append_dirs_to_list(char* path, char*** list_ptr, int* list_len_ptr,
+                            int* list_idx_ptr) {
+    DIR *dir;
+    struct dirent *entry;
+    // open dir at path
+    if ((dir = opendir(path)) != NULL) {
+        // append all file and directory names to list
+        while ((entry = readdir(dir)) != NULL) {
+            // ignore . link
+            if (strcmp(".", entry->d_name) == 0) {
+                continue;
+            }
+            // ignore .. link
+            if (strcmp("..", entry->d_name) == 0) {
+                continue;
+            }
+            // get file information
+            struct stat entry_info;
+            // get abs path of file
+            char* abs_path = concat_name_to_path(path, entry->d_name);
+            // handle inaccessible file info
+            if (stat(abs_path, &entry_info) == -1) {
+                continue;
+            }
+            // ignore directories and files that are not executable
+            if (!S_ISDIR(entry_info.st_mode)) {
+                continue;
+            }
+            free(abs_path);
+            // expand buffer if necessary
+            if (*list_idx_ptr >= *list_len_ptr) {
+                char** new_list = (char**) realloc(*list_ptr,
+                    2 * (*list_len_ptr) * sizeof(char*));
+                if (!new_list) {
+                    free_string_arr(*list_ptr, *list_idx_ptr);
+                    return;
+                }
+                *list_ptr = new_list;
+                (*list_len_ptr) *= 2;
+            }
+            // append new element
+            (*list_ptr)[(*list_idx_ptr)++] = get_malloced_copy(entry->d_name);
+        }
+        closedir(dir);
+    }
 }
 
 // returns the single matching binaries if existing
@@ -137,7 +276,7 @@ char** get_binaries(int* bin_lst_idx) {
     return binaries;
 }
 
-// append the names of all files at the specified path to the list
+// append the names of all executable files at the specified path to the list
 void append_binaries_to_list(char* path, char*** list_ptr, int* list_len_ptr,
                             int* list_idx_ptr) {
     DIR *dir;

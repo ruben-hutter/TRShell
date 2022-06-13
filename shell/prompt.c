@@ -98,6 +98,20 @@ char* get_current_working_dir() {
     return dir_name;
 }
 
+// gets the current working path
+char* get_current_working_path() {
+    // get PWD from environment vars
+    char* pwd = get_local_table_entry_value("PWD");
+    if (!pwd) {
+        // if not found -> return placeholder
+        return PWD_PLACEHOLDER;
+    }
+    int pth_len = get_concatenated_length(2, pwd, "/");
+    char* dir_path = get_malloced_empty_string(pth_len);
+    concatenate(2, dir_path, pwd, "/");
+    return dir_path;
+}
+
 void print_prompt_2() {
     char* prompt_string = create_user_prompt(PROMPT_2);
     printf(prompt_string);

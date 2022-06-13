@@ -17,13 +17,15 @@
 #define DELIMITER '/'
 
 #define USER_PLACEHOLDER "no_user_name"
-#define PWD_PLACEHOLDER "no_pwd"
+#define PWD_PLACEHOLDER "home/"
 #define HOME "~"
 
 // gets the username of the current user
 char* get_user_name(void);
 // gets the current working dir
 char* get_current_working_dir(void);
+// gets the current working path
+char* get_current_working_path(void); 
 
 // gets the prompt symbol for prompt 1
 char* get_prompt_symbol_1(void);

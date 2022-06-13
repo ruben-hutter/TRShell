@@ -38,10 +38,16 @@ char* querry_history(char* approach);
 // returns null on single or multiple matches
 char* querry_directories(char* approach);
 
+// append the names of all files at the specified path to the list
+void append_files_to_list(char* path, char*** list_ptr, int* list_len_ptr, int* list_idx_ptr);
+
+// append the names of all directories at the specified path to the list
+void append_dirs_to_list(char* path, char*** list_ptr, int* list_len_ptr, int* list_idx_ptr);
+
 // returns a list of all binaries at the locations specified in PATH
 char** get_binaries(int* binaries_length);
 
-// append the names of all files and directories at the specified path to the list
+// append the names of all executable files and directories at the specified path to the list
 void append_binaries_to_list(char* path, char*** name_list, int* name_list_length, int* name_list_index);
 
 // appends the naems of all builtin utilities to the list
