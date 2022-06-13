@@ -4,27 +4,35 @@
 char* last_approach = NULL;
 
 char* autocomplete(char* approach) {
-    update_last_approach(approach);
+    //update_last_approach(approach);
     // test: approach is empty string
     if (is_only_whitespace(approach)) {
+        printf("is e_str");
         return NULL;
-    }
-    // test: approach is single word
-    if (is_single_word(approach)) {
-        // complete binaries and builtins
-        return querry_directories(approach);
     }
     // check if approach is history querry
     if (is_history_querry(approach)) {
         return querry_history(approach);
     }
+    // test: approach is single word
+    if (is_single_word(approach)) {
+        // complete binaries and builtins
+        printf("is sgl_wrd");
+        return NULL;
+        //return querry_binaries(approach);
+    }
+    printf("succ");
+    return "foo";
+    /*
+    
     // complete directories
-    return querry_binaries(approach);
+    return querry_directories(approach);
+    */
 }
 
 // returns 1 if the approach is a history querry
 int is_history_querry(char* approach) {
-    if (approach[0] == '?' && strlen(approach) > 2) {
+    if (approach[0] == '?' && strlen(approach) > 1) {
         return 1;
     }
     return 0;
@@ -196,6 +204,11 @@ void print_matching_entries_from_list(char** entry_list, int list_length, char* 
     // print all lines
 }
 
+struct approach_split* auto_string_manip(char* string) {
+    return NULL;
+}
+
+/*
 // manipulates the given string for autocompletion [autocomplete]
 struct approach_split* auto_string_manip(char* string) {
     // struct ptr to return
@@ -251,6 +264,7 @@ struct approach_split* auto_string_manip(char* string) {
     app_split->n_complete = m_n_complete;
     return app_split;
 }
+*/
 
 // format n_complete string
 void format_n_complete(char* n_complete) {
@@ -279,20 +293,27 @@ void free_approach_split(struct approach_split* ap_split) {
 // returns the first match to the approach
 // if no match found, NULL is returned 
 char* querry_history(char* raw_approach) {
-    char approach[strlen(raw_approach) - 2];
+    int r_apr_len = strlen(raw_approach);
+    // new array for approach without leading ?
+    char approach[r_apr_len - 1];
     // copy section without "? "
-    strncpy(approach, raw_approach + 2, strlen(raw_approach) - 2);
+    strncpy(approach, raw_approach + 2, r_apr_len - 2);
+    terminate_string_at(approach, r_apr_len - 2);
+    // compare approach with history
     char* curr_string = get_previous_history_entry_string();
     char* match = NULL;
     reset_history_index();
-
+    // iterate over history
     for (int idx = 0; idx < history_size; idx++) {
         // if not matching -> continue
         if (!string_starts_with(curr_string, approach)) {
             curr_string = get_previous_history_entry_string();
             continue;
         }
+        // return match
         match = get_malloced_copy(curr_string);
+        // remove newline
+        cut_at_trailing_newline(match);
         return match;
     }
     return NULL;
