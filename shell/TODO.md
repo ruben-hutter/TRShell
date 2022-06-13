@@ -10,9 +10,8 @@
 
 [~] makefile refactor
 [] tilde for path change
-[] string manip
-[] concatenate_with_space() [string_utils]
-[] string_between_char(char* string, char delimiter) [string_utils]
+[~] string manip
+[x] string_between_char(char* string, char delimiter) [string_utils]
 
 ---
 

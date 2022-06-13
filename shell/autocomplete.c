@@ -210,12 +210,7 @@ void print_matching_entries_from_list(char** entry_list, int list_length, char* 
     // print all lines
 }
 
-struct approach_split* auto_string_manip(char* string) {
-    return NULL;
-}
-
-/*
-// manipulates the given string for autocompletion [autocomplete]
+// manipulates the given string for autocompletion
 struct approach_split* auto_string_manip(char* string) {
     // struct ptr to return
     struct approach_split* app_split = (struct approach_split*)
@@ -232,30 +227,39 @@ struct approach_split* auto_string_manip(char* string) {
 
     // get pre
     char* pre = strchr(string, space);
-    unsigned int pre_len = pre - string;
+    unsigned int pre_len = pre - string + 1;
     m_pre = get_malloced_empty_string(pre_len);
     strncpy(m_pre, string, pre_len);
-    printf("pre: %s\n", m_pre);
+    printf("pre: [%s]\n", m_pre);
 
     // get n_complete
-    char* n_complete = strchr(string, slash);
+    char* n_complete = strrchr(string, slash);
     if (!n_complete) {
         // path not partially given
         // take rest after command
-        unsigned int n_complete_len = string_len - pre + 1;
-        m_n_complete = get_malloced_copy(n_complete);
+        unsigned int n_complete_len = string_len - pre_len - 1;
+        m_n_complete = get_malloced_empty_string(n_complete_len);
+        strncpy(m_n_complete, pre + 1, n_complete_len);
+        printf("n_complete: [%s]\n", m_n_complete);
         // format n_complete
-        format_n_complete(m_n_complete);
+        format_n_complete(&m_n_complete);
         // bind everything to struct
         app_split->pre = m_pre;
         app_split->n_complete = m_n_complete;
         return app_split;
     }
-    m_n_complete = get_malloced_copy(n_complete);
+    unsigned int n_complete_len = (string + string_len) - n_complete - 1;
+    m_n_complete = get_malloced_empty_string(n_complete_len);
+    strncpy(m_n_complete, n_complete + 1, n_complete_len);
     // format n_complete
-    format_n_complete(m_n_complete);
+    format_n_complete(&m_n_complete);
+    printf("n_complete: [%s]\n", m_n_complete);
 
     // get path
+    unsigned int path_len = string_len - pre_len - n_complete_len;
+    m_path = get_malloced_empty_string(path_len);
+    strncpy(m_path, pre + 1, path_len);
+    printf("path: [%s]\n", m_path);
 
     // bind everything to struct
     app_split->pre = m_pre;
@@ -263,16 +267,15 @@ struct approach_split* auto_string_manip(char* string) {
     app_split->n_complete = m_n_complete;
     return app_split;
 }
-*/
 
 // format n_complete string
-void format_n_complete(char* n_complete) {
+void format_n_complete(char** n_complete) {
     char* single_quotes = "'";
     char* back_n_quotes = "\\\"";
     // remove double-quotes & backslashes
-    remove_chars_from_string(n_complete, back_n_quotes);
+    remove_chars_from_string(*n_complete, back_n_quotes);
     // put between single-quotes
-    string_bwn_char(&n_complete, single_quotes);
+    string_bwn_char(n_complete, single_quotes);
 }
 
 // frees an apprach split struct with all its members
