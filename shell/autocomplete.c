@@ -4,27 +4,37 @@
 char* last_approach = NULL;
 
 char* autocomplete(char* approach) {
-    update_last_approach(approach);
+    //update_last_approach(approach);
     // test: approach is empty string
     if (is_only_whitespace(approach)) {
+        printf("is e_str");
         return NULL;
+    }
+    // check if approach is history querry
+    if (is_history_querry(approach)) {
+        printf("is hst_qry");
+        return NULL;
+        //return querry_history(approach);
     }
     // test: approach is single word
     if (is_single_word(approach)) {
         // complete binaries and builtins
-        return querry_directories(approach);
+        printf("is sgl_wrd");
+        return NULL;
+        //return querry_binaries(approach);
     }
-    // check if approach is history querry
-    if (is_history_querry(approach)) {
-        return querry_history(approach);
-    }
+    printf("succ");
+    return "foo";
+    /*
+    
     // complete directories
-    return querry_binaries(approach);
+    return querry_directories(approach);
+    */
 }
 
 // returns 1 if the approach is a history querry
 int is_history_querry(char* approach) {
-    if (approach[0] == '?' && strlen(approach) > 2) {
+    if (approach[0] == '?' && strlen(approach) > 1) {
         return 1;
     }
     return 0;
