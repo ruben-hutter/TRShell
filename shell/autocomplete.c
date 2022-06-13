@@ -58,14 +58,14 @@ char* querry_directories(char* approach) {
     *name_list_index = 0;
     append_names_to_list(ap_split->path, name_list, name_list_length, name_list_index);
     // compare against list
-    char* match = compare_against_list(ap_split->n_complete, name_list, name_list_index);
+    char* match = compare_against_list(ap_split->n_complete, name_list, *name_list_index);
     // on double match
     if (!match) {
         // print all matching
-        print_matching_entries_from_list(name_list, name_list_index, ap_split->n_complete);
+        print_matching_entries_from_list(name_list, *name_list_index, ap_split->n_complete);
     }
     // free name list
-    free_string_arr(name_list, name_list_index);
+    free_string_arr(name_list, *name_list_index);
     // free an approach split object
     free_approach_split(ap_split);
     return match;
@@ -79,13 +79,13 @@ char* querry_binaries(char* approach) {
     *binaries_length = 0;
     char** binaries_list = get_binaries(binaries_length);
     // compare approach against list
-    char* match = compare_against_list(approach, binaries_list, binaries_length);
+    char* match = compare_against_list(approach, binaries_list, *binaries_length);
     // on double match
     if (!match) {
         // print all matching
-        print_matching_entries_from_list(binaries_list, binaries_length, approach);
+        print_matching_entries_from_list(binaries_list, *binaries_length, approach);
     }
-    free_string_arr(binaries_list, binaries_length);
+    free_string_arr(binaries_list, *binaries_length);
     return match;
 }
 
@@ -121,7 +121,7 @@ char** get_binaries(int* name_list_index) {
             entry_length = 1;
         }
         // create empty string to contain path
-        char* path[entry_length];      
+        char path[entry_length];      
         // copy entry to path
         strncpy(path, entry_start, entry_end-entry_start);
         path[entry_end-entry_start] = '\0';
@@ -155,7 +155,7 @@ void append_names_to_list(char* path, char** name_list, int* name_list_length, i
             if (name_list_index >= name_list_length) {
                 char** new_list = realloc(name_list, 2 * (*name_list_length) * sizeof(char*));
                 if (!new_list) {
-                    free_string_arr(name_list, name_list_index);
+                    free_string_arr(name_list, *name_list_index);
                     return;
                 }
                 name_list = new_list;
@@ -178,7 +178,7 @@ void append_builtin_utilities_to_list(char** name_list, int* name_list_length, i
         if (name_list_index >= name_list_length) {
             char** new_list = realloc(name_list, 2 * (*name_list_length) * sizeof(char*));
             if (!new_list) {
-                free_string_arr(name_list, name_list_index);
+                free_string_arr(name_list, *name_list_index);
                 return;
             }
             name_list = new_list;
@@ -272,7 +272,7 @@ void free_approach_split(struct approach_split* ap_split) {
 // returns the first match to the approach
 // if no match found, NULL is returned 
 char* querry_history(char* raw_approach) {
-    char* approach[strlen(raw_approach) - 2];
+    char approach[strlen(raw_approach) - 2];
     // copy section without "? "
     strncpy(approach, raw_approach + 2, strlen(raw_approach) - 2);
     char* curr_string = get_previous_history_entry_string();
@@ -305,7 +305,7 @@ char* compare_against_list(char* approach, char** entry_list, int list_length) {
         }
         // if match was previously found -> return NULL as match is not unique
         if (found) {
-            print_entry_list(entry_list, list_length);
+            print_matching_entries_from_list(entry_list, list_length, approach);
             return NULL;
         }
         found = true;
