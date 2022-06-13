@@ -207,6 +207,7 @@ struct approach_split* auto_string_manip(char* string) {
     // delimiters
     char slash = '/';
     char space = ' ';
+    char* back_n_quotes = "\\\"";
 
     // get pre
     char* pre = strchar(string, space);
@@ -218,9 +219,10 @@ struct approach_split* auto_string_manip(char* string) {
         // path not partially given
         // take rest after command
         n_complete = strrchr(string, space);
-        // remove double-quotes & backslashes
-        // put between single-quotes
         m_n_complete = get_malloced_copy(n_complete);
+        // remove double-quotes & backslashes
+        remove_chars_from_string(m_n_complete, back_n_quotes);
+        // put between single-quotes
     }
 
     // get path
@@ -284,4 +286,27 @@ char* querry_history(char* raw_approach) {
         return match;
     }
     return NULL;
+}
+
+// searches the list for a unique possible match of the approach and returns the match
+// if no match NULL is returned
+char* compare_against_list(char* approach, char** entry_list, int list_length) {
+    int approach_length = strlen(approach);
+    bool found = false;
+    char* match = NULL;
+    // iterate over lsit to find matches
+    for (int index = 0; index < list_length; index++) {
+        // if not matching -> continue
+        if (!string_starts_with(entry_list[index], approach)) {
+            continue;
+        }
+        // if match was previously found -> return NULL as match is not unique
+        if (found) {
+            print_entry_list(entry_list, list_length);
+            return NULL;
+        }
+        found = true;
+        match = get_malloced_copy(entry_list[index]);
+    }
+    return match;
 }

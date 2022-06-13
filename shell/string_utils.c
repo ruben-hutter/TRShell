@@ -85,6 +85,15 @@ void crop_string_to_end(char* input_string, char delimiter) {
     }
 }
 
+// put a string between a given char
+void string_bwn_char(char** input_string_ptr, char* my_char) {
+    char* new_str = get_malloced_empty_string(strlen(*input_string_ptr)
+        + 2 * strlen(my_char));
+    concatenate(3, new_str, my_char, *input_string_ptr, my_char);
+    free(*input_string_ptr);
+    *input_string_ptr = new_str;
+}
+
 // sets a terminator at the position of the first newline
 void cut_at_trailing_newline(char* input_string) {
     input_string[strcspn(input_string, "\n")] = '\0';
@@ -124,29 +133,6 @@ void put_string_section(char* input_string, int region_start, int region_end) {
     }
 }
 
-// searches the list for a unique possible match of the approach and returns the match
-// if no match NULL is returned
-char* compare_against_list(char* approach, char** entry_list, int list_length) {
-    int approach_length = strlen(approach);
-    bool found = false;
-    char* match = NULL;
-    // iterate over lsit to find matches
-    for (int index = 0; index < list_length; index++) {
-        // if not matching -> continue
-        if (!string_starts_with(entry_list[index], approach)) {
-            continue;
-        }
-        // if match was previously found -> return NULL as match is not unique
-        if (found) {
-            print_entry_list(entry_list, list_length);
-            return NULL;
-        }
-        found = true;
-        match = get_malloced_copy(entry_list[index]);
-    }
-    return match;
-}
-
 // returns true iff the input_string starts with the pattern_string
 int string_starts_with(const char* input_string, const char* pattern_string) {
     if(strncmp(input_string, pattern_string, strlen(pattern_string)) == 0) {
@@ -173,4 +159,26 @@ int is_single_word(char* string) {
 // free string array
 void free_string_arr(char** string_arr, int arr_length) {
     // TODO
+}
+
+// remove chars (from given list of chars) from given string
+void remove_chars_from_string(char* input_string, char* to_remove) {
+    // tokenize string
+    char* tok;
+    char* mod_string = get_malloced_empty_string(0);
+    tok = strtok(input_string, to_remove);
+    while (tok != NULL) {
+        // make mod_string big enough
+        int concat_len = get_concatenated_length(2, mod_string, tok);
+        char* tmp_mod_string = get_malloced_empty_string(concat_len);
+        // concat tok and actual mod string
+        concatenate(2, tmp_mod_string, mod_string, tok);
+        free(mod_string);
+        // replace mod_string
+        mod_string = tmp_mod_string;
+        tok = strtok(NULL, to_remove);
+    }
+    // change input string to modified string
+    strcpy(input_string, mod_string);
+    free(mod_string);
 }

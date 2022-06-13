@@ -61,4 +61,8 @@ void free_approach_split(struct approach_split* ap_split);
 // if no match found, NULL is returned 
 char* querry_history(char* raw_approach);
 
+// searches the list for a unique possible match of the approach and returns the match
+// if no match NULL is returned
+char* compare_against_list(char* approach, char** entry_list, int list_length);
+
 #endif
