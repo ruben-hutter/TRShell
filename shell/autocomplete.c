@@ -306,6 +306,8 @@ char* querry_history(char* raw_approach) {
         }
         // return match
         match = get_malloced_copy(curr_string);
+        // remove newline
+        cut_at_trailing_newline(match);
         return match;
     }
     return NULL;
