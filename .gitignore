@@ -1,4 +1,4 @@
-
+.json
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,c,python
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,c,python
 
@@ -243,3 +243,4 @@ cython_debug/
 *.code-workspace
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,c,python
+shell/.vscode/settings.json
