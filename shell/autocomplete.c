@@ -207,7 +207,6 @@ struct approach_split* auto_string_manip(char* string) {
     // delimiters
     char slash = '/';
     char space = ' ';
-    char* back_n_quotes = "\\\"";
 
     // get pre
     char* pre = strchar(string, space);
@@ -220,10 +219,15 @@ struct approach_split* auto_string_manip(char* string) {
         // take rest after command
         n_complete = strrchr(string, space);
         m_n_complete = get_malloced_copy(n_complete);
-        // remove double-quotes & backslashes
-        remove_chars_from_string(m_n_complete, back_n_quotes);
-        // put between single-quotes
+        // format n_complete
+        format_n_complete(m_n_complete);
+        // bind everything to struct
+        app_split->pre = m_pre;
+        app_split->n_complete = m_n_complete;
+        return app_split;
     }
+    m_n_complete = get_malloced_copy(n_complete);
+    format_n_complete(m_n_complete);
 
     // get path
     char* path = strtok(NULL, delimiter);
@@ -250,6 +254,16 @@ struct approach_split* auto_string_manip(char* string) {
         // only command and a part of a word is given
     }
     printf("string after crop: %s\n", string);
+}
+
+// format n_complete string
+void format_n_complete(char* n_complete) {
+    char single_quotes = "'";
+    char* back_n_quotes = "\\\"";
+    // remove double-quotes & backslashes
+    remove_chars_from_string(n_complete, back_n_quotes);
+    // put between single-quotes
+    string_bwn_char(n_complete, single_quotes);
 }
 
 // frees an apprach split struct with all its members
