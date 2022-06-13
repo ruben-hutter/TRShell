@@ -63,11 +63,6 @@ char* querry_directories(char* approach) {
     append_binaries_to_list(ap_split->path, &name_list, name_list_length, name_list_index);
     // compare against list
     char* match = compare_against_list(ap_split->n_complete, name_list, *name_list_index);
-    // on double match
-    if (!match) {
-        // print all matching
-        print_matching_entries_from_list(name_list, *name_list_index, ap_split->n_complete);
-    }
     // free name list
     free_string_arr(name_list, *name_list_index);
     // free an approach split object
@@ -85,11 +80,6 @@ char* querry_binaries(char* approach) {
     char** binaries_list = get_binaries(binaries_length);
     // compare approach against list
     char* match = compare_against_list(approach, binaries_list, *binaries_length);
-    // on double match
-    if (!match) {
-        // print all matching
-        print_matching_entries_from_list(binaries_list, *binaries_length, approach);
-    }
     free_string_arr(binaries_list, *binaries_length);
     return match;
 }
@@ -217,13 +207,18 @@ void append_builtin_utilities_to_list(char*** list_ptr, int* list_len_ptr, int* 
 
 // prints all entries of a list in a ls like fashion to the std out
 void print_matching_entries_from_list(char** entry_list, int list_length, char* approach) {
-    // group entries to lines
-    // print all lines
+    // init formatting
+    int format_index = 0;
+    char format[3] = {' ', ' ', '\n'};
+    printf("\n");
     for (int idx = 0; idx < list_length; idx++) {
+        // ignore irrelevant results
         if (!string_starts_with(entry_list[idx], approach)) {
             continue;
         }
-        printf("%s\n", entry_list[idx]);
+        // parint result
+        printf("%-26s%c", entry_list[idx], format[format_index % 3]);
+        format_index++;
     }
 }
 
