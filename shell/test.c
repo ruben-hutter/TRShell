@@ -9,7 +9,9 @@ int main(int argc, char** argv) {
     char* str3 = "cd \"os/proj/trsh shell/shell s";
     char* str4 = "cd o";
     char* string = get_malloced_copy(str4);
-    auto_string_manip(string);
+    struct approach_split* my_split;
+    my_split = auto_string_manip(string);
     free(string);
+    free(my_split);
     return 0;
 }
