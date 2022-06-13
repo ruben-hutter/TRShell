@@ -172,5 +172,10 @@ int is_single_word(char* string) {
 
 // free string array
 void free_string_arr(char** string_arr, int arr_length) {
-    // TODO
+    for (int index = 0; index < arr_length; index++) {
+        if (string_arr[index]) {
+            free(string_arr[index]);
+        }
+    }
+    free (string_arr);
 }
