@@ -48,9 +48,10 @@ void v_concatenate(int num_of_args, char* output_string, va_list input_strings) 
 // malloc an empty string of the specified length
 char* get_malloced_empty_string(int length) {
     // works as sizeof(char) is qual to 1
-    char* colored_string = (char*) malloc(length + 1);
-    *colored_string = '\0';
-    return colored_string;
+    char* empty_string = (char*) malloc(length + 1);
+    memset(empty_string,0,length + 1);
+    make_empty_string(empty_string);
+    return empty_string;
 }
 
 // gets a malloced copy of the passed string
@@ -64,6 +65,11 @@ char* get_malloced_copy(char* input_string) {
 // adds a terminator at the beginning of the string to empty it
 void make_empty_string(char* input_string) {
     *input_string = '\0';
+}
+
+// adds terminator at the specified position
+void terminate_string_at(char* input_string, int index) {
+    input_string[index] = '\0';
 }
 
 // drops all of string before and including last occurence of delimiter

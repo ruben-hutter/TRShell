@@ -12,9 +12,8 @@ char* autocomplete(char* approach) {
     }
     // check if approach is history querry
     if (is_history_querry(approach)) {
-        printf("is hst_qry");
-        return NULL;
-        //return querry_history(approach);
+        printf("is hst_qry\n");
+        return querry_history(approach);
     }
     // test: approach is single word
     if (is_single_word(approach)) {
@@ -206,6 +205,11 @@ void print_matching_entries_from_list(char** entry_list, int list_length, char* 
     // print all lines
 }
 
+struct approach_split* auto_string_manip(char* string) {
+    return NULL;
+}
+
+/*
 // manipulates the given string for autocompletion [autocomplete]
 struct approach_split* auto_string_manip(char* string) {
     // struct ptr to return
@@ -254,6 +258,7 @@ struct approach_split* auto_string_manip(char* string) {
     app_split->n_complete = m_n_complete;
     return app_split;
 }
+*/
 
 // format n_complete string
 void format_n_complete(char* n_complete) {
@@ -282,19 +287,24 @@ void free_approach_split(struct approach_split* ap_split) {
 // returns the first match to the approach
 // if no match found, NULL is returned 
 char* querry_history(char* raw_approach) {
-    char approach[strlen(raw_approach) - 2];
+    int r_apr_len = strlen(raw_approach);
+    // new array for approach without leading ?
+    char approach[r_apr_len - 1];
     // copy section without "? "
-    strncpy(approach, raw_approach + 2, strlen(raw_approach) - 2);
+    strncpy(approach, raw_approach + 2, r_apr_len - 2);
+    terminate_string_at(approach, r_apr_len - 2);
+    // compare approach with history
     char* curr_string = get_previous_history_entry_string();
     char* match = NULL;
     reset_history_index();
-
+    // iterate over history
     for (int idx = 0; idx < history_size; idx++) {
         // if not matching -> continue
         if (!string_starts_with(curr_string, approach)) {
             curr_string = get_previous_history_entry_string();
             continue;
         }
+        // return match
         match = get_malloced_copy(curr_string);
         return match;
     }
