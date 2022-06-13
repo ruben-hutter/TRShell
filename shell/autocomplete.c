@@ -12,7 +12,6 @@ char* autocomplete(char* approach) {
     }
     // check if approach is history querry
     if (is_history_querry(approach)) {
-        printf("is hst_qry\n");
         return querry_history(approach);
     }
     // test: approach is single word
