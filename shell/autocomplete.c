@@ -409,8 +409,6 @@ void format_n_complete(char** n_complete) {
     char* back_n_quotes = "\\\"";
     // remove double-quotes & backslashes
     remove_chars_from_string(*n_complete, back_n_quotes);
-    // put between single-quotes
-    string_bwn_char(n_complete, single_quotes);
 }
 
 // frees an apprach split struct with all its members
@@ -459,14 +457,12 @@ char* querry_history(char* raw_approach) {
 // searches the list for a unique possible match of the approach and returns the match
 // if no match NULL is returned
 char* compare_against_list(char* approach, char** entry_list, int list_length) {
-    printf("\napproach: %s", approach);
     int approach_length = strlen(approach);
     bool found = false;
     char* match = NULL;
     // iterate over lsit to find matches
     for (int index = 0; index < list_length; index++) {
         // if not matching -> continue
-        printf("\ncomp: %s ? %s", entry_list[index], approach);
         if (!string_starts_with(entry_list[index], approach)) {
             continue;
         }
