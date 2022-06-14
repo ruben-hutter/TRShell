@@ -26,8 +26,8 @@ void cd(int argc, char** argv) {
 
 // updates the pwd in the symbol table
 void update_pwd() {
-    char buff[1024];
-    int dest_len;
+    char buff[BUFFER_SIZE];
+    int dest_len = 0;
 
     struct symbol_table_entry *entry = get_local_table_entry("PWD");
     // get actual path

@@ -6,7 +6,6 @@
 #include "../string_utils.h"
 
 void ht(int argc, char** argv);
-void dump_history();
 void recall_history();
 
 #endif

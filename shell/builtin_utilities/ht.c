@@ -11,13 +11,14 @@ void ht(int argc, char** argv) {
 }
 
 void recall_history(int index) {
-    // cereate new buffered string to execute
+    // create new buffered string to execute
     struct buffered_string buffered_input;
     // recall command from history
     char* hist_string = get_nth_history_entry_string(index);
     // if recalled failed -> index was out of bounds
     if (!hist_string) {
-        printf("Index %d out of the history list of length %d!\n", index, history_size);
+        printf("Index %d out of the history list of length %d!\n", index,
+                history_size);
         return;
     }
     hist_string = get_malloced_copy(hist_string);
