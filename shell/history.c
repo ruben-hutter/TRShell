@@ -14,7 +14,7 @@ struct history_entry* history_tail = NULL;
 void append_string_to_changes(char* input_string) {
     // if buffer does not exist -> create buffer
     if (!change_buffer) {
-        change_buffer = malloc(CHANGE_BUFFER_SIZE*sizeof(char*)); 
+        change_buffer = (char**) malloc(CHANGE_BUFFER_SIZE * sizeof(char*)); 
     }
     if (change_buffer_index >= change_buffer_size) {
         // increase buffers allocated size
