@@ -62,11 +62,6 @@ char* querry_directories(char* approach) {
     append_dirs_to_list(ap_split->path, &dirs, dirs_len_ptr, dirs_idx_ptr);
     // compare against list
 
-    //DEBUG-------------------------------
-    printf("\nn_co: %s", ap_split->n_complete);
-    printf("\npath: %s", ap_split->path);
-    //DEBUG-------------------------------
-
     char* match = compare_against_list(ap_split->n_complete, dirs, dirs_idx);
     // free name list
     free_string_arr(dirs, dirs_idx);
@@ -78,15 +73,15 @@ char* querry_directories(char* approach) {
     }
     // reconstruct input
     if (no_path) {
-        int ipt_len = get_concatenated_length(3, ap_split->pre, " ", match);
+        int ipt_len = get_concatenated_length(2, ap_split->pre, match);
         char* input = get_malloced_empty_string(ipt_len);
-        concatenate(3, input, ap_split->pre, " ", match);
+        concatenate(2, input, ap_split->pre, match);
         free(match);
         match = input;
     } else {
-        int ipt_len = get_concatenated_length(4, ap_split->pre, " ", ap_split->path, match);
+        int ipt_len = get_concatenated_length(3, ap_split->pre, ap_split->path, match);
         char* input = get_malloced_empty_string(ipt_len);
-        concatenate(4, input, ap_split->pre, " ", ap_split->path, match);
+        concatenate(3, input, ap_split->pre, ap_split->path, match);
         free(match);
         match = input;
     }
@@ -381,10 +376,8 @@ struct approach_split* auto_string_manip(char* string) {
         // bind everything to struct
         app_split->pre = m_pre;
         app_split->n_complete = m_n_complete;
-        printf("\n upper path");
         return app_split;
     }
-    printf("\n lower path");
     unsigned int n_complete_len = (string + string_len) - n_complete - 1;
     m_n_complete = get_malloced_empty_string(n_complete_len);
     strncpy(m_n_complete, n_complete + 1, n_complete_len);
