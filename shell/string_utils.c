@@ -155,10 +155,6 @@ int is_single_word(char* string) {
     if (!spaces) {
         return true;
     }
-    // check if something else than spaces after first space
-    if (is_only_whitespace(spaces)) {
-        return true;
-    }
     return false;
 }
 
