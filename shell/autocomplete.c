@@ -47,7 +47,6 @@ char* querry_directories(char* approach) {
     struct approach_split* ap_split = auto_string_manip(approach);
     // set path in case of null
     if (!ap_split) {
-        printf("[querry_dir] not ap_split obj");
         return NULL;
     }
     if (!ap_split->path) {
@@ -395,11 +394,6 @@ struct approach_split* auto_string_manip(char* string) {
         app_split->path = m_path;
         app_split->esc_path = m_esc_path;
         app_split->n_complete = m_n_complete;
-        printf("\nbefor segfault\n");
-        printf("struct: %s\n", app_split->pre);
-        printf("struct: %s\n", app_split->path);
-        printf("struct: %s\n", app_split->esc_path);
-        printf("struct: %s\n", app_split->n_complete);
         return app_split;
     }
     unsigned int n_complete_len = (string + string_len) - n_complete - 1;
@@ -426,10 +420,6 @@ struct approach_split* auto_string_manip(char* string) {
     app_split->esc_path = m_esc_path;
     app_split->n_complete = m_n_complete;
 
-    printf("struct: %s\n", app_split->pre);
-    printf("struct: %s\n", app_split->path);
-    printf("struct: %s\n", app_split->esc_path);
-    printf("struct: %s\n", app_split->n_complete);
     return app_split;
 }
 
