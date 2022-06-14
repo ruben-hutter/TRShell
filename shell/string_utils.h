@@ -82,4 +82,14 @@ void free_string_arr(char** string_arr, int arr_length);
 // remove chars (from given list of chars) from given string
 void remove_chars_from_string(char* input_string, char* to_remove);
 
+// append a char to a string
+char* get_malloced_copy_w_char(char* string, char char_to_append);
+
+// insert char before char
+// folder green -> folder\ green (for space and backslash)
+char* insert_char_before_char(char* string, char first, char to_prepend);
+
+// count char in word
+int count_char_in_word(char* string, char to_count);
+
 #endif

@@ -58,7 +58,12 @@ char* querry_directories(char* approach) {
     // current insert position in the list
     int dirs_idx = 0;
     int* dirs_idx_ptr = &dirs_idx;
-    append_files_to_list(ap_split->path, &dirs, dirs_len_ptr, dirs_idx_ptr);
+    if (
+        (strcmp(ap_split->pre, "cd ") != 0)
+        && (strcmp(ap_split->pre, "ls ") != 0)
+    ) {
+        append_files_to_list(ap_split->path, &dirs, dirs_len_ptr, dirs_idx_ptr);
+    }
     append_dirs_to_list(ap_split->path, &dirs, dirs_len_ptr, dirs_idx_ptr);
     // compare against list
 
@@ -71,6 +76,15 @@ char* querry_directories(char* approach) {
         free_approach_split(ap_split);
         return match;
     }
+    // insert backslash before whitespace
+    char* esc_match = insert_char_before_char(match, ' ', '\\');
+    if (!esc_match) {
+        free(match);
+        free_approach_split(ap_split);
+        return NULL;
+    }
+    free(match);
+    match = esc_match;
     // reconstruct input
     if (no_path) {
         int ipt_len = get_concatenated_length(2, ap_split->pre, match);
@@ -180,7 +194,7 @@ void append_dirs_to_list(char* path, char*** list_ptr, int* list_len_ptr,
                 (*list_len_ptr) *= 2;
             }
             // append new element
-            (*list_ptr)[(*list_idx_ptr)++] = get_malloced_copy(entry->d_name);
+            (*list_ptr)[(*list_idx_ptr)++] = get_malloced_copy_w_char(entry->d_name, '/');
         }
         closedir(dir);
     }
@@ -350,6 +364,7 @@ struct approach_split* auto_string_manip(char* string) {
     // members to bind to struct
     char* m_pre;
     char* m_path;
+    char* m_esc_path;
     char* m_n_complete;
     // delimiters
     char slash = '/';
@@ -372,7 +387,7 @@ struct approach_split* auto_string_manip(char* string) {
         m_n_complete = get_malloced_empty_string(n_complete_len);
         strncpy(m_n_complete, pre + 1, n_complete_len);
         // format n_complete
-        format_n_complete(&m_n_complete);
+        remove_back_n_quotes(&m_n_complete);
         // bind everything to struct
         app_split->pre = m_pre;
         app_split->n_complete = m_n_complete;
@@ -382,26 +397,33 @@ struct approach_split* auto_string_manip(char* string) {
     m_n_complete = get_malloced_empty_string(n_complete_len);
     strncpy(m_n_complete, n_complete + 1, n_complete_len);
     // format n_complete
-    format_n_complete(&m_n_complete);
+    remove_back_n_quotes(&m_n_complete);
+
+    // get esc_path
+    unsigned int esc_path_len = string_len - pre_len - n_complete_len;
+    m_esc_path = get_malloced_empty_string(esc_path_len);
+    strncpy(m_esc_path, pre + 1, esc_path_len);
 
     // get path
-    unsigned int path_len = string_len - pre_len - n_complete_len;
-    m_path = get_malloced_empty_string(path_len);
-    strncpy(m_path, pre + 1, path_len);
+    int quotes_count = count_char_in_word(m_esc_path, '"');
+    int backslash_count = count_char_in_word(m_esc_path, '\\');
+    unsigned int path_len = esc_path_len - quotes_count - backslash_count;
+    m_path = get_malloced_copy(m_esc_path);
+    remove_back_n_quotes(&m_path);
 
     // bind everything to struct
     app_split->pre = m_pre;
     app_split->path = m_path;
+    app_split->esc_path = m_esc_path;
     app_split->n_complete = m_n_complete;
     return app_split;
 }
 
 // format n_complete string
-void format_n_complete(char** n_complete) {
-    char* single_quotes = "'";
+void remove_back_n_quotes(char** string) {
     char* back_n_quotes = "\\\"";
     // remove double-quotes & backslashes
-    remove_chars_from_string(*n_complete, back_n_quotes);
+    remove_chars_from_string(*string, back_n_quotes);
 }
 
 // frees an apprach split struct with all its members

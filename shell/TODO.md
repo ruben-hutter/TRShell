@@ -25,7 +25,7 @@ ru: string mod on string_to_change
 return void
 
 pre: all before path [cd ]
-path: all after pre, before approach [os/proj/trsh\ shell/]; [os/proj/"trsh shell"/]; [os/proj/trsh shell/]
+path: all after pre, before approach [os/proj/trsh\ shell/]; [os/proj/"trsh shell"/]; ["os/proj/trsh shell/]
 n_complete: [shell\ s]; [shell s] -> ohne \, ohne " ['shell s']
 
 pre + path + match

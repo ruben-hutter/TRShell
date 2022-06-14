@@ -14,6 +14,7 @@
 struct approach_split {
     char* pre;
     char* path;
+    char* esc_path;
     char* n_complete;
 };
 
@@ -64,7 +65,7 @@ void print_matching_entries_from_list(char** entry_list, int list_length, char* 
 struct approach_split* auto_string_manip(char* string);
 
 // format n_complete string
-void format_n_complete(char** n_complete);
+void remove_back_n_quotes(char** n_complete);
 
 // frees an approach split object
 void free_approach_split(struct approach_split* ap_split);

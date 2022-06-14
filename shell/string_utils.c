@@ -189,3 +189,55 @@ void remove_chars_from_string(char* input_string, char* to_remove) {
     strcpy(input_string, mod_string);
     free(mod_string);
 }
+
+// append a char to a string
+char* get_malloced_copy_w_char(char* string, char char_to_append) {
+    int len = strlen(string) + 1;
+    char* output = get_malloced_empty_string(len);
+    strcpy(output, string);
+    output[len - 1] = char_to_append;
+    return output;
+}
+
+// insert char before char
+// folder green -> folder\ green (for space and backslash)
+char* insert_char_before_char(char* string, char first, char to_prepend) {
+    char* output;
+    int count;
+
+    // count number of spaces
+    count_char_in_word(string, first);
+    // there is at least a first char
+    if (count > 0) {
+        // set output length
+        int string_len = strlen(string);
+        int output_len = string_len + count;
+        output = get_malloced_empty_string(output_len);
+        // reset count
+        count = 0;
+        // copy segments + to_prepend
+        for (int i = 0; i < string_len; i++) {
+            if (string[i] == ' ') {
+                output[i + count++] = to_prepend;
+            }
+            output[i + count] = string[i];
+        }
+        return output;
+    }
+    return get_malloced_copy(string);
+}
+
+// count char in word
+int count_char_in_word(char* string, char to_count) {
+    int count;
+
+    char* tmp = strchr(string, to_count);
+    if (tmp) {
+        count++;
+    }
+    while (tmp != NULL) {
+        tmp = strchr(tmp + 1, to_count);
+        count++;
+    }
+    return count;
+}
