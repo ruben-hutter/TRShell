@@ -9,7 +9,7 @@
 #include "history.h"
 #include "builtin_utilities.h"
 
-#define DEFAULT_LENGTH 10
+#define DEFAULT_LENGTH 50
 
 struct approach_split {
     char* pre;

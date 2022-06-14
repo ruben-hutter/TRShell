@@ -2,95 +2,73 @@
 
 #include "string_utils.h"
 
-struct approach_split {
-    char* pre;
-    char* path;
-    char* esc_path;
-    char* n_complete;
-};
-
-struct approach_split* auto_string_manip(char* string);
-void remove_back_n_quotes(char** string);
+#define DEFAULT_LENGTH 10
 
 int main(int argc, char** argv) {
     char* string = "cd q";
     char* str = get_malloced_copy(string);
-    struct approach_split* app_split = auto_string_manip(string);
-    printf("struct: %s\n", app_split->pre);
-    printf("struct: %s\n", app_split->path);
-    printf("struct: %s\n", app_split->esc_path);
-    printf("struct: %s\n", app_split->n_complete);
+
     free(str);
     return 0;
 }
 
-// manipulates the given string for autocompletion
-struct approach_split* auto_string_manip(char* string) {
-    // struct ptr to return
-    struct approach_split* app_split = (struct approach_split*)
-        malloc(sizeof(struct approach_split));
-    // members to bind to struct
-    char* m_pre;
-    char* m_path;
-    char* m_esc_path;
-    char* m_n_complete;
-    // delimiters
-    char slash = '/';
-    char space = ' ';
-    // input length
-    int string_len = strlen(string);
+// returns a list of all binaries at the locations specified in PATH
+char** get_binaries(int* bin_lst_idx) {
+    // create list to store dir and file names
+    char** binaries = (char**) malloc(DEFAULT_LENGTH * sizeof(char*));
+    // current mex cap of the list
+    int bin_cnt = DEFAULT_LENGTH;
+    int* bin_cnt_ptr = &bin_cnt;
+    // current insert position in the list
+    *bin_lst_idx = 0;
+    // add dir and file names to list
+    // get comma seperated list of directories
+    char* env_path = get_local_table_entry_value("PATH");
 
-    // get pre
-    char* pre = strchr(string, space);
-    unsigned int pre_len = pre - string + 1;
-    m_pre = get_malloced_empty_string(pre_len);
-    strncpy(m_pre, string, pre_len);
-
-    // get n_complete
-    char* n_complete = strrchr(string, slash);
-    if (!n_complete) {
-        // path not partially given
-        // take rest after command
-        unsigned int n_complete_len = string_len - pre_len;
-        m_n_complete = get_malloced_empty_string(n_complete_len);
-        strncpy(m_n_complete, pre + 1, n_complete_len);
-        // format n_complete
-        remove_back_n_quotes(&m_n_complete);
-        // bind everything to struct
-        app_split->pre = m_pre;
-        app_split->n_complete = m_n_complete;
-        return app_split;
+    char* delimiter = ":";
+    char* entry = strtok(env_path, delimiter);
+    while (entry != NULL) {
+        printf("actual token: %s\n", entry);
+        entry = strtok(NULL, delimiter);
     }
-    unsigned int n_complete_len = (string + string_len) - n_complete - 1;
-    m_n_complete = get_malloced_empty_string(n_complete_len);
-    strncpy(m_n_complete, n_complete + 1, n_complete_len);
-    // format n_complete
-    remove_back_n_quotes(&m_n_complete);
 
-    // get esc_path
-    unsigned int esc_path_len = string_len - pre_len - n_complete_len;
-    m_esc_path = get_malloced_empty_string(esc_path_len);
-    strncpy(m_esc_path, pre + 1, esc_path_len);
-
-    // get path
-    int quotes_count = count_char_in_word(m_esc_path, '"');
-    int backslash_count = count_char_in_word(m_esc_path, '\\');
-    unsigned int path_len = esc_path_len - quotes_count - backslash_count;
-    m_path = get_malloced_copy(m_esc_path);
-    remove_back_n_quotes(&m_path);
-
-    // bind everything to struct
-    app_split->pre = m_pre;
-    app_split->path = m_path;
-    app_split->esc_path = m_esc_path;
-    app_split->n_complete = m_n_complete;
-
-    return app_split;
-}
-
-// remove backslashes and quotes
-void remove_back_n_quotes(char** string) {
-    char* back_n_quotes = "\\\"";
-    // remove double-quotes & backslashes
-    remove_chars_from_string(*string, back_n_quotes);
+    // pointer to beginning of element
+    char* entry_start = env_path;
+    // pointer to end of element
+    char* entry_end;
+    // iterate through entries
+    while (entry_start && *entry_start) {
+        // get path to binaries
+        // both pointers at start of entry
+        entry_end = entry_start;
+        // move end pointer back until the end of entry
+        while (*entry_end && *entry_end != ':') {
+            entry_end++;
+        }
+        // get length of entry
+        int entry_length = entry_end - entry_start;
+        if (!entry_length) {
+            entry_length = 1;
+        }
+        // create empty string to contain path
+        char path[entry_length];      
+        // copy entry to path
+        strncpy(path, entry_start, entry_end-entry_start);
+        path[entry_end-entry_start] = '\0';
+        // if missing append / to end of path
+        if (entry_end[-1] != '/') {
+            strcat(path, "/");
+        }
+        // get file and dir names in that folder and add to list
+        append_binaries_to_list(path, &binaries, bin_cnt_ptr, bin_lst_idx);
+        // process next path
+        // move pointers to start of next entry
+        entry_start = entry_end;
+        // if one char before first char of next entry -> move one forwad
+        if (*entry_end == ':') {
+            entry_start++;
+        }
+    }
+    append_builtin_utilities_to_list(&binaries, bin_cnt_ptr, bin_lst_idx);
+    return binaries;
 }

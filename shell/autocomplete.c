@@ -227,42 +227,21 @@ char** get_binaries(int* bin_lst_idx) {
     // add dir and file names to list
     // get comma seperated list of directories
     char* env_path = get_local_table_entry_value("PATH");
-    // pointer to beginning of element
-    char* entry_start = env_path;
-    // pointer to end of element
-    char* entry_end;
-    // iterate through entries
-    while (entry_start && *entry_start) {
-        // get path to binaries
-        // both pointers at start of entry
-        entry_end = entry_start;
-        // move end pointer back until the end of entry
-        while (*entry_end && *entry_end != ':') {
-            entry_end++;
-        }
-        // get length of entry
-        int entry_length = entry_end - entry_start;
-        if (!entry_length) {
-            entry_length = 1;
-        }
-        // create empty string to contain path
-        char path[entry_length];      
-        // copy entry to path
-        strncpy(path, entry_start, entry_end-entry_start);
-        path[entry_end-entry_start] = '\0';
-        // if missing append / to end of path
-        if (entry_end[-1] != '/') {
-            strcat(path, "/");
-        }
+    char* delimiter = ":";
+    // single entry of local table path
+    char* entry = strtok(env_path, delimiter);
+    int entry_len = 0;
+    while (entry != NULL) {
+        entry_len = strlen(entry);
+        // path of entry with space for terminating slash
+        char path[entry_len + 2];
+        // copy entry, slash and terminator into path
+        strcpy(path, entry);
+        path[entry_len] = '/';
+        path[entry_len + 1] = '\0';
         // get file and dir names in that folder and add to list
         append_binaries_to_list(path, &binaries, bin_cnt_ptr, bin_lst_idx);
-        // process next path
-        // move pointers to start of next entry
-        entry_start = entry_end;
-        // if one char before first char of next entry -> move one forwad
-        if (*entry_end == ':') {
-            entry_start++;
-        }
+        entry = strtok(NULL, delimiter);
     }
     append_builtin_utilities_to_list(&binaries, bin_cnt_ptr, bin_lst_idx);
     return binaries;
