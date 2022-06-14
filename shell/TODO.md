@@ -16,4 +16,3 @@
 [x] autocomplete -> get_binaries() refactor with strtok
 [x] executor -> search_path() refactor with strtok
 [] complete logo
-[] set_node_val_str -> remove comment if it works fine

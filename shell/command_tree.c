@@ -50,17 +50,10 @@ void set_node_val_str(struct tree_node* node, char* string) {
         return;
     }
     char* node_string = get_malloced_copy(string);
-    // // alloc space for passed string
-    // char* node_string = malloc(strlen(string) + 1);
-
-    // // alloc failed
-    // if (!node_string) {
-    //     node->value.string = NULL;
-    //     return;
-    // }
-    
-    // // copy and set node's string
-    // strcpy(node_string, string);
+    if (!node_string) {
+        node->value.string = NULL;
+        return;
+    }
     node->value.string = node_string;
 }
 
