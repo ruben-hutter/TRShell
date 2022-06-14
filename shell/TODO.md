@@ -6,6 +6,8 @@
 
 ## Tobi
 
+[] querry_history() comments
+
 ## Ruben
 
 [~] makefile refactor

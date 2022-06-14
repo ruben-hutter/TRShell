@@ -22,12 +22,12 @@ char* autocomplete(char* approach) {
     return querry_directories(approach);
 }
 
-// returns 1 if the approach is a history querry
+// returns true if the approach is a history querry, false if not
 int is_history_querry(char* approach) {
     if (approach[0] == '?' && strlen(approach) > 1) {
-        return 1;
+        return true;
     }
-    return 0;
+    return false;
 }
 
 // updates the last_approach with a malloced copy of the current one
@@ -69,7 +69,6 @@ char* querry_directories(char* approach) {
     }
     append_dirs_to_list(ap_split->path, &dirs, dirs_len_ptr, dirs_idx_ptr);
     // compare against list
-
     char* match = compare_against_list(ap_split->n_complete, dirs, dirs_idx);
     // free name list
     free_string_arr(dirs, dirs_idx);
@@ -86,7 +85,6 @@ char* querry_directories(char* approach) {
         free_approach_split(ap_split);
         return NULL;
     }
-
     free(match);
     char* input = NULL;
     // reconstruct input
@@ -95,7 +93,8 @@ char* querry_directories(char* approach) {
         input = get_malloced_empty_string(ipt_len);
         concatenate(2, input, ap_split->pre, esc_match);
     } else {
-        int ipt_len = get_concatenated_length(3, ap_split->pre, ap_split->esc_path, esc_match);
+        int ipt_len = get_concatenated_length(3, ap_split->pre,
+                                                ap_split->esc_path, esc_match);
         input = get_malloced_empty_string(ipt_len);
         concatenate(3, input, ap_split->pre, ap_split->esc_path, esc_match);
     }
@@ -156,8 +155,8 @@ void append_files_to_list(char* path, char*** list_ptr, int* list_len_ptr,
 // append the names of all directories at the specified path to the list
 void append_dirs_to_list(char* path, char*** list_ptr, int* list_len_ptr,
                             int* list_idx_ptr) {
-    DIR *dir;
-    struct dirent *entry;
+    DIR* dir;
+    struct dirent* entry;
     // open dir at path
     if ((dir = opendir(path)) != NULL) {
         // append all file and directory names to list
@@ -195,7 +194,8 @@ void append_dirs_to_list(char* path, char*** list_ptr, int* list_len_ptr,
                 (*list_len_ptr) *= 2;
             }
             // append new element
-            (*list_ptr)[(*list_idx_ptr)++] = get_malloced_copy_w_char(entry->d_name, '/');
+            (*list_ptr)[(*list_idx_ptr)++] =
+                                get_malloced_copy_w_char(entry->d_name, '/');
         }
         closedir(dir);
     }
@@ -252,9 +252,9 @@ char** get_binaries(int* bin_lst_idx) {
 
 // append the names of all executable files at the specified path to the list
 void append_binaries_to_list(char* path, char*** list_ptr, int* list_len_ptr,
-                            int* list_idx_ptr) {
-    DIR *dir;
-    struct dirent *entry;
+                                int* list_idx_ptr) {
+    DIR* dir;
+    struct dirent* entry;
     // open dir at path
     if ((dir = opendir(path)) != NULL) {
         // append all file and directory names to list
@@ -299,12 +299,14 @@ void append_binaries_to_list(char* path, char*** list_ptr, int* list_len_ptr,
 }
 
 // appends the naems of all builtin utilities to the list
-void append_builtin_utilities_to_list(char*** list_ptr, int* list_len_ptr, int* list_idx_ptr) {
+void append_builtin_utilities_to_list(char*** list_ptr, int* list_len_ptr,
+                                        int* list_idx_ptr) {
     // iterate over builtin utilities
     for (int idx = 0; idx < builtin_utility_count; idx++) {
         // expand buffer if necessary
         if (*list_idx_ptr >= *list_len_ptr) {
-            char** new_list = (char**) realloc(*list_ptr, 2 * (*list_len_ptr) * sizeof(char*));
+            char** new_list = (char**) realloc(*list_ptr,
+                                        2 * (*list_len_ptr) * sizeof(char*));
             if (!new_list) {
                 free_string_arr(*list_ptr, *list_idx_ptr);
                 return;
@@ -313,13 +315,14 @@ void append_builtin_utilities_to_list(char*** list_ptr, int* list_len_ptr, int* 
             (*list_len_ptr) *= 2;
         }
         // append new element
-        (*list_ptr)[(*list_idx_ptr)++] = get_malloced_copy(builtin_utilities[idx].name);
+        (*list_ptr)[(*list_idx_ptr)++] =
+                                get_malloced_copy(builtin_utilities[idx].name);
     }
 }
 
-
 // prints all entries of a list in a ls like fashion to the std out
-void print_matching_entries_from_list(char** entry_list, int list_length, char* approach) {
+void print_matching_entries_from_list(char** entry_list, int list_length,
+                                        char* approach) {
     // init formatting
     int format_index = 0;
     char format[3] = {' ', ' ', '\n'};
@@ -329,11 +332,11 @@ void print_matching_entries_from_list(char** entry_list, int list_length, char* 
         if (!string_starts_with(entry_list[idx], approach)) {
             continue;
         }
-        // parint result
+        // print result
         printf("%-26s%c", entry_list[idx], format[format_index % 3]);
         format_index++;
     }
-    // print newline if no already happened above
+    // print newline if not already happened above
     if (format_index % 3 != 0) {
         printf("\n");
     } 
@@ -341,9 +344,9 @@ void print_matching_entries_from_list(char** entry_list, int list_length, char* 
 
 // manipulates the given string for autocompletion
 struct approach_split* auto_string_manip(char* string) {
-    // struct ptr to return
+    // struct pointer that will be returned
     struct approach_split* app_split = (struct approach_split*)
-        malloc(sizeof(struct approach_split));
+                                        malloc(sizeof(struct approach_split));
     // members to bind to struct
     char* m_pre = NULL;
     char* m_path = NULL;
@@ -401,7 +404,6 @@ struct approach_split* auto_string_manip(char* string) {
     app_split->path = m_path;
     app_split->esc_path = m_esc_path;
     app_split->n_complete = m_n_complete;
-
     return app_split;
 }
 
@@ -435,6 +437,7 @@ void free_approach_split(struct approach_split* ap_split) {
 // returns the first match to the approach
 // if no match found, NULL is returned 
 char* querry_history(char* raw_approach) {
+    char* match = NULL;
     int r_apr_len = strlen(raw_approach);
     // new array for approach without leading ?
     char approach[r_apr_len - 1];
@@ -443,7 +446,6 @@ char* querry_history(char* raw_approach) {
     terminate_string_at(approach, r_apr_len - 2);
     // compare approach with history
     char* curr_string = get_previous_history_entry_string();
-    char* match = NULL;
     reset_history_index();
     // iterate over history
     for (int idx = 0; idx < history_size; idx++) {
@@ -452,7 +454,6 @@ char* querry_history(char* raw_approach) {
             curr_string = get_previous_history_entry_string();
             continue;
         }
-        // return match
         match = get_malloced_copy(curr_string);
         // remove newline
         cut_at_trailing_newline(match);
@@ -461,8 +462,8 @@ char* querry_history(char* raw_approach) {
     return NULL;
 }
 
-// searches the list for a unique possible match of the approach and returns the match
-// if no match NULL is returned
+// searches the list for a unique possible match of the approach
+// and returns the match or NULL
 char* compare_against_list(char* approach, char** entry_list, int list_length) {
     int approach_length = strlen(approach);
     int found = false;
