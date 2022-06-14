@@ -147,7 +147,7 @@ int string_starts_with(const char* input_string, const char* pattern_string) {
     return false;
 }
 
-// checkes if a string is a word
+// checks if a string is a word
 int is_single_word(char* string) {
     char space = ' ';
     // check if string contains at least a space

@@ -61,31 +61,13 @@ char* querry_directories(char* approach) {
     append_files_to_list(ap_split->path, &dirs, dirs_len_ptr, dirs_idx_ptr);
     append_dirs_to_list(ap_split->path, &dirs, dirs_len_ptr, dirs_idx_ptr);
     // compare against list
-    char* match = compare_against_list(ap_split->n_complete, dirs, dirs_idx);
-
-     //DEBUG-------------------------------
-    printf("\nlooking for: %s", ap_split->n_complete);
-    if (match) {
-        printf("\nmatch: %s", match);
-    } else {
-        printf("\nno match :(");
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     //DEBUG-------------------------------
+    printf("\nn_co: %s", ap_split->n_complete);
+    printf("\npath: %s", ap_split->path);
+    //DEBUG-------------------------------
 
+    char* match = compare_against_list(ap_split->n_complete, dirs, dirs_idx);
     // free name list
     free_string_arr(dirs, dirs_idx);
     // handle no match
@@ -475,12 +457,14 @@ char* querry_history(char* raw_approach) {
 // searches the list for a unique possible match of the approach and returns the match
 // if no match NULL is returned
 char* compare_against_list(char* approach, char** entry_list, int list_length) {
+    printf("\napproach: %s", approach);
     int approach_length = strlen(approach);
     bool found = false;
     char* match = NULL;
     // iterate over lsit to find matches
     for (int index = 0; index < list_length; index++) {
         // if not matching -> continue
+        printf("\ncomp: %s ? %s", entry_list[index], approach);
         if (!string_starts_with(entry_list[index], approach)) {
             continue;
         }
