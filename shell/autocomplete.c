@@ -227,9 +227,11 @@ char** get_binaries(int* bin_lst_idx) {
     // add dir and file names to list
     // get comma seperated list of directories
     char* env_path = get_local_table_entry_value("PATH");
+    // get a copy because strtok modifies the original string
+    char* env_path_cpy = get_malloced_copy(env_path);
     char* delimiter = ":";
     // single entry of local table path
-    char* entry = strtok(env_path, delimiter);
+    char* entry = strtok(env_path_cpy, delimiter);
     int entry_len = 0;
     while (entry != NULL) {
         entry_len = strlen(entry);
@@ -243,6 +245,7 @@ char** get_binaries(int* bin_lst_idx) {
         append_binaries_to_list(path, &binaries, bin_cnt_ptr, bin_lst_idx);
         entry = strtok(NULL, delimiter);
     }
+    free(env_path_cpy);
     append_builtin_utilities_to_list(&binaries, bin_cnt_ptr, bin_lst_idx);
     return binaries;
 }

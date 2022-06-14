@@ -2,85 +2,44 @@
 
 // searches a command in all directories listed in $PATH
 char* search_path(char* command_name) {
+    // get length of command
+    int command_name_len = strlen(command_name);
     // get comma seperated list of directories
-    char* PATH = get_local_table_entry_value("PATH");
-    // pointer to beginning of element
-    char* entry_start = PATH;
-    // pointer to end of element
-    char* entry_end;
-
-    // iterate through entries
-    while (entry_start && *entry_start) {
-        // both pointers at start of entry
-        entry_end = entry_start;
-
-        // move end pointer back until the end of entry
-        while (*entry_end && *entry_end != ':') {
-            entry_end++;
-        }
-
-        // get length of entry
-        int entry_length = entry_end - entry_start;
-        if (!entry_length) {
-            entry_length = 1;
-        }
-
-        // get length of command
-        int command_name_length = strlen(command_name);
-
-        // prepare string to store path
-        char path[entry_length+1+command_name_length+1];
-
-        // copy entry to path
-        strncpy(path, entry_start, entry_end-entry_start);
-        path[entry_end-entry_start] = '\0';
-
-        // if missing append / to end of path
-        if (entry_end[-1] != '/') {
-            strcat(path, "/");
-        }
-
-        // append command name to path
-        strcat(path, command_name);
-
+    char* env_path = get_local_table_entry_value("PATH");
+    char* env_path_cpy = get_malloced_copy(env_path);
+    char* delimiter = ":";
+    // single entry of local table path
+    char* entry = strtok(env_path_cpy, delimiter);
+    int entry_len = 0;
+    while (entry != NULL) {
+        entry_len = strlen(entry);
+        // path of entry with space for slash, command and terminator
+        char path[entry_len + command_name_len + 2];
+        // put everything into path
+        strcpy(path, entry);
+        path[entry_len] = '/';
+        strncpy(path + entry_len + 1, command_name, command_name_len);
+        path[entry_len + command_name_len + 1] = '\0';
         // check if file exists
         struct stat st;
-
         if (stat(path, &st) == 0) {
             // exists
             if (!S_ISREG(st.st_mode)) {
                 errno = ENOENT;
-
-                // move pointers to start of next entry
-                entry_start = entry_end;
-
-                // if one char before first char of next entry -> move one forwad
-                if (*entry_end == ':') {
-                    entry_start++;
-                }
                 continue;
             }
-
             // malloc space for path
-            entry_start = malloc(strlen(path)+1);
-            if (!entry_start) {
+            char* m_path = get_malloced_copy(path);
+            if (!m_path) {
+                free(env_path_cpy);
                 return NULL;
             }
-
-            // copy path to malloced space and return
-            strcpy(entry_start, path);
-            return entry_start;            
+            free(env_path_cpy);
+            return m_path;            
         }
-
-        // move pointers to start of next entry
-        entry_start = entry_end;
-
-        // if one char before first char of next entry -> move one forwad
-        if (*entry_end == ':') {
-            entry_start++;
-        }
+        entry = strtok(NULL, delimiter);
     }
-
+    free(env_path_cpy);
     errno = ENOENT;
     return NULL;
 }
