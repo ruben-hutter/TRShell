@@ -1,7 +1,8 @@
 #include "buffered_string.h"
 
-// populates the passed dstruct with the passed string
-void populate_buffered_string(struct buffered_string* buffered_string, char* input_string) {
+// populates the passed struct with the given string
+void populate_buffered_string(struct buffered_string* buffered_string,
+                                char* input_string) {
     buffered_string->buffer = input_string;
     buffered_string->buffer_size = strlen(input_string);
     buffered_string->current_pos = INIT_POS;
@@ -19,7 +20,7 @@ void unget_last_char (struct buffered_string* input) {
 
 // returns the next char in the buffer
 char get_next_char (struct buffered_string* input) {
-    // either buffered_string pointer or pointer of buffer in input struct is NULL       
+    // buffered_string pointer or pointer of buffer in input struct is NULL
     if (!input || !input->buffer) {
         // return error char symbolizing that an error occured
         errno = ENODATA;
@@ -40,13 +41,13 @@ char get_next_char (struct buffered_string* input) {
 
 // return the next char without incrementinng the current read potision
 char peek_next_char(struct buffered_string* input) {
-    // either buffered_string pointer or pointer of buffer in input struct is NULL
+    // buffered_string pointer or pointer of buffer in input struct is NULL
     if (!input || !input->buffer) {
         // return error char symbolizing that an error occured
         errno = ENODATA;
         return ERRCHAR;
     }
-    // current reading position in the buffer used for getting the pos of the next char
+    // get position of next char
     long peek_pos = input->current_pos + 1;
     // if peeking out of buffer return end of file
     if (peek_pos >= input->buffer_size) {
@@ -55,13 +56,12 @@ char peek_next_char(struct buffered_string* input) {
     return input->buffer[peek_pos];
 }
 
-// moves the reading position in the buffer to the right until non whitespace char is found
+// moves reading position in buffer to the right until non whitespace is found
 void skip_leading_white_spaces(struct buffered_string* input) {
-    // either buffered_string pointer or pointer of buffer in input struct is NULL
+    // buffered_string pointer or pointer of buffer in input struct is NULL
     if (!input || !input->buffer) {
         return;
     }
-
     char upcoming_char;
     // move to the right until non tab or whitespace or EOF char is found
     while (true) {

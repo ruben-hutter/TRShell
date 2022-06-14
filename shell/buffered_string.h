@@ -22,14 +22,19 @@ struct buffered_string {
 };
 
 // creates a buffered string contianing the specified string
-void populate_buffered_string(struct buffered_string* buffered_string, char* input_string);
-// get next char from buffer
-char get_next_char(struct buffered_string* input);
+void populate_buffered_string(struct buffered_string* buffered_string,
+                                char* input_string);
+
 // moves the read index one char back
 void unget_last_char(struct buffered_string* input);
+
+// get next char from buffer
+char get_next_char(struct buffered_string* input);
+
 // returns the next char without moving the read index
 char peek_next_char(struct buffered_string* input);
-// skips leading white spaces
+
+// moves reading position in buffer to the right until non whitespace is found
 void skip_leading_white_spaces(struct buffered_string* input);
 
 #endif
