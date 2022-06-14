@@ -4,6 +4,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdarg.h>
+
 #include "string_utils.h"
 
 // colors used for normal users
@@ -21,7 +22,9 @@
 
 // concat input_strings with style reset character at the appendet to the end
 void concatenate_with_style(int num_of_input_strings, char* styled_string, ...);
-// get the length of all passed string concatenated with the style reset char apendet to the end
+
+// get the length of all passed strings concatenated
+// with the style reset char apendet to the end
 int get_concatenated_length_with_style(int num_of_input_strings, ...);
 
 #endif

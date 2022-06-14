@@ -9,4 +9,5 @@ struct builtin_utility builtin_utilities[] =
         {"clera", "prints a funny line when typo in clear", clera},
     };
 
-int builtin_utility_count = sizeof(builtin_utilities)/sizeof(struct builtin_utility);
+int builtin_utility_count =
+                    sizeof(builtin_utilities) / sizeof(struct builtin_utility);
