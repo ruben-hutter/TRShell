@@ -42,7 +42,7 @@ void update_last_approach(char* approach) {
 // returns the single matching directories if existing
 // returns null on single or multiple matches
 char* querry_directories(char* approach) {
-    bool no_path = false;
+    int no_path = false;
     // split string into pre, path and pth_approach
     struct approach_split* ap_split = auto_string_manip(approach);
     // set path in case of null
