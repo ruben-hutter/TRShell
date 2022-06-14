@@ -81,8 +81,10 @@ char* querry_directories(char* approach) {
     if (!esc_match) {
         free(match);
         free_approach_split(ap_split);
-        return NULL;
+        return esc_match;
     }
+    printf("\n>>> %s", esc_match);
+
     free(match);
     match = esc_match;
     // reconstruct input

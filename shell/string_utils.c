@@ -206,7 +206,7 @@ char* insert_char_before_char(char* string, char first, char to_prepend) {
     int count;
 
     // count number of spaces
-    count_char_in_word(string, first);
+    count = count_char_in_word(string, first);
     // there is at least a first char
     if (count > 0) {
         // set output length
