@@ -64,7 +64,7 @@ void print_matching_entries_from_list(char** entry_list, int list_length, char* 
 // manipulates the given string for autocompletion
 struct approach_split* auto_string_manip(char* string);
 
-// format n_complete string
+// remove backslashes and quotes
 void remove_back_n_quotes(char** n_complete);
 
 // frees an approach split object
