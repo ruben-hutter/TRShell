@@ -16,22 +16,18 @@ struct tree_node* new_node(enum node_type type) {
 }
 
 // add node as child to parent node
-// TODO: more cnsise implementation using pure doubl linked list (no first child)
 void add_child_node(struct tree_node* parent, struct tree_node* child) {
     // if any null pointers -> exit
     if (!parent || !child) {
         return;
     }
-
     // add child
     // if no child yet, add child as first child
     if (!parent->first_child) {
-        
         parent->first_child = child;
         parent->number_of_children++;
         return;
     }
-
     // iterate down the list of children until last reached
     struct tree_node* sibling = parent->first_child;
     while (sibling->next_sibling) {
@@ -43,6 +39,7 @@ void add_child_node(struct tree_node* parent, struct tree_node* child) {
     parent->number_of_children++;
 }
 
+// set string value of node
 void set_node_val_str(struct tree_node* node, char* string) {
     // set node type to string node
     node->value_type = VALUE_STRING;
@@ -52,49 +49,52 @@ void set_node_val_str(struct tree_node* node, char* string) {
         node->value.string = NULL;
         return;
     }
-    
-    // alloc space for passed string
-    char* node_string = malloc(strlen(string) + 1);
+    char* node_string = get_malloced_copy(string);
+    // // alloc space for passed string
+    // char* node_string = malloc(strlen(string) + 1);
 
-    // alloc failed
-    if (!node_string) {
-        node->value.string = NULL;
-        return;
-    }
+    // // alloc failed
+    // if (!node_string) {
+    //     node->value.string = NULL;
+    //     return;
+    // }
     
-    // copy and set node's string
-    strcpy(node_string, string);
+    // // copy and set node's string
+    // strcpy(node_string, string);
     node->value.string = node_string;
 }
 
+// free everything of tree, starting by root recursively
 void free_tree_from_root(struct tree_node* node) {
     if (!node) {
         return;
     }
-
+    // set first child
     struct tree_node* child = node->first_child;
 
+    // iterate over all children and call recursion
     while (child) {
         struct tree_node* next = child->next_sibling;
         free_tree_from_root(child);
         child = next;
     }
 
+    // if node is of type string and has a string value, free the string
     if (node->value_type == VALUE_STRING && node->value.string) {
         free(node->value.string);
     }
-
+    // free node itself
     free(node);
 }
 
+// make a tree from a given root node
 struct tree_node* build_tree_from_root(struct token* root_token) {
-    // nullpointer -> exit
     if (!root_token) {
         return NULL;
     }
     // allocate new node for command
     struct tree_node* root_node = new_node(COMMAND_NODE);
-    // allocation failed -> return and free token as not used anymore
+
     if (!root_node) {
         free_token(root_token);
         return NULL;
@@ -108,10 +108,8 @@ struct tree_node* build_tree_from_root(struct token* root_token) {
             free_token(root_token);
             break;
         }
-
         // allocate new tree node for a token of the input
         struct tree_node* node = new_node(VARIABLE_NODE);
-        // alloc failed
         if (!node) {
             // free cmd node prepared earlier
             free_tree_from_root(root_node);
@@ -126,23 +124,20 @@ struct tree_node* build_tree_from_root(struct token* root_token) {
         // free token
         free_token(root_token);
     } while ((root_token = get_next_token(input)) != &eof_token);
-
     return root_node;
 }
 
+// traverse tree and print out nodes
 void print_command_tree(struct tree_node* node) {
-    // traverse tree and print out nodes
     if (!node) {
         return;
     }
-
-    int i = 0;
-
+    int node_id = 0;
     struct tree_node* child = node->first_child;
 
     while (child) {
         struct tree_node* next = child->next_sibling;
-        printf("child %d: %s -> ", i++, child->value.string);
+        printf("child %d: %s -> ", node_id++, child->value.string);
         child = next;
     }
     printf("\n");
