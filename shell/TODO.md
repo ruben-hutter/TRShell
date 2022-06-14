@@ -11,7 +11,5 @@
 [~] makefile refactor
 [] tilde for path change
 [x] autocomplete -> get_binaries() refactor with strtok
-[] executor -> search_path() refactor with strtok
+[x] executor -> search_path() refactor with strtok
 [] complete logo
-
----
