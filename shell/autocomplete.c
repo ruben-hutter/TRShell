@@ -373,7 +373,7 @@ struct approach_split* auto_string_manip(char* string) {
     if (!n_complete) {
         // path not partially given
         // take rest after command
-        unsigned int n_complete_len = string_len - pre_len - 1;
+        unsigned int n_complete_len = string_len - pre_len;
         m_n_complete = get_malloced_empty_string(n_complete_len);
         strncpy(m_n_complete, pre + 1, n_complete_len);
         // format n_complete
@@ -381,8 +381,10 @@ struct approach_split* auto_string_manip(char* string) {
         // bind everything to struct
         app_split->pre = m_pre;
         app_split->n_complete = m_n_complete;
+        printf("\n upper path");
         return app_split;
     }
+    printf("\n lower path");
     unsigned int n_complete_len = (string + string_len) - n_complete - 1;
     m_n_complete = get_malloced_empty_string(n_complete_len);
     strncpy(m_n_complete, n_complete + 1, n_complete_len);
