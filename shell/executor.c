@@ -1,6 +1,16 @@
 #include "executor.h"
 
-// searches a command in all directories listed in $PATH
+// free all given string arguments
+static inline void free_argv(int argc, char** argv) {
+    if (!argc) {
+        return;
+    }
+    while (argc--) {
+        free(argv[argc]);
+    }
+}
+
+// searches a command in all directories listed in PATH
 char* search_path(char* command_name) {
     // get length of command
     int command_name_len = strlen(command_name);
@@ -44,42 +54,29 @@ char* search_path(char* command_name) {
     return NULL;
 }
 
-// executes a command using exec v
+// executes a command using execv
 int exec_command(int argc, char** argv) {
-
     // if starts with / -> assume its a path and try run directly
     if (strchr(argv[0], '/')) {
         execv(argv[0], argv);
         return 0;  
     }
-    
     // search for command with that name
     char* path = search_path(argv[0]);
 
-    // no command found -> return
     if (!path) {
         return 0;
     }
-
     // exec command
     execv(path, argv);
     free(path);
     return 0;
 }
 
-static inline void free_argv(int argc, char** argv) {
-    if (!argc) {
-        return;
-    }
-
-    while (argc--) {
-        free(argv[argc]);
-    }
-}
-
+// execute a simple command
 int do_simple_command(struct tree_node* node) {
     if (!node) {
-        return 0;
+        return 1;
     }
 
     struct tree_node* child = node->first_child;
@@ -89,20 +86,17 @@ int do_simple_command(struct tree_node* node) {
 
     int argc = 0;
     long max_args = 255;
-    char* argv[max_args+1];     // keep 1 for the terminating NULL arg
+    char* argv[max_args + 1];     // keep 1 for the terminating NULL arg
     char* str;
-
     // add every child as an array entry
     while (child) {
         str = child->value.string;
-        argv[argc] = malloc(strlen(str)+1);
-
+        argv[argc] = get_malloced_copy(str);
         if (!argv[argc]) {
             free_argv(argc, argv);
-            return 0;
+            return 1;
         }
-
-        strcpy(argv[argc], str);
+        // increment counter
         argc++;
         if (argc >= max_args) {
             break;
@@ -116,7 +110,7 @@ int do_simple_command(struct tree_node* node) {
         if (strcmp(argv[0], builtin_utilities[iterator].name) == 0) {
             builtin_utilities[iterator].func(argc, argv);
             free_argv(argc, argv);
-            return 1;
+            return 0;
         }
     }
 
@@ -134,14 +128,12 @@ int do_simple_command(struct tree_node* node) {
         }
     } else if (child_pid < 0) {
         fprintf(stderr, "error: failed to fork command: %s\n", strerror(errno));
-        return 0;
+        return 1;
     }
-
     // wait for the command to be executed,
     // and return an error code if command failed
     int status = 0;
     waitpid(child_pid, &status, 0);
     free_argv(argc, argv);
-
-    return 1;
+    return 0;
 }
