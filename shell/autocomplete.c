@@ -46,6 +46,10 @@ char* querry_directories(char* approach) {
     // split string into pre, path and pth_approach
     struct approach_split* ap_split = auto_string_manip(approach);
     // set path in case of null
+    if (!ap_split) {
+        printf("[querry_dir] not ap_split obj");
+        return NULL;
+    }
     if (!ap_split->path) {
         no_path = true;
         ap_split->path = get_current_working_path();
@@ -74,36 +78,32 @@ char* querry_directories(char* approach) {
     if (!match) {
         // free an approach split object
         free_approach_split(ap_split);
-        return match;
+        return NULL;
     }
     // insert backslash before whitespace
     char* esc_match = insert_char_before_char(match, ' ', '\\');
     if (!esc_match) {
         free(match);
         free_approach_split(ap_split);
-        return esc_match;
+        return NULL;
     }
-    printf("\n>>> %s", esc_match);
 
     free(match);
-    match = esc_match;
+    char* input = NULL;
     // reconstruct input
     if (no_path) {
-        int ipt_len = get_concatenated_length(2, ap_split->pre, match);
-        char* input = get_malloced_empty_string(ipt_len);
-        concatenate(2, input, ap_split->pre, match);
-        free(match);
-        match = input;
+        int ipt_len = get_concatenated_length(2, ap_split->pre, esc_match);
+        input = get_malloced_empty_string(ipt_len);
+        concatenate(2, input, ap_split->pre, esc_match);
     } else {
-        int ipt_len = get_concatenated_length(3, ap_split->pre, ap_split->esc_path, match);
-        char* input = get_malloced_empty_string(ipt_len);
-        concatenate(3, input, ap_split->pre, ap_split->esc_path, match);
-        free(match);
-        match = input;
+        int ipt_len = get_concatenated_length(3, ap_split->pre, ap_split->esc_path, esc_match);
+        input = get_malloced_empty_string(ipt_len);
+        concatenate(3, input, ap_split->pre, ap_split->esc_path, esc_match);
     }
     // free an approach split object
     free_approach_split(ap_split);
-    return match;
+    free(esc_match);
+    return input;
 }
 
 // append the names of all files at the specified path to the list
@@ -364,10 +364,10 @@ struct approach_split* auto_string_manip(char* string) {
     struct approach_split* app_split = (struct approach_split*)
         malloc(sizeof(struct approach_split));
     // members to bind to struct
-    char* m_pre;
-    char* m_path;
-    char* m_esc_path;
-    char* m_n_complete;
+    char* m_pre = NULL;
+    char* m_path = NULL;
+    char* m_esc_path = NULL;
+    char* m_n_complete = NULL;
     // delimiters
     char slash = '/';
     char space = ' ';
@@ -392,7 +392,14 @@ struct approach_split* auto_string_manip(char* string) {
         remove_back_n_quotes(&m_n_complete);
         // bind everything to struct
         app_split->pre = m_pre;
+        app_split->path = m_path;
+        app_split->esc_path = m_esc_path;
         app_split->n_complete = m_n_complete;
+        printf("\nbefor segfault\n");
+        printf("struct: %s\n", app_split->pre);
+        printf("struct: %s\n", app_split->path);
+        printf("struct: %s\n", app_split->esc_path);
+        printf("struct: %s\n", app_split->n_complete);
         return app_split;
     }
     unsigned int n_complete_len = (string + string_len) - n_complete - 1;
@@ -419,6 +426,10 @@ struct approach_split* auto_string_manip(char* string) {
     app_split->esc_path = m_esc_path;
     app_split->n_complete = m_n_complete;
 
+    printf("struct: %s\n", app_split->pre);
+    printf("struct: %s\n", app_split->path);
+    printf("struct: %s\n", app_split->esc_path);
+    printf("struct: %s\n", app_split->n_complete);
     return app_split;
 }
 
@@ -431,6 +442,9 @@ void remove_back_n_quotes(char** string) {
 
 // frees an apprach split struct with all its members
 void free_approach_split(struct approach_split* ap_split) {
+    if (!ap_split) {
+        return;
+    }
     if (ap_split->pre) {
         free(ap_split->pre);
     }
@@ -480,7 +494,7 @@ char* querry_history(char* raw_approach) {
 char* compare_against_list(char* approach, char** entry_list, int list_length) {
     int approach_length = strlen(approach);
     int found = false;
-    char* match = NULL;
+    char* match;
     // iterate over lsit to find matches
     for (int index = 0; index < list_length; index++) {
         // if not matching -> continue

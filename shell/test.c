@@ -13,9 +13,13 @@ struct approach_split* auto_string_manip(char* string);
 void remove_back_n_quotes(char** string);
 
 int main(int argc, char** argv) {
-    char* string = "cd \"some/shitty path/dir/something";
+    char* string = "cd q";
     char* str = get_malloced_copy(string);
     struct approach_split* app_split = auto_string_manip(string);
+    printf("struct: %s\n", app_split->pre);
+    printf("struct: %s\n", app_split->path);
+    printf("struct: %s\n", app_split->esc_path);
+    printf("struct: %s\n", app_split->n_complete);
     free(str);
     return 0;
 }
@@ -81,11 +85,6 @@ struct approach_split* auto_string_manip(char* string) {
     app_split->esc_path = m_esc_path;
     app_split->n_complete = m_n_complete;
 
-    // debug
-    printf("pre: [%s]\n", app_split->pre);
-    printf("path: [%s]\n", app_split->path);
-    printf("esc_path: [%s]\n", app_split->esc_path);
-    printf("n_complete: [%s]\n", app_split->n_complete);
     return app_split;
 }
 

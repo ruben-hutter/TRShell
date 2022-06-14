@@ -165,7 +165,7 @@ void free_string_arr(char** string_arr, int arr_length) {
             free(string_arr[index]);
         }
     }
-    free (string_arr);
+    free(string_arr);
 }
 
 // remove chars (from given list of chars) from given string
