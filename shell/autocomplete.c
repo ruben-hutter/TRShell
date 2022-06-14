@@ -75,6 +75,7 @@ char* querry_directories(char* approach) {
     free_string_arr(dirs, dirs_idx);
     // handle no match
     if (!match) {
+        printf("\n>>>\n");
         // free an approach split object
         free_approach_split(ap_split);
         return NULL;
@@ -484,7 +485,7 @@ char* querry_history(char* raw_approach) {
 char* compare_against_list(char* approach, char** entry_list, int list_length) {
     int approach_length = strlen(approach);
     int found = false;
-    char* match;
+    char* match = NULL;
     // iterate over lsit to find matches
     for (int index = 0; index < list_length; index++) {
         // if not matching -> continue
