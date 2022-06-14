@@ -75,7 +75,6 @@ char* querry_directories(char* approach) {
     free_string_arr(dirs, dirs_idx);
     // handle no match
     if (!match) {
-        printf("\n>>>\n");
         // free an approach split object
         free_approach_split(ap_split);
         return NULL;
