@@ -484,7 +484,7 @@ char* querry_history(char* raw_approach) {
 // if no match NULL is returned
 char* compare_against_list(char* approach, char** entry_list, int list_length) {
     int approach_length = strlen(approach);
-    bool found = false;
+    int found = false;
     char* match = NULL;
     // iterate over lsit to find matches
     for (int index = 0; index < list_length; index++) {
