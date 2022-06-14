@@ -93,9 +93,9 @@ char* querry_directories(char* approach) {
         free(match);
         match = input;
     } else {
-        int ipt_len = get_concatenated_length(3, ap_split->pre, ap_split->path, match);
+        int ipt_len = get_concatenated_length(3, ap_split->pre, ap_split->esc_path, match);
         char* input = get_malloced_empty_string(ipt_len);
-        concatenate(3, input, ap_split->pre, ap_split->path, match);
+        concatenate(3, input, ap_split->pre, ap_split->esc_path, match);
         free(match);
         match = input;
     }
@@ -433,6 +433,9 @@ void free_approach_split(struct approach_split* ap_split) {
     }
     if (ap_split->path) {
         free(ap_split->path);
+    }
+    if (ap_split->esc_path) {
+        free(ap_split->esc_path);
     }
     if (ap_split->n_complete) {
         free(ap_split->n_complete);
