@@ -22,8 +22,8 @@ colors.o: colors.c colors.h
 executor.o: executor.c executor.h
 	gcc -c executor.c
 
-utils.o: builtin_utilities.o string_utils.o init.o token.o word_expansion.o
-	gcc -o utils.o builtin_utilities.o string_utils.o init.o token.o word_expansion.o
+utils.o: builtin_utilities.o string_utils.o init.o token.o 
+	gcc -o utils.o builtin_utilities.o string_utils.o init.o token.o 
 
 builtin_utilities.o: builtin_utilities.c builtin_utilities.h
 	gcc -c builtin_utilities.c
@@ -36,9 +36,6 @@ init.o: init.c init.h
 
 token.o: token.c token.h
 	gcc -c token.c
-
-word_expansion.o: word_expansion.c word_expansion.h
-	gcc -c word_expansion.c
 
 structures.o: command_tree.o symbol_table.o
 	gcc -c command_tree.o symbol_table.o
