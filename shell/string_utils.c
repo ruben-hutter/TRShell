@@ -16,8 +16,7 @@ int get_concatenated_length(int num_of_args, ...) {
 // get the length of all passed string in the va_list concatenated
 int v_get_concatenated_length(int num_of_args, va_list input_strings) {
     int concatenated_length = 0;
-    int iter;
-    for (iter = 0; iter < num_of_args; iter++) {
+    for (int iter = 0; iter < num_of_args; iter++) {
         concatenated_length += strlen(va_arg(input_strings, char*));
     }
     // return resulting length
@@ -39,8 +38,7 @@ void concatenate(int num_of_args, char* output_string, ...) {
 // concatenate all strings in the va_list to output string
 // note that output_string must be of sufficient length to fit concatenation
 void v_concatenate(int num_of_args, char* output_string, va_list input_strings) {
-    int iter;
-    for (iter = 0; iter < num_of_args; iter++) {
+    for (int iter = 0; iter < num_of_args; iter++) {
         strcat(output_string, va_arg(input_strings, char*));
     }
 }
@@ -49,7 +47,7 @@ void v_concatenate(int num_of_args, char* output_string, va_list input_strings) 
 char* get_malloced_empty_string(int length) {
     // works as sizeof(char) is qual to 1
     char* empty_string = (char*) malloc(length + 1);
-    memset(empty_string,0,length + 1);
+    memset(empty_string, 0, length + 1);
     make_empty_string(empty_string);
     return empty_string;
 }
@@ -84,7 +82,7 @@ void crop_string_to_end(char* input_string, char delimiter) {
     while (actual_ptr > input_string) {
         if (*actual_ptr == delimiter) {
             // overrite actual string
-            strcpy(input_string, actual_ptr+1);
+            strcpy(input_string, actual_ptr + 1);
             break;
         }
         actual_ptr--;
@@ -93,8 +91,8 @@ void crop_string_to_end(char* input_string, char delimiter) {
 
 // put a string between a given char
 void string_bwn_char(char** input_string_ptr, char* my_char) {
-    char* new_str = get_malloced_empty_string(strlen(*input_string_ptr)
-        + 2 * strlen(my_char));
+    char* new_str = get_malloced_empty_string(
+                            strlen(*input_string_ptr) + 2 * strlen(my_char));
     concatenate(3, new_str, my_char, *input_string_ptr, my_char);
     free(*input_string_ptr);
     *input_string_ptr = new_str;
@@ -116,23 +114,24 @@ int is_only_whitespace(const char* input_string) {
     return true;
 }
 
-// shifts the section form reg_start to reg_end one character to the right, leading to a gap at region_start
-// indexes are not checked!
+// shifts the section form reg_start to reg_end one character to the right,
+// leading to a gap at region_start (indexes are not checked!)
 void shift_string_right(char* input_string, int region_start, int region_end) {
     for (int current = region_end; current >= region_start; current--) {
         input_string[current + 1] = input_string[current];
     }
 }
 
-// shifts the section form reg_start to reg_end one character to the left, leading to the char at reggion_start to be overwritten
-// indexes are not checked!
+// shifts the section form reg_start to reg_end one character to the left,
+// leading to the char at reggion_start to be overwritten
+// (indexes are not checked!)
 void shift_string_left(char* input_string, int region_start, int region_end) {
     for (int current = region_start; current <= region_end; current++) {
         input_string[current] = input_string[current + 1];
     }
 }
 
-// put a the section from form reg_start to reg_end to the std out using putchar
+// put the section form reg_start to reg_end to the std out using putchar
 void put_string_section(char* input_string, int region_start, int region_end) {
     for (int current = region_start; current <= region_end; current++) {
         putchar(input_string[current]);
@@ -141,7 +140,7 @@ void put_string_section(char* input_string, int region_start, int region_end) {
 
 // returns true iff the input_string starts with the pattern_string
 int string_starts_with(const char* input_string, const char* pattern_string) {
-    if(strncmp(input_string, pattern_string, strlen(pattern_string)) == 0) {
+    if (strncmp(input_string, pattern_string, strlen(pattern_string)) == 0) {
         return true;
     }
     return false;
@@ -171,7 +170,7 @@ void free_string_arr(char** string_arr, int arr_length) {
 // remove chars (from given list of chars) from given string
 void remove_chars_from_string(char* input_string, char* to_remove) {
     // tokenize string
-    char* tok;
+    char* tok = NULL;
     char* mod_string = get_malloced_empty_string(0);
     tok = strtok(input_string, to_remove);
     while (tok != NULL) {
@@ -202,9 +201,8 @@ char* get_malloced_copy_w_char(char* string, char char_to_append) {
 // insert char before char
 // folder green -> folder\ green (for space and backslash)
 char* insert_char_before_char(char* string, char first, char to_prepend) {
-    char* output;
-    int count;
-
+    char* output = NULL;
+    int count = 0;
     // count number of spaces
     count = count_char_in_word(string, first);
     // there is at least a first char
@@ -229,8 +227,7 @@ char* insert_char_before_char(char* string, char first, char to_prepend) {
 
 // count char in word
 int count_char_in_word(char* string, char to_count) {
-    int count;
-
+    int count = 0;
     char* tmp = strchr(string, to_count);
     if (tmp) {
         count++;

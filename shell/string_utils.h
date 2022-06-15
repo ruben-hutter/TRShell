@@ -40,18 +40,8 @@ void terminate_string_at(char* input_string, int index);
 // example for delimiter '&': first&second&third -> third
 void crop_string_to_end(char* input_string, char delimiter);
 
-// delete the char at the specified position
-void delete_char_at(char* input_string, size_t char_index);
-
-// subsitiutes the section between start and end of first_string with the second_string
-char* subsitute_section_with_string(char* input_string, char* substitute_string, size_t start, size_t end);
-
 // put a string between a given char (input_string must me on heap)
 void string_bwn_char(char** input_string, char* add_quotes);
-
-int check_buffer_bounds(int* count, int* length, char*** buffer);
-
-void free_buffer(int length, char** buffer);
 
 // sets a terminator at the position of the first newline
 void cut_at_trailing_newline(char* input_string);
@@ -59,15 +49,16 @@ void cut_at_trailing_newline(char* input_string);
 // returs true if a string is only whitespace, otherwise false
 int is_only_whitespace(const char* input_string);
 
-// shifts the section form reg_start to reg_end one character to the right, leading to a gap at region_start
-// indexes are not checked!
+// shifts the section form reg_start to reg_end one character to the right,
+// leading to a gap at region_start (indexes are not checked!)
 void shift_string_right(char* input_string, int region_start, int region_end);
 
-// shifts the section form reg_start to reg_end one character to the left, leading to the char at reggion_start to be overwritten
-// indexes are not checked!
+// shifts the section form reg_start to reg_end one character to the left,
+// leading to the char at reggion_start to be overwritten
+// (indexes are not checked!)
 void shift_string_left(char* input_string, int region_start, int region_end);
 
-// put a the section from form reg_start to reg_end to the std out using putchar
+// put the section form reg_start to reg_end to the std out using putchar
 void put_string_section(char* input_string, int region_start, int region_end);
 
 // returns true iff the input_string starts with the pattern_string
