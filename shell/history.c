@@ -18,14 +18,15 @@ void append_string_to_changes(char* input_string) {
     }
     if (change_buffer_index >= change_buffer_size) {
         // increase buffers allocated size
-        char** new_buffer = realloc(change_buffer, 2 * change_buffer_size * sizeof(char*));
-            // check for failed allocation
-            if (new_buffer) {
-                change_buffer = new_buffer;
-            } else {
-                free(change_buffer);
-                change_buffer = NULL;
-            }
+        char** new_buffer = (char**) realloc(change_buffer,
+                                    2 * change_buffer_size * sizeof(char*));
+        // check for failed allocation
+        if (!new_buffer) {
+            free(change_buffer);
+            change_buffer = NULL;
+        } else {
+            change_buffer = new_buffer;
+        }
     }
     change_buffer[change_buffer_index++] = input_string;
 }
@@ -58,7 +59,8 @@ void append_string_to_history(char* input_string){
         return;
     }
     // malloc new node
-    struct history_entry* new_entry = (struct history_entry*)malloc(sizeof(struct history_entry));
+    struct history_entry* new_entry =
+                    (struct history_entry*) malloc(sizeof(struct history_entry));
     // add data
     new_entry->input_string = input_string;
     // remove previous occurence
@@ -71,7 +73,6 @@ void append_string_to_history(char* input_string){
 
 // appends the entry to the list
 void append_entry_to_list(struct history_entry* entry) {
-    // check for entry null
     if (!entry) {
         return;
     }
@@ -80,9 +81,9 @@ void append_entry_to_list(struct history_entry* entry) {
     }
     // no next entry as this entry is the last one
     entry->next_entry = NULL;
-    // previous entry will be the current lst one
+    // previous entry will be the current last one
     entry->previous_entry = history_tail;
-    // update link current las element to new one
+    // update link current last element to new one
     if (history_tail) {
         history_tail->next_entry = entry;
     }
@@ -141,12 +142,14 @@ void free_history_entry(struct history_entry* entry) {
     if (!entry) {
         return;
     }
+    // if a string exists, free it
     if (entry->input_string) {
         free(entry->input_string);
     }
     free(entry);
 }
 
+// frees the whole history from tail to head
 void free_complete_history() {
     // set current to tail
     reset_history_index();
@@ -163,19 +166,19 @@ void free_complete_history() {
     free_change_buffer();
 }
 
+// removes every pointer to old history
 void free_history_pointers() {
     history_head = NULL;
     history_tail = NULL;
     history_current = NULL;
 }
 
+// free change buffer
 void free_change_buffer() {
     if (!change_buffer) {
         return;
     }
-
-    int idx;
-    for (idx = 0; idx < change_buffer_index; idx++) {
+    for (int idx = 0; idx < change_buffer_index; idx++) {
         if (change_buffer[idx]) {
             free(change_buffer[idx]);
         }
@@ -188,8 +191,8 @@ void reset_history_index() {
     history_current = history_tail;
 }
 
+// get entry containing the specified string or NULL
 struct history_entry* get_entry_by_string(char* input_string) {
-    // input string is null
     if (!input_string) {
         return NULL;
     }
@@ -232,7 +235,7 @@ char* get_previous_history_entry_string() {
     return input_string;
 }
 
-// returns true if more elements available
+// returns true if at end of history or false if not
 int is_at_head() {
     return history_current == history_head;
 }
