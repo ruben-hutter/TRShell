@@ -219,7 +219,7 @@ char* querry_binaries(char* approach) {
 char** get_binaries(int* bin_lst_idx) {
     // create list to store dir and file names
     char** binaries = (char**) malloc(DEFAULT_LENGTH * sizeof(char*));
-    // current mex cap of the list
+    // current max cap of the list
     int bin_cnt = DEFAULT_LENGTH;
     int* bin_cnt_ptr = &bin_cnt;
     // current insert position in the list
@@ -439,14 +439,15 @@ void free_approach_split(struct approach_split* ap_split) {
 char* querry_history(char* raw_approach) {
     char* match = NULL;
     int r_apr_len = strlen(raw_approach);
-    // new array for approach without leading ?
+    // new array for approach without leading "? ""
     char approach[r_apr_len - 1];
     // copy section without "? "
     strncpy(approach, raw_approach + 2, r_apr_len - 2);
     terminate_string_at(approach, r_apr_len - 2);
-    // compare approach with history
-    char* curr_string = get_previous_history_entry_string();
+    // reset history indexing to ensure that iteration contains all entries
     reset_history_index();
+    // compare approach with history entries
+    char* curr_string = get_previous_history_entry_string();
     // iterate over history
     for (int idx = 0; idx < history_size; idx++) {
         // if not matching -> continue
@@ -455,7 +456,7 @@ char* querry_history(char* raw_approach) {
             continue;
         }
         match = get_malloced_copy(curr_string);
-        // remove newline
+        // remove newline at end of entry (every entry ends with newline)
         cut_at_trailing_newline(match);
         return match;
     }

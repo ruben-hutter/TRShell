@@ -391,10 +391,9 @@ void print_local_table() {
     int indent = table->stack_level << 2;
 
     // print header for table
-    fprintf(stderr, "%*sSymbol table [Level %d];\n", indent, " ",
+    fprintf(stderr, "%*sSymbol table on level %d\n", indent, " ",
                 table->stack_level);
-    fprintf(stderr, "%*s===========================\n", indent, " ");
-    fprintf(stderr, "%*sNo     Symbol                           Val\n",
+    fprintf(stderr, "%*sIndex  Key                              Value\n",
                 indent, " ");
 
     // iterate though entries of table if not empty
@@ -410,7 +409,7 @@ void print_local_table() {
             // itereate over entries in list attatched to each cell
             while (current_entry) {
                 index++;
-                fprintf(stderr, "%*s[%04d] %-32s '%s'\n", indent, " ",
+                fprintf(stderr, "%*s%04d %-32s '%s'\n", indent, " ",
                             index, current_entry->name, current_entry->value);
                 current_entry = current_entry->next;
             }

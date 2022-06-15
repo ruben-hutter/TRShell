@@ -7,6 +7,7 @@ struct builtin_utility builtin_utilities[] =
         {"ht", "prints an indexed list of the history", ht},
         {"exit", "exits the shell", exit_shell},
         {"clera", "prints a funny line when typo in clear", clera},
+        {"builtins", "prints a list of all builtin utilities", builtins},
     };
 
 int builtin_utility_count =

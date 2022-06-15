@@ -6,6 +6,7 @@
 #include "builtin_utilities/ht.h"
 #include "builtin_utilities/exit.h"
 #include "builtin_utilities/clera.h"
+#include "builtin_utilities/builtins.h"
 
 // struct for builtin utilities
 struct builtin_utility {
