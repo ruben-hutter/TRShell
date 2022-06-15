@@ -104,7 +104,7 @@ int get_string_from_input(char* buffer, int buffer_size) {
             if (!result) {
                 // handle dump buffer flag
                 if (dump_buffer_flag) {
-                    return 1;
+                    return 0;
                 }
                 continue;
             }
@@ -128,7 +128,7 @@ int get_string_from_input(char* buffer, int buffer_size) {
             buffer[buffer_end_position++] = '\n';
             // eventually add terminator to buffer here!!!
             putchar('\n');
-            return 0;
+            return 1;
         }
 
         // handle insert
