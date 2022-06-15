@@ -7,10 +7,6 @@
 
 ## Tobi
 
-[x] querry_history() comments
-[x] builtins.c ???
-[x] print_prompt_3()
-
 ## Ruben
 
 [~] makefile refactor

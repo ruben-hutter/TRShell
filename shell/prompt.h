@@ -48,7 +48,7 @@ char* get_current_working_path(void);
 // prints prompt string 2
 void print_prompt_2(void);
 
-//prints prompt string 3
+// prints prompt string 3
 void print_prompt_3(void);
 
 // get the prompt prefix containing the user name

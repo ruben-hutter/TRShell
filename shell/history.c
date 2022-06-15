@@ -261,6 +261,7 @@ void print_history() {
     struct history_entry* current_entry = history_head;
     // while not at end -> continue searching
     fprintf(stdout, "Index  Command\n");
+    fprintf(stdout, "=====  =======\n");
     while (current_entry) {
         fprintf(stdout, "%-6d %s",index, current_entry->input_string);
         current_entry = current_entry->next_entry;

@@ -119,12 +119,14 @@ char* get_current_working_path() {
     return dir_path;
 }
 
+// prints prompt string 2
 void print_prompt_2() {
     char* prompt_string = create_user_prompt(PROMPT_2);
     printf(prompt_string);
     free(prompt_string);
 }
 
+// prints prompt string 3
 void print_prompt_3() {
     // get username from environment vars
     char* username = "root";
