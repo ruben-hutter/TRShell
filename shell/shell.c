@@ -29,7 +29,8 @@ int main(int argc, char **argv) {
             continue;
         }
 
-        // init new struct representing char buffer for easy processing of the input string
+        // init new struct representing char buffer
+        // for easy processing of the input string
         struct buffered_string buffered_input;
         populate_buffered_string(&buffered_input, input_string);
         // parse input
@@ -50,7 +51,6 @@ int parse_and_execute(struct buffered_string* buffered_input) {
     // get first section of input as token object
     struct token* curr_token = get_next_token(buffered_input);
 
-
     while (curr_token && curr_token != &eof_token) {
         // build tree storing command and tokens of the users input
         // build_tree_from_root automatically gets following tokens
@@ -60,18 +60,15 @@ int parse_and_execute(struct buffered_string* buffered_input) {
         if (!cmd) {
             break;
         }
-
         do_simple_command(cmd);
         free_tree_from_root(cmd);
-
         // process next command
         curr_token = get_next_token(buffered_input);
     }
-
     return 0;
 }
 
-// free everything
+// free everything, clean up programm
 void free_everything() {
     // free symbol table
     free_table_stack();

@@ -16,9 +16,13 @@
 
 extern int running;
 
-// function prototypes of shell
+// trshell main function
 int main(int argc, char **argv);
+
+// parse and execute a command stored in the char buffer
 int parse_and_execute(struct buffered_string* buffered_input);
+
+// free everything, clean up programm
 void free_everything(void);
 
 #endif
