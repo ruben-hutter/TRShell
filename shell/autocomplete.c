@@ -55,7 +55,7 @@ char* querry_directories(char* approach) {
     }
     // create list to store dir and file names
     char** dirs = (char**) malloc(DEFAULT_LENGTH * sizeof(char*));
-    // current mex cap of the list
+    // current max cap of the list
     int dirs_len = DEFAULT_LENGTH;
     int* dirs_len_ptr = &dirs_len;
     // current insert position in the list
