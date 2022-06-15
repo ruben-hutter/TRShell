@@ -13,6 +13,7 @@ void print_prompt() {
     print_prompt_1();
 }
 
+// prints prompt string 1
 void print_prompt_1() {
     // get username from environment vars
     char* username = get_user_name();
@@ -43,34 +44,40 @@ char* get_prompt_symbol_1() {
     return ps1;
 }
 
-// get the prompt prefix containing the user name and the current directory in user colors
+// get the prompt prefix containing the user name
+// and the current directory in user colors
 char* create_user_prefix(char* user_name, char* curr_work_dir_name) {
     // construct styled version of username + separator
-    char user_part[get_concatenated_length_with_style(3, USER_PRIMARY, user_name, SEPARATOR)];
+    char user_part[get_concatenated_length_with_style(3, USER_PRIMARY,
+                                                        user_name, SEPARATOR)];
     make_empty_string(user_part);
     concatenate_with_style(3, user_part, USER_PRIMARY, user_name, SEPARATOR);
 
     // construct styled version of working directory
-    char dir_part[get_concatenated_length_with_style(3, USER_SECONDARY, STYLE_BOLD, curr_work_dir_name)];
+    char dir_part[get_concatenated_length_with_style(3, USER_SECONDARY,
+                                            STYLE_BOLD, curr_work_dir_name)];
     make_empty_string(dir_part);
-    concatenate_with_style(3, dir_part, USER_SECONDARY, STYLE_BOLD, curr_work_dir_name);
+    concatenate_with_style(3, dir_part, USER_SECONDARY, STYLE_BOLD,
+                            curr_work_dir_name);
 
     // concatenate user_part and dir_part
-    char* prefix = get_malloced_empty_string(get_concatenated_length(2, user_part, dir_part));
+    char* prefix = get_malloced_empty_string(get_concatenated_length(2,
+                                                user_part, dir_part));
     concatenate(2, prefix, user_part, dir_part);
 
     return prefix;
 }
 
-//  get the prompt symbol of the specified prompt in user colors
+// get the prompt symbol of the specified prompt in user colors
 char* create_user_prompt(char* prompt) {
-    char* styled_prompt = get_malloced_empty_string(get_concatenated_length_with_style(2, prompt, USER_PRIMARY));
+    char* styled_prompt = get_malloced_empty_string(
+                get_concatenated_length_with_style(2, prompt, USER_PRIMARY));
     concatenate_with_style(2, styled_prompt, USER_PRIMARY, prompt);
     return styled_prompt;
 }
 
 // gets the username of the current user
-char* get_user_name(void) {
+char* get_user_name() {
     char* name = get_local_table_entry_value("USER");
     if (!name) {
         name = USER_PLACEHOLDER;
@@ -138,28 +145,33 @@ void print_prompt_3() {
     printf(prompt_string);
 }
 
-// get the prompt prefix containing the user name and the current directory in user colors
+// get the prompt prefix containing the user name
+// and the current directory in user colors
 char* create_root_prefix(char* user_name, char* curr_work_dir_name) {
     // construct styled version of username + separator
-    char user_part[get_concatenated_length_with_style(3, ROOT_PRIMARY, user_name, SEPARATOR)];
+    char user_part[get_concatenated_length_with_style(3, ROOT_PRIMARY,
+                                                        user_name, SEPARATOR)];
     make_empty_string(user_part);
     concatenate_with_style(3, user_part, ROOT_PRIMARY, user_name, SEPARATOR);
 
     // construct styled version of working directory
-    char dir_part[get_concatenated_length_with_style(3, ROOT_SECONDARY, STYLE_BOLD, curr_work_dir_name)];
+    char dir_part[get_concatenated_length_with_style(3, ROOT_SECONDARY,
+                                            STYLE_BOLD, curr_work_dir_name)];
     make_empty_string(dir_part);
-    concatenate_with_style(3, dir_part, ROOT_SECONDARY, STYLE_BOLD, curr_work_dir_name);
+    concatenate_with_style(3, dir_part, ROOT_SECONDARY, STYLE_BOLD,
+                            curr_work_dir_name);
 
     // concatenate user_part and dir_part
-    char* prefix = get_malloced_empty_string(get_concatenated_length(2, user_part, dir_part));
+    char* prefix = get_malloced_empty_string(get_concatenated_length(2,
+                                                user_part, dir_part));
     concatenate(2, prefix, user_part, dir_part);
-
     return prefix;
 }
 
-//  get the prompt symbol of the specified prompt in user colors
+// get the prompt symbol of the specified prompt in user colors
 char* create_root_prompt(char* prompt) {
-    char* styled_prompt = get_malloced_empty_string(get_concatenated_length_with_style(2, prompt, ROOT_PRIMARY));
+    char* styled_prompt = get_malloced_empty_string(
+                get_concatenated_length_with_style(2, prompt, ROOT_PRIMARY));
     concatenate_with_style(2, styled_prompt, ROOT_PRIMARY, prompt);
     return styled_prompt;
 }

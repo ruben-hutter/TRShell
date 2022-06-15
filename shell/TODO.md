@@ -8,6 +8,7 @@
 
 [] querry_history() comments
 [] builtins.c ???
+[] print_prompt_3()
 
 ## Ruben
 
