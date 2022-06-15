@@ -12,16 +12,17 @@ char* read_from_input() {
 
     set_tty_raw();
 
-    while (get_string_from_input(temp_buffer, READ_BUFFER_SIZE)/*fgets(temp_buffer, READ_BUFFER_SIZE, stdin)*/) {
+    while (get_string_from_input(temp_buffer, READ_BUFFER_SIZE)) {
         // get length of read input
-        int temp_buffer_length = strlen(temp_buffer); // ex. "ls -al" -> "ls -al\n" (without '\0')
-
+        // ex. "ls -al" -> "ls -al\n" (without '\0')
+        int temp_buffer_length = strlen(temp_buffer);
         // create buffer if not existing or expand to accomodate more input
         if (!buffer) {
-            buffer = malloc(temp_buffer_length+1);
+            buffer = (char*) malloc(temp_buffer_length + 1);
         } else {
             // increase buffers allocated size
-            char* new_buffer = realloc(buffer, buffer_length+temp_buffer_length+1);
+            char* new_buffer = (char*) realloc(buffer,
+                                        buffer_length + temp_buffer_length + 1);
             // check for failed allocation
             if (new_buffer) {
                 buffer = new_buffer;
@@ -41,7 +42,7 @@ char* read_from_input() {
         strcpy(buffer+buffer_length, temp_buffer);
 
         // last buffer char is "new line"
-        if (temp_buffer[temp_buffer_length-1] == '\n') {
+        if (temp_buffer[temp_buffer_length - 1] == '\n') {
             
             // only contains newline
             if (temp_buffer_length == 1) {
@@ -50,13 +51,13 @@ char* read_from_input() {
             }
 
             // second last char wasn't a line-brake char
-            if (temp_buffer[temp_buffer_length-2] != '\\') {
+            if (temp_buffer[temp_buffer_length - 2] != '\\') {
                 void restore_old_tty_settings();
                 return buffer;
             }
 
-            // if it continues remove newline and print multiline command input prompt
-            buffer[buffer_length+temp_buffer_length-2] = '\0';
+            // if continues, remove newline and print multiline command prompt
+            buffer[buffer_length+temp_buffer_length - 2] = '\0';
             temp_buffer_length -= 2;
             print_prompt_2();
         }
@@ -67,6 +68,7 @@ char* read_from_input() {
     return buffer;
 }
 
+// extracts the last input from buffer
 int get_string_from_input(char* buffer, int buffer_size) {
     // init buffer indexes
     int buffer_position = 0;
@@ -83,7 +85,8 @@ int get_string_from_input(char* buffer, int buffer_size) {
         dump_buffer_flag = 0;
         if (last_approach) {
             // move last approach to buffer
-            set_buffer_to_string(last_approach, buffer, buff_pos_ptr, buff_end_pos_ptr);
+            set_buffer_to_string(last_approach, buffer, buff_pos_ptr,
+                                    buff_end_pos_ptr);
             printf(last_approach);
         } 
     }
@@ -101,7 +104,7 @@ int get_string_from_input(char* buffer, int buffer_size) {
             if (!result) {
                 // handle dump buffer flag
                 if (dump_buffer_flag) {
-                    return 0;
+                    return 1;
                 }
                 continue;
             }
@@ -125,7 +128,7 @@ int get_string_from_input(char* buffer, int buffer_size) {
             buffer[buffer_end_position++] = '\n';
             // eventually add terminator to buffer here!!!
             putchar('\n');
-            return 1;
+            return 0;
         }
 
         // handle insert
@@ -158,7 +161,8 @@ void dump_buffer() {
 }
 
 // removes last char and updates buffer
-void handle_backspace(char* buffer, int* buffer_position, int* buffer_end_position) {
+void handle_backspace(char* buffer, int* buffer_position,
+                        int* buffer_end_position) {
     if (*buffer_position < 1) {
         return;
     }
@@ -170,64 +174,64 @@ void handle_backspace(char* buffer, int* buffer_position, int* buffer_end_positi
     (*buffer_position)--;
     // shift buffer to left to remove deletable char
     shift_string_left(buffer, *buffer_position, *buffer_end_position);
-    // update buffer end positionzjuü98
+    // update buffer end position
     (*buffer_end_position)--;
     // print rest of buffer
-    put_string_section(buffer, *(buffer_position), *(buffer_end_position)-1);
+    put_string_section(buffer, *(buffer_position), *(buffer_end_position) - 1);
     if (*(buffer_position) == (*buffer_end_position)) {
         return;
     }
     // reset cursor position
     printf("\033[%dD", *buffer_end_position - *buffer_position);
-};
+}
 
 // hande control sequence
 void handle_arrow(char* buffer, int* buff_pos_ptr, int* buff_end_pos_ptr) {
     if (getchar() == '[') {
-        switch (getchar())
-        {
-        case 'A':
-            // up arrow
-            char* previous_history_string = get_previous_history_entry_string();
-            if (previous_history_string) {
-                remove_line();
-                print_prompt();
-                set_buffer_to_string(previous_history_string, buffer, buff_pos_ptr, buff_end_pos_ptr);
-                printf(buffer);
-            }
-            break;
-        case 'B':
-            // down arrow
-            char* next_history_string = get_next_history_entry_string();
-            if (next_history_string) {
-                remove_line();
-                print_prompt();
-                set_buffer_to_string(next_history_string, buffer, buff_pos_ptr, buff_end_pos_ptr);
-                printf(buffer);
-            }
-            break;
-        case 'C':
-            // right arrow
-            if (*buff_pos_ptr >= *buff_end_pos_ptr) {
+        switch (getchar()) {
+            case 'A':
+                // up arrow
+                char* previous_history_string = get_previous_history_entry_string();
+                if (previous_history_string) {
+                    remove_line();
+                    print_prompt();
+                    set_buffer_to_string(previous_history_string, buffer,
+                                            buff_pos_ptr, buff_end_pos_ptr);
+                    printf(buffer);
+                }
                 break;
-            }
-            printf("\033[1C");
-            (*buff_pos_ptr)++;
-            break;
-        case 'D':
-            // left arrow
-            if (*buff_pos_ptr <= 0) {
+            case 'B':
+                // down arrow
+                char* next_history_string = get_next_history_entry_string();
+                if (next_history_string) {
+                    remove_line();
+                    print_prompt();
+                    set_buffer_to_string(next_history_string, buffer,
+                                            buff_pos_ptr, buff_end_pos_ptr);
+                    printf(buffer);
+                }
                 break;
-            }
-            printf("\033[1D");
-            (*buff_pos_ptr)--;
-            break;
+            case 'C':
+                // right arrow
+                if (*buff_pos_ptr >= *buff_end_pos_ptr) {
+                    break;
+                }
+                printf("\033[1C");
+                (*buff_pos_ptr)++;
+                break;
+            case 'D':
+                // left arrow
+                if (*buff_pos_ptr <= 0) {
+                    break;
+                }
+                printf("\033[1D");
+                (*buff_pos_ptr)--;
+                break;
         }
     }
-    return;
 }
 
-// ersae line and reprint prompt
+// erase line and reprint prompt
 void remove_line() {
     // erase line
     printf("\033[2K");
@@ -235,7 +239,9 @@ void remove_line() {
     printf("\033[0G");
 }
 
-void set_buffer_to_string(char* string, char* buffer, int* buff_pos_ptr, int* buff_end_pos_ptr) {
+// set buffer to entered string
+void set_buffer_to_string(char* string, char* buffer, int* buff_pos_ptr,
+                            int* buff_end_pos_ptr) {
     // string is null
     if (!string) {
         return;
@@ -252,49 +258,24 @@ void set_buffer_to_string(char* string, char* buffer, int* buff_pos_ptr, int* bu
     (*buff_end_pos_ptr) = strlen(buffer);
     // current position to append is also end of string
     (*buff_pos_ptr) = (*buff_end_pos_ptr);
-};
+}
 
-/*set tty mode to raw*/
+// set tty mode to raw
 void set_tty_raw() {
     static struct termios new_settings;
     // get old terminal settings
     tcgetattr(STDIN_FILENO, &old_settings);
     // create copy of terminal settings
     new_settings = old_settings;
-    /*ICANON normally takes care that one line at a time will be processed
-    that means it will return if it sees a "\n" or an EOF or an EOL*/
+    // ICANON normally takes care that one line at a time will be processed
+    // that means it will return if it sees a "\n" or an EOF or an EOL
     new_settings.c_lflag &= ~(ICANON);
     new_settings.c_lflag &= ~(ECHO);        
     // apply new settings to stdin
     tcsetattr(STDIN_FILENO, TCSANOW, &new_settings);
 }
 
-/*restore the old settings*/
+// restore the old settings
 void restore_old_tty_settings() {
-    /*restore the old settings*/
     tcsetattr( STDIN_FILENO, TCSANOW, &old_settings);
 }
-
-/*
-/*This is your part:
-    I choose 'e' to end input. Notice that EOF is also turned off
-    in the non-canonical mode
-    char input[1024];
-    input[0] = '\0';
-    int counter = 0;
-    while((c=getchar())!= 'e') {
-        if (c == 0x7F) {
-            printf("\b\b\b   \b\b\b");
-            counter--;
-            continue;
-        }
-        input[counter++] = c;
-        if (c == '\n') {
-            input[counter++] = '\n';
-            input[counter] = '\0';
-            printf(input);
-            counter = 0;
-            input[0] == '\0';
-        }
-    } 
-*/
