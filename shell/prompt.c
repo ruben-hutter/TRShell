@@ -184,35 +184,3 @@ char* get_prompt_symbol_3() {
     }
     return ps3;
 }
-
-
-
-// -----------------------------------------------------------------------------
-// Check later as not important now!
-// -----------------------------------------------------------------------------
-
-
-/*
-void print_prompt_3(void) {
-    // update the current working directory
-    update_cwd();
-    // crop to last folder
-    crop_string_to_end(current_working_dir, '/');
-    // check if in home
-    check_if_home();
-    // get prefix and prompt
-    char* prefix = create_user_prefix("tobi", last_folder);
-    char* prompt = create_user_prompt(PROMPT_3);
-    // combine prefix and prompt to prompt_string
-    char prompt_string[get_concatenated_length(2, prefix, prompt)];
-    make_empty_string(prompt_string);
-    concatenate(2, prompt_string, prefix, prompt);
-    // free prefix and prompt
-    free(prefix);
-    free(prompt);
-    // print prompt string
-    fprintf(stderr, prompt_string);
-}
-*/
-
-

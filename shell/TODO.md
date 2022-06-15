@@ -7,9 +7,9 @@
 
 ## Tobi
 
-[] querry_history() comments
-[] builtins.c ???
-[] print_prompt_3()
+[x] querry_history() comments
+[x] builtins.c ???
+[x] print_prompt_3()
 
 ## Ruben
 
